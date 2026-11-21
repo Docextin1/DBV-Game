@@ -69,9 +69,9 @@
       touch-action: none;
     }
 
-    /* =========================================================================
-       AVISO DE ROTAÇÃO PARA CELULAR EM MODO RETRATO (VERTICAL)
-       ========================================================================= */
+    /* 
+       AVISO DE ROTAÇÃO 
+       =============== */
     #rotate-overlay {
       position: fixed;
       inset: 0;
@@ -137,7 +137,7 @@
       margin: 0;
     }
 
-    /* Controles Touch sobrepostos na tela (Estilo Console Portátil como na referência) */
+    /* Controles Touch sobrepostos na tela */
     #touch-ui {
       position: absolute;
       inset: 0;
@@ -331,9 +331,8 @@
       color: var(--gold);
     }
 
-    /* =========================================================================
-       INSÍGNIAS DO DISPOSITIVO (DESBRAVADOR + PÓDIO TOP 3 BRILHANTE)
-       ========================================================================= */
+    /* 
+       INSÍGNIAS DO DISPOSITIVO (DESBRAVADOR + PÓDIO TOP 3 BRILHANT */
     .insignias-shelf {
       display: flex;
       flex-wrap: wrap;
@@ -438,9 +437,8 @@
       to { box-shadow: 0 0 24px rgba(255, 175, 110, 0.98); }
     }
 
-    /* =========================================================================
-       FORMULÁRIO DE REGISTRO DE NOME E TABELA RANKING TOP 50 (FIREBASE)
-       ========================================================================= */
+    /*
+       FORMULÁRIO DE REGISTRO DE NOME E TABELA RANKING TOP 50  */
     .record-form {
       background: rgba(5, 19, 38, 0.82);
       border: 1.5px solid var(--gold);
@@ -688,7 +686,7 @@
     <button class="mini-btn" id="btnPause" title="Pausar (P)">❚❚</button>
   </div>
 
-  <!-- Controles Touch na tela (PC também pode clicar ou usar teclado) -->
+  <!-- Controles Touch na tela -->
   <div id="touch-ui">
     <div class="touch-cluster">
       <button class="pad-btn" id="btnLeft" aria-label="Esquerda">
@@ -721,7 +719,7 @@
       <div class="insignias-shelf hidden" id="insigniasShelf"></div>
 
       <p class="modal-desc" id="modalDesc">
-        Explore a trilha da floresta, salte sobre precipícios, agache-se sob troncos e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho.<br><br>
+      Abraao Gessé o convida a  Explorar a trilha da floresta! saltar sobre precipícios, e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho! MARANATA.<br><br>
         Consiga pelo menos <strong>10 lenços</strong> até o acampamento final para conquistar o título de <strong>DESBRAVADOR</strong>!
       </p>
 
@@ -783,9 +781,9 @@
   'use strict';
 
   /**
-   * ============================================================================
+   *
    * 0. INTEGRAÇÃO COM FIREBASE REALTIME DATABASE + INSÍGNIAS DO DISPOSITIVO
-   * ============================================================================
+   * 
    */
   const FIREBASE_DB_URL = 'https://dbv-game-default-rtdb.firebaseio.com';
   const STORAGE_KEYS = {
@@ -1140,9 +1138,9 @@
   const sfx = new SoundEngine();
 
   /**
-   * ============================================================================
+   * 
    * 2. GERADOR DE SPRITES PIXEL ART MATRICIAL
-   * ============================================================================
+   * 
    */
   const PALETTE = {
     'K': '#141013',
@@ -1376,9 +1374,9 @@
   ], 2);
 
   /**
-   * ============================================================================
+   * 
    * 3. CONFIGURAÇÃO DO CANVAS E ESTADO DO JOGO
-   * ============================================================================
+   * 
    */
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
@@ -1421,9 +1419,9 @@
   let world = null;
 
   /**
-   * ============================================================================
+   * 
    * 4. CONSTRUÇÃO DA FASE 1 (TERRENOS, PLATAFORMAS, OBSTÁCULOS E 20 LENÇOS)
-   * ============================================================================
+   * 
    */
   function createLevelData() {
     const platforms = [
@@ -2070,9 +2068,9 @@
   }
 
   /**
-   * ============================================================================
+   * 
    * 7. RENDERIZAÇÃO PIXEL ART (CENÁRIO PARALLAX, TERRENOS, SPRITES E HUD)
-   * ============================================================================
+   * 
    */
   function drawPixelCloud(x, y, scale) {
     ctx.save();
