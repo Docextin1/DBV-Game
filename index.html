@@ -69,6 +69,74 @@
       touch-action: none;
     }
 
+    /* =========================================================================
+       AVISO DE ROTAÇÃO PARA CELULAR EM MODO RETRATO (VERTICAL)
+       ========================================================================= */
+    #rotate-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #143b6b 0%, #051120 100%);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+    }
+
+    @media screen and (max-width: 900px) and (orientation: portrait) {
+      #rotate-overlay {
+        display: flex;
+      }
+    }
+
+    .phone-rotate-icon {
+      width: 68px;
+      height: 112px;
+      border: 4px solid var(--gold);
+      border-radius: 14px;
+      position: relative;
+      margin-bottom: 24px;
+      box-shadow: 0 0 25px rgba(255, 212, 38, 0.35);
+      animation: rotatePhoneAnim 2.2s ease-in-out infinite;
+    }
+
+    .phone-rotate-icon::after {
+      content: '';
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--gold);
+    }
+
+    @keyframes rotatePhoneAnim {
+      0%, 20% { transform: rotate(0deg); }
+      50%, 80% { transform: rotate(-90deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .rotate-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--gold);
+      margin: 0 0 12px;
+      text-shadow: 0 3px 0 #5e3800;
+    }
+
+    .rotate-desc {
+      font-size: 15px;
+      color: #d6e9ff;
+      max-width: 310px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
     /* Controles Touch sobrepostos na tela (Estilo Console Portátil como na referência) */
     #touch-ui {
       position: absolute;
@@ -117,6 +185,15 @@
       fill: #fff;
       filter: drop-shadow(0 2px 0 #000);
     }
+
+    .pad-btn span {
+      font-size: clamp(8px, 1.3vw, 10px);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+      text-shadow: 0 1px 2px #000;
+    }
+
     /* Botões superiores utilitários (Som, Tela Cheia e Pausa) */
     #top-actions {
       position: absolute;
@@ -156,7 +233,7 @@
       box-shadow: 0 2px 0 #061426;
     }
 
-    /* Telas Modais (Início, Pausa, Vitória/Derrota) */
+    /* Telas Modais (Início, Pausa, Vitória/Derrota, Ranking) */
     #modal-layer {
       position: absolute;
       inset: 0;
@@ -165,20 +242,31 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 12px;
       z-index: 25;
+      overflow-y: auto;
     }
 
     .modal-card {
       background: linear-gradient(180deg, #143b6b 0%, #091d36 100%);
       border: 3px solid var(--gold);
       border-radius: 20px;
-      padding: clamp(18px, 3.5vw, 32px);
-      max-width: 540px;
+      padding: clamp(14px, 2.8vw, 26px);
+      max-width: 580px;
       width: 100%;
+      max-height: 94dvh;
+      overflow-y: auto;
       text-align: center;
       box-shadow: 0 18px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 212, 38, 0.25);
       animation: popIn 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    .modal-card::-webkit-scrollbar {
+      width: 6px;
+    }
+    .modal-card::-webkit-scrollbar-thumb {
+      background: rgba(255, 212, 38, 0.45);
+      border-radius: 999px;
     }
 
     @keyframes popIn {
@@ -196,38 +284,38 @@
       padding: 4px 12px;
       border-radius: 999px;
       letter-spacing: 0.08em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       text-transform: uppercase;
     }
 
     .modal-title {
       font-family: 'Press Start 2P', monospace;
-      font-size: clamp(16px, 3vw, 24px);
+      font-size: clamp(14px, 2.7vw, 22px);
       line-height: 1.45;
       color: var(--gold);
       text-shadow: 0 3px 0 #5e3800;
-      margin: 0 0 12px;
+      margin: 0 0 10px;
     }
 
     .modal-desc {
-      font-size: clamp(13px, 2vw, 15px);
-      line-height: 1.55;
+      font-size: clamp(12.5px, 1.9vw, 14.5px);
+      line-height: 1.5;
       color: #d6e9ff;
-      margin: 0 0 18px;
+      margin: 0 0 14px;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 8px;
+      margin-bottom: 14px;
     }
 
     .stat-box {
       background: rgba(5, 19, 38, 0.75);
       border: 1px solid #3c6ea8;
       border-radius: 12px;
-      padding: 10px 6px;
+      padding: 8px 6px;
     }
 
     .stat-box small {
@@ -235,24 +323,306 @@
       font-size: 10px;
       color: #8cb8eb;
       font-weight: 700;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .stat-box strong {
-      font-size: clamp(15px, 2.4vw, 20px);
+      font-size: clamp(14px, 2.2vw, 19px);
       color: var(--gold);
+    }
+
+    /* =========================================================================
+       INSÍGNIAS DO DISPOSITIVO (DESBRAVADOR + PÓDIO TOP 3 BRILHANTE)
+       ========================================================================= */
+    .insignias-shelf {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .insignia-pill {
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Insígnia Permanente de Desbravador */
+    .insignia-dbv {
+      background: linear-gradient(135deg, #1b4f91 0%, #0d2b52 100%);
+      border: 2px solid #ffd426;
+      color: #fff6cc;
+    }
+
+    .insignia-dbv .tri-emblem {
+      width: 14px;
+      height: 14px;
+      background: #de3626;
+      clip-path: polygon(50% 100%, 0 0, 100% 0);
+      border-top: 2px solid #ffd426;
+      flex-shrink: 0;
+    }
+
+    /* Efeito de brilho deslizante para as insígnias do Top 3 */
+    .insignia-shiny::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -75%;
+      width: 45%;
+      height: 200%;
+      background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.78) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(24deg);
+      animation: sheenSweep 2.4s infinite ease-in-out;
+    }
+
+    @keyframes sheenSweep {
+      0% { left: -75%; }
+      55%, 100% { left: 135%; }
+    }
+
+    /* 1º Lugar: Ouro Super Brilhoso */
+    .insignia-gold {
+      background: linear-gradient(135deg, #fff3a1 0%, #ffd426 42%, #d48800 100%);
+      border: 2px solid #ffffff;
+      color: #2b1600;
+      box-shadow: 0 0 18px rgba(255, 212, 38, 0.85), inset 0 1px 4px #ffffff;
+      animation: pulseGold 2s infinite alternate;
+    }
+
+    @keyframes pulseGold {
+      from { box-shadow: 0 0 12px rgba(255, 212, 38, 0.65); }
+      to { box-shadow: 0 0 26px rgba(255, 238, 120, 1); }
+    }
+
+    /* 2º Lugar: Prata Super Brilhosa */
+    .insignia-silver {
+      background: linear-gradient(135deg, #ffffff 0%, #d4dfe8 45%, #8c9ba8 100%);
+      border: 2px solid #ffffff;
+      color: #102030;
+      box-shadow: 0 0 16px rgba(220, 238, 255, 0.8), inset 0 1px 4px #ffffff;
+      animation: pulseSilver 2s infinite alternate;
+    }
+
+    @keyframes pulseSilver {
+      from { box-shadow: 0 0 10px rgba(200, 225, 250, 0.55); }
+      to { box-shadow: 0 0 24px rgba(240, 248, 255, 0.98); }
+    }
+
+    /* 3º Lugar: Bronze Super Brilhoso */
+    .insignia-bronze {
+      background: linear-gradient(135deg, #ffd1a6 0%, #d97c38 45%, #8a3e10 100%);
+      border: 2px solid #ffe4cc;
+      color: #260d00;
+      box-shadow: 0 0 16px rgba(235, 138, 68, 0.8), inset 0 1px 4px #ffe8d6;
+      animation: pulseBronze 2s infinite alternate;
+    }
+
+    @keyframes pulseBronze {
+      from { box-shadow: 0 0 10px rgba(217, 124, 56, 0.55); }
+      to { box-shadow: 0 0 24px rgba(255, 175, 110, 0.98); }
+    }
+
+    /* =========================================================================
+       FORMULÁRIO DE REGISTRO DE NOME E TABELA RANKING TOP 50 (FIREBASE)
+       ========================================================================= */
+    .record-form {
+      background: rgba(5, 19, 38, 0.82);
+      border: 1.5px solid var(--gold);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .record-form label {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .record-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .name-input {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 2px solid #64a5e8;
+      background: #07192e;
+      color: #fff;
+      font-family: 'Rubik', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      outline: none;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .name-input:focus {
+      border-color: var(--gold);
+    }
+
+    .save-score-btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 2px solid #fff3a8;
+      background: linear-gradient(180deg, #57e378 0%, #249e44 100%);
+      color: #05240d;
+      font-family: 'Rubik', sans-serif;
+      font-weight: 900;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 4px 0 #125924;
+    }
+
+    .save-score-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #125924;
+    }
+
+    .save-score-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .ranking-panel {
+      background: rgba(4, 15, 31, 0.88);
+      border: 1.5px solid #3c6ea8;
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .ranking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 7px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid rgba(100, 165, 232, 0.3);
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .ranking-list {
+      max-height: 175px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding-right: 4px;
+    }
+
+    .ranking-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .ranking-list::-webkit-scrollbar-thumb {
+      background: #3c6ea8;
+      border-radius: 999px;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 38px 1fr auto auto;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 9px;
+      border-radius: 8px;
+      background: rgba(16, 44, 82, 0.55);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #e6f2ff;
+    }
+
+    .rank-row.is-me {
+      border: 1.5px solid var(--gold);
+      background: rgba(255, 212, 38, 0.16);
+    }
+
+    .rank-row.top-1 {
+      background: linear-gradient(90deg, rgba(255, 212, 38, 0.28), rgba(16, 44, 82, 0.7));
+      border: 1px solid rgba(255, 212, 38, 0.65);
+    }
+
+    .rank-row.top-2 {
+      background: linear-gradient(90deg, rgba(212, 223, 232, 0.24), rgba(16, 44, 82, 0.7));
+      border: 1px solid rgba(212, 223, 232, 0.55);
+    }
+
+    .rank-row.top-3 {
+      background: linear-gradient(90deg, rgba(217, 124, 56, 0.25), rgba(16, 44, 82, 0.7));
+      border: 1px solid rgba(217, 124, 56, 0.55);
+    }
+
+    .rank-pos {
+      font-weight: 900;
+      color: var(--gold);
+      text-align: center;
+    }
+
+    .rank-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .rank-scarves {
+      font-size: 11px;
+      color: #ffe47a;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .rank-time {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: #7dff9b;
+    }
+
+    .modal-actions-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
     }
 
     .primary-btn {
       width: 100%;
-      padding: 14px 20px;
+      padding: 13px 18px;
       border-radius: 14px;
       border: 2px solid #fff3a8;
       background: linear-gradient(180deg, #ffdf4d 0%, #e59b00 100%);
       color: #241300;
       font-family: 'Rubik', sans-serif;
       font-weight: 900;
-      font-size: clamp(15px, 2.3vw, 18px);
+      font-size: clamp(14px, 2.2vw, 17px);
       letter-spacing: 0.04em;
       cursor: pointer;
       box-shadow: 0 6px 0 #8c5800;
@@ -264,8 +634,29 @@
       box-shadow: 0 2px 0 #8c5800;
     }
 
+    .secondary-btn {
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 2px solid #64a5e8;
+      background: linear-gradient(180deg, #1d4e89 0%, #0d2747 100%);
+      color: #e6f2ff;
+      font-family: 'Rubik', sans-serif;
+      font-weight: 800;
+      font-size: clamp(12.5px, 1.9vw, 14px);
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #061426;
+      transition: transform 0.08s ease;
+    }
+
+    .secondary-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #061426;
+    }
+
     .controls-legend {
-      margin-top: 14px;
+      margin-top: 12px;
       font-size: 11px;
       color: #8fb8e6;
       line-height: 1.5;
@@ -277,6 +668,15 @@
   </style>
 </head>
 <body>
+
+<!-- Aviso automático para celulares na vertical (Retrato) -->
+<div id="rotate-overlay">
+  <div class="phone-rotate-icon"></div>
+  <h2 class="rotate-title">VIRE O CELULAR</h2>
+  <p class="rotate-desc">
+    Para jogar <strong>A Jornada dos Lenços</strong> com a melhor visão da trilha, gire a tela do seu celular para a <strong>horizontal</strong>!
+  </p>
+</div>
 
 <div id="game-wrapper">
   <canvas id="gameCanvas" width="960" height="540"></canvas>
@@ -311,15 +711,20 @@
     </div>
   </div>
 
-  <!-- Modal Inicial / Pausa / Fim de Fase -->
+  <!-- Modal Inicial / Pausa / Fim de Fase / Ranking -->
   <div id="modal-layer">
     <div class="modal-card" id="modalCard">
       <div class="badge-tag" id="modalBadge">CLUBE DE DESBRAVADORES</div>
       <h1 class="modal-title" id="modalTitle">A JORNADA DOS LENÇOS</h1>
+
+      <!-- Prateleira de Insígnias do Dispositivo (Desbravador + Top 3 Ouro/Prata/Bronze) -->
+      <div class="insignias-shelf hidden" id="insigniasShelf"></div>
+
       <p class="modal-desc" id="modalDesc">
         Explore a trilha da floresta, salte sobre precipícios, agache-se sob troncos e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho.<br><br>
         Consiga pelo menos <strong>10 lenços</strong> até o acampamento final para conquistar o título de <strong>DESBRAVADOR</strong>!
       </p>
+
       <div class="stats-grid hidden" id="modalStats">
         <div class="stat-box">
           <small>LENÇOS</small>
@@ -334,8 +739,38 @@
           <strong id="statRank">ASPIRANTE</strong>
         </div>
       </div>
-      <button class="primary-btn" id="btnStart">▶ INICIAR AVENTURA</button>
-      <div class="controls-legend">
+
+      <!-- Formulário para salvar o nome no Ranking Global (apenas se venceu com >= 10 lenços) -->
+      <div class="record-form hidden" id="recordForm">
+        <label for="playerNameInput">🏅 SALVE SEU TEMPO NO RANKING GLOBAL (TOP 50):</label>
+        <div class="record-input-row">
+          <input
+            type="text"
+            id="playerNameInput"
+            class="name-input"
+            maxlength="22"
+            placeholder="Digite seu nome ou clube..."
+            autocomplete="off"
+          />
+          <button type="button" class="save-score-btn" id="btnSaveScore">SALVAR</button>
+        </div>
+      </div>
+
+      <!-- Painel do Ranking Global Top 50 (Firebase) -->
+      <div class="ranking-panel hidden" id="rankingPanel">
+        <div class="ranking-header">
+          <span>🏆 RANKING GLOBAL — TOP 50</span>
+          <span id="rankingStatus">CARREGANDO...</span>
+        </div>
+        <div class="ranking-list" id="rankingList"></div>
+      </div>
+
+      <div class="modal-actions-stack">
+        <button class="primary-btn" id="btnStart">▶ INICIAR AVENTURA</button>
+        <button class="secondary-btn" id="btnToggleRanking">🏆 VER RANKING TOP 50</button>
+      </div>
+
+      <div class="controls-legend" id="controlsLegend">
         <strong>PC:</strong> Setas ou WASD para mover · Espaço / ↑ para pular · ↓ para agachar<br>
         <strong>Celular:</strong> Use os botões na tela (suporta toque simultâneo!)
       </div>
@@ -346,6 +781,278 @@
 <script>
 (() => {
   'use strict';
+
+  /**
+   * ============================================================================
+   * 0. INTEGRAÇÃO COM FIREBASE REALTIME DATABASE + INSÍGNIAS DO DISPOSITIVO
+   * ============================================================================
+   */
+  const FIREBASE_DB_URL = 'https://dbv-game-default-rtdb.firebaseio.com';
+  const STORAGE_KEYS = {
+    DEVICE_ID: 'dbv_game_device_id_v1',
+    HAS_DBV_BADGE: 'dbv_game_has_desbravador_badge_v1',
+    SAVED_NAME: 'dbv_game_player_name_v1'
+  };
+
+  function getOrCreateDeviceId() {
+    let id = null;
+    try {
+      id = localStorage.getItem(STORAGE_KEYS.DEVICE_ID);
+      if (!id) {
+        id = 'dbv_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
+        localStorage.setItem(STORAGE_KEYS.DEVICE_ID, id);
+      }
+    } catch (_) {
+      id = 'dbv_temp_' + Math.random().toString(36).substring(2, 10);
+    }
+    return id;
+  }
+
+  const DEVICE_ID = getOrCreateDeviceId();
+  let cachedTop50 = [];
+  let scoreAlreadySavedThisRun = false;
+
+  function hasPermanentDbvBadge() {
+    try {
+      return localStorage.getItem(STORAGE_KEYS.HAS_DBV_BADGE) === 'true';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function unlockPermanentDbvBadge() {
+    try {
+      localStorage.setItem(STORAGE_KEYS.HAS_DBV_BADGE, 'true');
+    } catch (_) {}
+  }
+
+  function getSavedPlayerName() {
+    try {
+      return localStorage.getItem(STORAGE_KEYS.SAVED_NAME) || '';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function setSavedPlayerName(name) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.SAVED_NAME, name);
+    } catch (_) {}
+  }
+
+  function formatTimeMMSS(totalSeconds) {
+    const safe = Math.max(0, Number(totalSeconds) || 0);
+    const mins = String(Math.floor(safe / 60)).padStart(2, '0');
+    const secs = String(Math.floor(safe % 60)).padStart(2, '0');
+    const tenths = Math.floor((safe % 1) * 10);
+    return `${mins}:${secs}.${tenths}`;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Busca todos os registros no Firebase e retorna o Top 50 ordenado pelo menor tempo
+  async function fetchGlobalRanking() {
+    const statusEl = document.getElementById('rankingStatus');
+    if (statusEl) statusEl.textContent = 'ATUALIZANDO...';
+
+    try {
+      const res = await fetch(`${FIREBASE_DB_URL}/ranking.json`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Falha ao consultar ranking');
+      const data = await res.json();
+
+      const entries = [];
+      if (data && typeof data === 'object') {
+        for (const [key, val] of Object.entries(data)) {
+          if (!val || typeof val !== 'object') continue;
+          const scarves = Number(val.scarves) || 0;
+          const time = Number(val.time);
+          // Só contabiliza quem pegou pelo menos 10 lenços!
+          if (scarves >= 10 && Number.isFinite(time) && time > 0) {
+            entries.push({
+              key,
+              deviceId: val.deviceId || '',
+              name: String(val.name || 'Desbravador').slice(0, 22),
+              scarves,
+              time,
+              createdAt: Number(val.createdAt) || 0
+            });
+          }
+        }
+      }
+
+      // Ordenação: 1º Menor Tempo; 2º Desempate por mais lenços; 3º Mais antigo
+      entries.sort((a, b) => {
+        if (Math.abs(a.time - b.time) > 0.001) return a.time - b.time;
+        if (b.scarves !== a.scarves) return b.scarves - a.scarves;
+        return a.createdAt - b.createdAt;
+      });
+
+      cachedTop50 = entries.slice(0, 50);
+      if (statusEl) statusEl.textContent = `${cachedTop50.length} / 50`;
+      renderRankingList();
+      renderDeviceInsignias();
+      return cachedTop50;
+    } catch (err) {
+      if (statusEl) statusEl.textContent = 'OFFLINE';
+      renderRankingList(true);
+      renderDeviceInsignias();
+      return cachedTop50;
+    }
+  }
+
+  // Envia ou atualiza o recorde do dispositivo no Firebase
+  async function submitScoreToFirebase(playerName, timeSeconds, scarvesCount) {
+    if (scarvesCount < 10) return false;
+    const cleanName = playerName.trim().slice(0, 22) || 'Desbravador';
+    setSavedPlayerName(cleanName);
+
+    const payload = {
+      deviceId: DEVICE_ID,
+      name: cleanName,
+      time: Number(timeSeconds.toFixed(2)),
+      scarves: scarvesCount,
+      createdAt: Date.now()
+    };
+
+    try {
+      // Verifica se este dispositivo já possui um registro no Firebase para manter apenas o melhor tempo dele
+      const existingRes = await fetch(`${FIREBASE_DB_URL}/ranking.json`, { cache: 'no-store' });
+      const existingData = existingRes.ok ? await existingRes.json() : null;
+
+      let existingKey = null;
+      let existingBestTime = Infinity;
+
+      if (existingData && typeof existingData === 'object') {
+        for (const [k, v] of Object.entries(existingData)) {
+          if (v && v.deviceId === DEVICE_ID) {
+            const t = Number(v.time) || Infinity;
+            if (t < existingBestTime) {
+              existingBestTime = t;
+              existingKey = k;
+            }
+          }
+        }
+      }
+
+      if (existingKey && existingBestTime <= payload.time) {
+        // Já possui um tempo melhor salvo: apenas atualiza o nome se mudou
+        await fetch(`${FIREBASE_DB_URL}/ranking/${existingKey}.json`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: cleanName })
+        });
+      } else if (existingKey) {
+        // Bateu o próprio recorde pessoal: substitui pelo novo tempo mais rápido
+        await fetch(`${FIREBASE_DB_URL}/ranking/${existingKey}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        // Primeiro registro deste dispositivo no ranking global
+        await fetch(`${FIREBASE_DB_URL}/ranking.json`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      await fetchGlobalRanking();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // Renderiza a lista do Top 50 no painel
+  function renderRankingList(hasError = false) {
+    const listEl = document.getElementById('rankingList');
+    if (!listEl) return;
+
+    if (hasError && cachedTop50.length === 0) {
+      listEl.innerHTML = `<div style="padding:12px;text-align:center;color:#9fc4eb;font-size:12px;">Não foi possível conectar ao ranking online agora.</div>`;
+      return;
+    }
+
+    if (cachedTop50.length === 0) {
+      listEl.innerHTML = `<div style="padding:12px;text-align:center;color:#9fc4eb;font-size:12px;">Nenhum desbravador no ranking ainda. Seja o 1º a concluir com 10+ lenços!</div>`;
+      return;
+    }
+
+    listEl.innerHTML = cachedTop50.map((item, index) => {
+      const pos = index + 1;
+      const isMe = item.deviceId === DEVICE_ID;
+      let topClass = '';
+      let medal = `#${pos}`;
+      if (pos === 1) { topClass = 'top-1'; medal = '🥇'; }
+      else if (pos === 2) { topClass = 'top-2'; medal = '🥈'; }
+      else if (pos === 3) { topClass = 'top-3'; medal = '🥉'; }
+
+      return `
+        <div class="rank-row ${topClass} ${isMe ? 'is-me' : ''}">
+          <span class="rank-pos">${medal}</span>
+          <span class="rank-name">${escapeHtml(item.name)}${isMe ? ' (Você)' : ''}</span>
+          <span class="rank-scarves">🧣 ${item.scarves}/20</span>
+          <span class="rank-time">${formatTimeMMSS(item.time)}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Renderiza as insígnias do dispositivo:
+  // 1) Insígnia Permanente de Desbravador (salva no dispositivo)
+  // 2) Insígnia exclusiva Ouro / Prata / Bronze SE o dispositivo estiver no Top 3 atual do Firebase
+  function renderDeviceInsignias() {
+    const shelf = document.getElementById('insigniasShelf');
+    if (!shelf) return;
+
+    const badgesHtml = [];
+
+    if (hasPermanentDbvBadge()) {
+      badgesHtml.push(`
+        <div class="insignia-pill insignia-dbv" title="Conquista permanente salva neste dispositivo">
+          <span class="tri-emblem"></span>
+          <span>INSÍGNIA DESBRAVADOR</span>
+        </div>
+      `);
+    }
+
+    // Verifica qual a melhor posição atual deste dispositivo no Top 3 do ranking global
+    const myRankIndex = cachedTop50.findIndex(item => item.deviceId === DEVICE_ID);
+    if (myRankIndex === 0) {
+      badgesHtml.push(`
+        <div class="insignia-pill insignia-gold insignia-shiny" title="1º Lugar no Ranking Geral!">
+          <span>🥇 INSÍGNIA OURO · TOP 1</span>
+        </div>
+      `);
+    } else if (myRankIndex === 1) {
+      badgesHtml.push(`
+        <div class="insignia-pill insignia-silver insignia-shiny" title="2º Lugar no Ranking Geral!">
+          <span>🥈 INSÍGNIA PRATA · TOP 2</span>
+        </div>
+      `);
+    } else if (myRankIndex === 2) {
+      badgesHtml.push(`
+        <div class="insignia-pill insignia-bronze insignia-shiny" title="3º Lugar no Ranking Geral!">
+          <span>🥉 INSÍGNIA BRONZE · TOP 3</span>
+        </div>
+      `);
+    }
+
+    if (badgesHtml.length > 0) {
+      shelf.innerHTML = badgesHtml.join('');
+      shelf.classList.remove('hidden');
+    } else {
+      shelf.innerHTML = '';
+      shelf.classList.add('hidden');
+    }
+  }
 
   /**
    * ============================================================================
@@ -434,24 +1141,8 @@
 
   /**
    * ============================================================================
-   * 2. GERADOR DE SPRITES PIXEL ART MATRICIAL (ALTA FIDELIDADE AO SPRITE 262658)
+   * 2. GERADOR DE SPRITES PIXEL ART MATRICIAL
    * ============================================================================
-   * Paleta fiel à imagem enviada:
-   * K: Contorno preto (#141013)
-   * H: Cabelo castanho escuro (#381c0e)
-   * h: Cabelo castanho médio/luz (#63371e)
-   * S: Pele base (#f2c38f)
-   * s: Pele sombra (#cc8e5a)
-   * E: Olho branco (#ffffff)
-   * W: Camisa branca (#f5f6f2)
-   * w: Camisa sombra (#c5ced9)
-   * R: Brasão/Triângulo vermelho na manga (#de3626)
-   * Y: Lenço amarelo ouro (#ffd426)
-   * y: Lenço sombra/nó (#cf8300)
-   * P: Calça verde-musgo escuro (#32402b)
-   * p: Calça sombra (#1e2619)
-   * B: Bota marrom (#61351a)
-   * b: Bota sombra (#381c0c)
    */
   const PALETTE = {
     'K': '#141013',
@@ -491,8 +1182,6 @@
     return c;
   }
 
-  // Cabeça fiel ao sprite 262658 (15 linhas x 24 colunas): cabelo espetado com luzes,
-  // orelha sombreada, rosto de perfil/3-4 e olho branco/preto na posição exata
   const HEAD_BASE = [
     ".......KKKK...KKKK......",
     ".....KKhhhhKKKhhhhK.....",
@@ -511,7 +1200,6 @@
     ".......KKKKKKKKK........"
   ];
 
-  // Frame 0: Parado (Idle 1)
   const HERO_IDLE_1 = bakeSprite([
     ...HEAD_BASE,
     "......KYYYYYYYYYKK......",
@@ -529,7 +1217,6 @@
     "......KKKKK....KKKKK...."
   ]);
 
-  // Frame 1: Parado respirando (Idle 2)
   const HERO_IDLE_2 = bakeSprite([
     "........................",
     ...HEAD_BASE,
@@ -548,7 +1235,6 @@
     "......KKKKK....KKKKK...."
   ]);
 
-  // Frame 2: Corrida 1 (Pose fiel à imagem 262658: braço esquerdo atrás, punho direito à frente, passo largo!)
   const HERO_RUN_1 = bakeSprite([
     ...HEAD_BASE,
     "......KYYYYYYYYYKK......",
@@ -565,7 +1251,6 @@
     ".KKKKK............KKKKK."
   ]);
 
-  // Frame 3: Corrida 2 (Passagem intermediária compacta)
   const HERO_RUN_2 = bakeSprite([
     "........................",
     ...HEAD_BASE,
@@ -582,7 +1267,6 @@
     ".....KKKKK....KKKKK....."
   ]);
 
-  // Frame 4: Corrida 3 (Passo largo invertido)
   const HERO_RUN_3 = bakeSprite([
     ...HEAD_BASE,
     "......KYYYYYYYYYKK......",
@@ -599,7 +1283,6 @@
     ".KKKKK............KKKKK."
   ]);
 
-  // Frame 5: Pulo (Braço dianteiro erguido e pernas em salto dinâmico)
   const HERO_JUMP = bakeSprite([
     ...HEAD_BASE,
     "....KKKYYYYYYYYYKK......",
@@ -617,7 +1300,6 @@
     "........................"
   ]);
 
-  // Frame 6: Agachado (Perfil baixo para passar sob os troncos)
   const HERO_DUCK = bakeSprite([
     "........................",
     "........................",
@@ -644,7 +1326,6 @@
     "..KKKKKK......KKKKKK...."
   ]);
 
-  // Retrato do rosto para o HUD superior esquerdo (igual à imagem 1!)
   const HERO_PORTRAIT = bakeSprite([
     ".....KKKK...KKKK....",
     "...KKhhhhKKKhhhhK...",
@@ -664,7 +1345,6 @@
     "..KWRRWWWyYYYyyWWWWK"
   ], 2);
 
-  // Sprite do Lenço Amarelo Brilhante (16x16)
   const SCARF_SPRITE = bakeSprite([
     "....KKKKKKKK....",
     "...KYYYYYYYYK...",
@@ -682,7 +1362,6 @@
     "KKK..........KKK"
   ], 2);
 
-  // Sprite de Coração (HUD)
   const HEART_SPRITE = bakeSprite([
     ".KKK...KKK.",
     "KRRRK.KRRRK",
@@ -706,7 +1385,6 @@
   const W = 960;
   const H = 540;
   const WORLD_WIDTH = 7600;
-  const BASE_GROUND = 432;
 
   // Elementos da UI Modal
   const modalLayer = document.getElementById('modal-layer');
@@ -718,10 +1396,17 @@
   const statTime = document.getElementById('statTime');
   const statRank = document.getElementById('statRank');
   const btnStart = document.getElementById('btnStart');
+  const btnToggleRanking = document.getElementById('btnToggleRanking');
   const btnPause = document.getElementById('btnPause');
   const btnMute = document.getElementById('btnMute');
   const btnFullscreen = document.getElementById('btnFullscreen');
   const gameWrapper = document.getElementById('game-wrapper');
+
+  const recordForm = document.getElementById('recordForm');
+  const playerNameInput = document.getElementById('playerNameInput');
+  const btnSaveScore = document.getElementById('btnSaveScore');
+  const rankingPanel = document.getElementById('rankingPanel');
+  const controlsLegend = document.getElementById('controlsLegend');
 
   // Estado de Entrada (Teclado + Multi-Touch)
   const keys = {
@@ -733,7 +1418,6 @@
 
   let gameState = 'MENU'; // MENU | PLAYING | PAUSED | ENDED
   let lastTimestamp = 0;
-
   let world = null;
 
   /**
@@ -742,65 +1426,52 @@
    * ============================================================================
    */
   function createLevelData() {
-    // Segmentos de terreno sólido (x, y = topo da grama, w, h)
-    // Inclui degraus elevados e fossos com espinhos exatamente como na imagem 1!
     const platforms = [
-      // Trecho inicial com degraus e fosso de espinhos (inspirado na screenshot!)
       { x: 0,    y: 432, w: 760,  h: 120, style: 'ground' },
-      { x: 760,  y: 468, w: 220,  h: 90,  style: 'ground' }, // Fosso baixo
-      { x: 980,  y: 380, w: 230,  h: 170, style: 'ground' }, // Degrau 1
-      { x: 1210, y: 315, w: 260,  h: 235, style: 'ground' }, // Degrau 2 alto
+      { x: 760,  y: 468, w: 220,  h: 90,  style: 'ground' },
+      { x: 980,  y: 380, w: 230,  h: 170, style: 'ground' },
+      { x: 1210, y: 315, w: 260,  h: 235, style: 'ground' },
       { x: 1470, y: 432, w: 680,  h: 120, style: 'ground' },
 
-      // Plataformas suspensas na copa das árvores
       { x: 1640, y: 310, w: 140,  h: 28,  style: 'wood' },
       { x: 1850, y: 245, w: 150,  h: 28,  style: 'wood' },
 
-      // Segundo setor: Vale dos troncos e abismos
       { x: 2230, y: 432, w: 540,  h: 120, style: 'ground' },
       { x: 2860, y: 390, w: 180,  h: 28,  style: 'wood' },
       { x: 3130, y: 340, w: 180,  h: 28,  style: 'wood' },
       { x: 3400, y: 432, w: 860,  h: 120, style: 'ground' },
 
-      // Plataformas altas do meio da fase (Checkpoint na área)
       { x: 3650, y: 320, w: 170,  h: 28,  style: 'wood' },
       { x: 3900, y: 255, w: 170,  h: 28,  style: 'wood' },
 
-      // Terceiro setor: Trilha da Montanha
       { x: 4360, y: 432, w: 460,  h: 120, style: 'ground' },
       { x: 4820, y: 375, w: 240,  h: 175, style: 'ground' },
       { x: 5060, y: 315, w: 260,  h: 235, style: 'ground' },
       { x: 5420, y: 350, w: 160,  h: 28,  style: 'wood' },
       { x: 5680, y: 432, w: 720,  h: 120, style: 'ground' },
 
-      // Quarto setor: Reta final para o Acampamento Desbravador
       { x: 5900, y: 315, w: 160,  h: 28,  style: 'wood' },
       { x: 6140, y: 255, w: 160,  h: 28,  style: 'wood' },
       { x: 6490, y: 432, w: 1110, h: 120, style: 'ground' }
     ];
 
-    // Caixas de madeira sólidas (servem de degrau ou barreira para pular)
     const crates = [
-      { x: 535,  y: 384, w: 48, h: 48 }, // Igual à caixa antes do fosso na imagem!
+      { x: 535,  y: 384, w: 48, h: 48 },
       { x: 1580, y: 384, w: 48, h: 48 },
       { x: 2480, y: 384, w: 48, h: 48 },
       { x: 2528, y: 384, w: 48, h: 48 },
-      { x: 2528, y: 336, w: 48, h: 48 }, // Escadinha de caixas
+      { x: 2528, y: 336, w: 48, h: 48 },
       { x: 4540, y: 384, w: 48, h: 48 },
       { x: 5800, y: 384, w: 48, h: 48 },
       { x: 6720, y: 384, w: 48, h: 48 }
     ];
 
-    // Obstáculos perigosos:
-    // - 'spikes': espinhos no chão/fosso
-    // - 'log': tronco suspenso onde o jogador PRECISA agachar para passar por baixo!
-    // - 'patrol': ouriço/caranguejo da trilha que patrulha de um lado para o outro
     const hazards = [
-      { type: 'spikes', x: 785,  y: 444, w: 165, h: 24 }, // Espinhos no fosso da imagem 1!
-      { type: 'log',    x: 1780, y: 342, w: 110, h: 36 }, // Agachar por baixo!
+      { type: 'spikes', x: 785,  y: 444, w: 165, h: 24 },
+      { type: 'log',    x: 1780, y: 342, w: 110, h: 36 },
       { type: 'spikes', x: 2010, y: 408, w: 96,  h: 24 },
       { type: 'patrol', x: 2360, y: 404, w: 38,  h: 28, minX: 2260, maxX: 2450, vx: 95 },
-      { type: 'log',    x: 3530, y: 342, w: 120, h: 36 }, // Agachar por baixo!
+      { type: 'log',    x: 3530, y: 342, w: 120, h: 36 },
       { type: 'spikes', x: 3780, y: 408, w: 110, h: 24 },
       { type: 'patrol', x: 4050, y: 404, w: 38,  h: 28, minX: 3940, maxX: 4210, vx: 115 },
       { type: 'log',    x: 4650, y: 342, w: 110, h: 36 },
@@ -810,28 +1481,27 @@
       { type: 'spikes', x: 7070, y: 408, w: 96,  h: 24 }
     ];
 
-    // Exatamente 20 Lenços Amarelos espalhados estrategicamente (rotas baixas e altas)
     const scarfCoords = [
-      [440, 375],   // 1 - Logo no início
-      [560, 325],   // 2 - Acima da primeira caixa
-      [865, 315],   // 3 - Arco sobre o fosso de espinhos
-      [1090, 325],  // 4 - Primeiro degrau
-      [1330, 260],  // 5 - Segundo degrau alto
-      [1710, 255],  // 6 - Plataforma de madeira 1
-      [1925, 190],  // 7 - Plataforma de madeira 2 (rota alta)
-      [1835, 392],  // 8 - Debaixo do tronco (recompensa por agachar!)
-      [2380, 340],  // 9 - Sobre o patrulheiro
-      [2630, 285],  // 10 - Após escada de caixas
-      [2950, 330],  // 11 - Salto sobre o abismo
-      [3220, 280],  // 12 - Segunda plataforma sobre o abismo
-      [3590, 392],  // 13 - Debaixo do segundo tronco
-      [3985, 200],  // 14 - Topo das plataformas do meio
-      [4565, 325],  // 15 - Acima da caixa na montanha
-      [4940, 315],  // 16 - Subida da montanha
-      [5500, 290],  // 17 - Plataforma flutuante pós-espinhos
-      [5980, 255],  // 18 - Plataforma alta setor final
-      [6220, 195],  // 19 - Plataforma mais alta do setor final
-      [6925, 392]   // 20 - Debaixo do último tronco antes do acampamento!
+      [440, 375],
+      [560, 325],
+      [865, 315],
+      [1090, 325],
+      [1330, 260],
+      [1710, 255],
+      [1925, 190],
+      [1835, 392],
+      [2380, 340],
+      [2630, 285],
+      [2950, 330],
+      [3220, 280],
+      [3590, 392],
+      [3985, 200],
+      [4565, 325],
+      [4940, 315],
+      [5500, 290],
+      [5980, 255],
+      [6220, 195],
+      [6925, 392]
     ];
 
     const scarves = scarfCoords.map(([x, y], idx) => ({
@@ -853,6 +1523,7 @@
   }
 
   function resetGame() {
+    scoreAlreadySavedThisRun = false;
     const level = createLevelData();
     world = {
       ...level,
@@ -892,20 +1563,22 @@
   function triggerJumpPress() {
     sfx.init();
     if (gameState !== 'PLAYING') return;
-    world.player.jumpBufferTimer = 0.14; // Jump buffer de 140ms para resposta imediata
+    world.player.jumpBufferTimer = 0.14;
     keys.jumpHeld = true;
   }
 
   function triggerJumpRelease() {
     keys.jumpHeld = false;
     if (gameState !== 'PLAYING') return;
-    // Corte variável de pulo: soltar o botão cedo reduz a altura do salto
     if (world.player.vy < -240) {
       world.player.vy *= 0.56;
     }
   }
 
   window.addEventListener('keydown', (e) => {
+    // Não interceptar teclas enquanto o jogador digita seu nome no input
+    if (document.activeElement === playerNameInput) return;
+
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) {
       e.preventDefault();
     }
@@ -939,7 +1612,6 @@
     keys.jumpHeld = false;
   });
 
-  // Helper para vincular botões touch com captura de ponteiro individual
   function bindTouchButton(el, onDown, onUp) {
     el.addEventListener('pointerdown', (e) => {
       e.preventDefault();
@@ -985,7 +1657,6 @@
     btnMute.textContent = muted ? '🔇' : '🔊';
   });
 
-  // Alternar Tela Cheia (PC e Celular Android/Chrome/Edge/Firefox)
   function toggleFullscreen() {
     const doc = document;
     const isFs = doc.fullscreenElement || doc.webkitFullscreenElement;
@@ -1020,7 +1691,12 @@
       modalTitle.textContent = 'DESCANSO NA TRILHA';
       modalDesc.innerHTML = 'Respire fundo, Desbravador! Clique abaixo para continuar sua missão.';
       modalStats.classList.add('hidden');
+      recordForm.classList.add('hidden');
+      rankingPanel.classList.add('hidden');
+      btnToggleRanking.classList.remove('hidden');
+      btnToggleRanking.textContent = '🏆 VER RANKING TOP 50';
       btnStart.textContent = '▶ CONTINUAR';
+      renderDeviceInsignias();
       modalLayer.classList.remove('hidden');
     } else if (gameState === 'PAUSED') {
       gameState = 'PLAYING';
@@ -1041,6 +1717,54 @@
     gameState = 'PLAYING';
     btnPause.textContent = '❚❚';
     modalLayer.classList.add('hidden');
+  });
+
+  // Botão para alternar visualização do Ranking Top 50 a qualquer momento no modal
+  btnToggleRanking.addEventListener('click', () => {
+    sfx.init();
+    const isHidden = rankingPanel.classList.contains('hidden');
+    if (isHidden) {
+      rankingPanel.classList.remove('hidden');
+      btnToggleRanking.textContent = '▲ OCULTAR RANKING';
+      fetchGlobalRanking();
+    } else {
+      rankingPanel.classList.add('hidden');
+      btnToggleRanking.textContent = '🏆 VER RANKING TOP 50';
+    }
+  });
+
+  // Salvar nome e tempo no Firebase ao concluir a fase com >= 10 lenços
+  btnSaveScore.addEventListener('click', async () => {
+    if (scoreAlreadySavedThisRun || !world) return;
+    const p = world.player;
+    if (p.scarves < 10) return;
+
+    const rawName = playerNameInput.value.trim();
+    if (!rawName) {
+      playerNameInput.focus();
+      return;
+    }
+
+    btnSaveScore.disabled = true;
+    btnSaveScore.textContent = 'SALVANDO...';
+
+    const ok = await submitScoreToFirebase(rawName, world.elapsed, p.scarves);
+    if (ok) {
+      scoreAlreadySavedThisRun = true;
+      recordForm.classList.add('hidden');
+      rankingPanel.classList.remove('hidden');
+      btnToggleRanking.textContent = '▲ OCULTAR RANKING';
+    } else {
+      btnSaveScore.disabled = false;
+      btnSaveScore.textContent = 'TENTAR NOVAMENTE';
+    }
+  });
+
+  playerNameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      btnSaveScore.click();
+    }
   });
 
   /**
@@ -1110,18 +1834,37 @@
     statTime.textContent = `${mins}:${secs}`;
     statRank.textContent = rank;
 
-    if (won) {
+    if (won && p.scarves >= 10) {
+      // Conquista permanente da Insígnia de Desbravador no dispositivo!
+      unlockPermanentDbvBadge();
       sfx.win();
-      modalBadge.textContent = '🏅 MISSÃO CUMPRIDA!';
+      modalBadge.textContent = '🏅 INSÍGNIA DESBRAVADOR CONQUISTADA!';
       modalTitle.textContent = p.scarves === 20 ? 'DESBRAVADOR MESTRE!' : 'TÍTULO CONQUISTADO!';
-      modalDesc.innerHTML = `Parabéns! Você chegou ao acampamento com <strong>${p.scarves} de 20 lenços</strong> e conquistou oficialmente o título de <strong>${rank}</strong>!`;
+      modalDesc.innerHTML = `Parabéns! Você chegou ao acampamento com <strong>${p.scarves} de 20 lenços</strong> em <strong>${formatTimeMMSS(world.elapsed)}</strong> e desbloqueou a <strong>Insígnia de Desbravador</strong>!`;
+
+      // Exibe o campo para colocar o nome e entrar no Top 50 Global
+      recordForm.classList.remove('hidden');
+      playerNameInput.value = getSavedPlayerName();
+      btnSaveScore.disabled = false;
+      btnSaveScore.textContent = 'SALVAR';
+
+      // Exibe também o Ranking Top 50 atualizado
+      rankingPanel.classList.remove('hidden');
+      btnToggleRanking.textContent = '▲ OCULTAR RANKING';
+      fetchGlobalRanking();
     } else {
       sfx.lose();
+      recordForm.classList.add('hidden');
+      rankingPanel.classList.remove('hidden');
+      btnToggleRanking.textContent = '▲ OCULTAR RANKING';
+      fetchGlobalRanking();
+
       modalBadge.textContent = 'FIM DA EXPEDIÇÃO';
       modalTitle.textContent = 'QUASE LÁ!';
-      modalDesc.innerHTML = customReason || `Você chegou ao fim com <strong>${p.scarves}/10 lenços</strong> necessários. Explore as plataformas altas e tente novamente!`;
+      modalDesc.innerHTML = customReason || `Você chegou ao fim com <strong>${p.scarves}/10 lenços</strong> necessários para entrar no ranking. Explore as plataformas altas e tente novamente!`;
     }
 
+    renderDeviceInsignias();
     btnStart.textContent = '↻ JOGAR NOVAMENTE';
     modalLayer.classList.remove('hidden');
   }
@@ -1135,7 +1878,6 @@
     if (p.invulnTimer > 0) p.invulnTimer -= dt;
     if (world.shakeTimer > 0) world.shakeTimer -= dt;
 
-    // 1. Movimento Horizontal com aceleração e atrito suaves
     const moveDir = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
     p.ducking = keys.duck && p.onGround;
     const targetSpeed = moveDir * (p.ducking ? 165 : 315);
@@ -1151,18 +1893,13 @@
       p.face = moveDir;
     }
 
-    // Ajuste de altura da hitbox ao agachar
     const prevBottom = p.y + p.h;
     p.h = p.ducking ? 54 : 84;
     p.y = prevBottom - p.h;
 
-    // Lista combinada de geometria sólida (plataformas + caixas)
-    // Obs.: Troncos ('log') são tratados com dupla mecânica logo abaixo:
-    // sólidos por cima (pousar/andar), mas causam dano se bater por baixo/lateral em pé!
     const solids = [...world.platforms, ...world.crates];
     const logs = world.hazards.filter(h => h.type === 'log');
 
-    // 2. Integração Horizontal + Resolução de Colisão
     p.x += p.vx * dt;
     p.x = Math.max(16, Math.min(WORLD_WIDTH - p.w - 16, p.x));
 
@@ -1174,8 +1911,6 @@
       }
     }
 
-    // Colisão horizontal/inferior com Troncos:
-    // Se o jogador estiver em pé (ou tentando passar por baixo sem agachar), bate e leva dano!
     for (const lg of logs) {
       if (aabb(p.x + 3, p.y + 2, p.w - 6, p.h - 4, lg.x, lg.y, lg.w, lg.h)) {
         if (p.vx > 0) p.x = lg.x - p.w - 3;
@@ -1186,7 +1921,6 @@
       }
     }
 
-    // 3. Coyote Time & Jump Buffer
     if (p.onGround) {
       p.coyoteTimer = 0.11;
     } else {
@@ -1206,7 +1940,6 @@
       spawnParticles(p.x + p.w / 2, p.y + p.h, '#ffffff', 6, 95);
     }
 
-    // 4. Gravidade + Integração Vertical + Resolução de Colisão
     p.vy += 1680 * dt;
     p.vy = Math.min(p.vy, 920);
     p.y += p.vy * dt;
@@ -1225,9 +1958,6 @@
       }
     }
 
-    // Colisão Vertical com Troncos ('log'):
-    // - Caindo por cima (p.vy >= 0 e pés próximos ao topo do tronco): pousa e anda em cima normalmente!
-    // - Batendo por baixo (subindo ou levantando sem agachar): bloqueia e leva dano!
     for (const lg of logs) {
       if (aabb(p.x + 4, p.y, p.w - 8, p.h, lg.x, lg.y, lg.w, lg.h)) {
         const feetPrev = prevBottom;
@@ -1246,7 +1976,6 @@
       }
     }
 
-    // Queda em abismo (fora da tela por baixo)
     if (p.y > H + 40) {
       p.lives--;
       sfx.hurt();
@@ -1262,7 +1991,6 @@
       spawnFloatingText(p.x, p.y - 12, 'RESGATADO!', '#ffd426');
     }
 
-    // 5. Animação de corrida e poeira nos pés
     if (p.onGround && Math.abs(p.vx) > 25 && !p.ducking) {
       p.animTimer += dt * 13;
       p.stepSoundTimer -= dt;
@@ -1275,9 +2003,8 @@
       p.animTimer += dt * 2.5;
     }
 
-    // 6. Atualização dos Obstáculos e Patrulheiros
     for (const h of world.hazards) {
-      if (h.type === 'log') continue; // Troncos já têm física de plataforma + dano inferior acima
+      if (h.type === 'log') continue;
 
       if (h.type === 'patrol') {
         h.x += h.vx * dt;
@@ -1290,14 +2017,12 @@
         }
       }
 
-      // Hitbox um pouco mais justa (margem de 5px para evitar frustração)
       if (aabb(p.x + 5, p.y + 4, p.w - 10, p.h - 6, h.x + 3, h.y + 3, h.w - 6, h.h - 4)) {
         damagePlayer();
         if (gameState === 'ENDED') return;
       }
     }
 
-    // 7. Coleta dos 20 Lenços Amarelos
     for (const sc of world.scarves) {
       if (sc.taken) continue;
       const bobY = sc.y + Math.sin(world.elapsed * 4.5 + sc.phase) * 5;
@@ -1310,7 +2035,6 @@
       }
     }
 
-    // 8. Checkpoint (Fogueira de Acampamento no meio da fase)
     const cp = world.checkpoint;
     if (!cp.activated && Math.abs(p.x - cp.x) < 48) {
       cp.activated = true;
@@ -1321,18 +2045,15 @@
       spawnFloatingText(cp.x - 45, cp.y - 75, 'CHECKPOINT!', '#7dff9b');
     }
 
-    // 9. Portal / Bandeira Final da Fase
     if (p.x + p.w >= world.goal.x) {
       endGame(p.scarves >= 10);
       return;
     }
 
-    // 10. Câmera Suave com Look-Ahead
     const lookAhead = p.face * 75;
     const targetCam = Math.max(0, Math.min(WORLD_WIDTH - W, p.x - W * 0.34 + lookAhead));
     world.camX += (targetCam - world.camX) * Math.min(1, dt * 7.5);
 
-    // 11. Partículas e Textos Flutuantes
     for (const pt of world.particles) {
       pt.x += pt.vx * dt;
       pt.y += pt.vy * dt;
@@ -1368,7 +2089,6 @@
   }
 
   function drawBackground(camX) {
-    // Céu azul vibrante em camadas
     const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
     skyGrad.addColorStop(0, '#067cf5');
     skyGrad.addColorStop(0.65, '#3eb5ff');
@@ -1376,7 +2096,6 @@
     ctx.fillStyle = skyGrad;
     ctx.fillRect(0, 0, W, H);
 
-    // Nuvens em parallax lento
     const cloudSpan = 1300;
     for (let i = 0; i < 6; i++) {
       const cx = ((i * 260 - camX * 0.08) % cloudSpan + cloudSpan) % cloudSpan - 120;
@@ -1385,12 +2104,10 @@
       drawPixelCloud(cx, cy, sc);
     }
 
-    // Montanhas distantes com cumes iluminados (estilo imagem 1)
     const mSpan = 640;
     const mShift = camX * 0.16;
     for (let i = -1; i < 4; i++) {
       const bx = i * mSpan - (mShift % mSpan);
-      // Montanha maior
       ctx.fillStyle = '#4c88c9';
       ctx.beginPath();
       ctx.moveTo(bx, 440);
@@ -1399,7 +2116,6 @@
       ctx.closePath();
       ctx.fill();
 
-      // Face iluminada da montanha
       ctx.fillStyle = '#6da7e3';
       ctx.beginPath();
       ctx.moveTo(bx + 210, 185);
@@ -1409,7 +2125,6 @@
       ctx.closePath();
       ctx.fill();
 
-      // Montanha secundária
       ctx.fillStyle = '#3872b2';
       ctx.beginPath();
       ctx.moveTo(bx + 300, 440);
@@ -1419,7 +2134,6 @@
       ctx.fill();
     }
 
-    // Camada de copas de árvores distantes (verde azulado)
     const bushSpan = 180;
     const bushShift = camX * 0.34;
     for (let i = -1; i < 8; i++) {
@@ -1439,14 +2153,12 @@
   }
 
   function drawSceneryProps(camX) {
-    // Árvores grandes em primeiro plano com tronco e copa detalhada
     const treePositions = [95, 660, 1520, 2290, 3450, 4410, 5740, 6540, 7200];
     for (const tx of treePositions) {
       const sx = tx - camX;
       if (sx < -160 || sx > W + 160) continue;
       const gy = 432;
 
-      // Tronco
       ctx.fillStyle = '#5c3114';
       ctx.fillRect(sx - 18, gy - 145, 36, 145);
       ctx.fillStyle = '#7d4620';
@@ -1455,7 +2167,6 @@
       ctx.lineWidth = 3;
       ctx.strokeRect(sx - 18, gy - 145, 36, 145);
 
-      // Copa pixelada em camadas
       const blobs = [
         [0, -175, 68, '#1a7520'],
         [-45, -145, 48, '#238f26'],
@@ -1471,7 +2182,6 @@
       }
     }
 
-    // Cercas de madeira rústicas (como na imagem 1)
     const fencePositions = [180, 1620, 2650, 3880, 5880, 6620];
     for (const fx of fencePositions) {
       const sx = fx - camX;
@@ -1481,13 +2191,11 @@
       ctx.strokeStyle = '#2b1606';
       ctx.lineWidth = 2.5;
 
-      // Travessas horizontais
       ctx.fillRect(sx, gy - 54, 175, 11);
       ctx.strokeRect(sx, gy - 54, 175, 11);
       ctx.fillRect(sx, gy - 28, 175, 11);
       ctx.strokeRect(sx, gy - 28, 175, 11);
 
-      // Estacas verticais
       for (let p = 0; p < 3; p++) {
         const px = sx + 14 + p * 68;
         ctx.fillStyle = '#a8652d';
@@ -1503,11 +2211,9 @@
       if (sx + plat.w < -40 || sx > W + 40) continue;
 
       if (plat.style === 'ground') {
-        // Bloco de terra com pedrinhas pixeladas (idêntico ao estilo da imagem 1)
         ctx.fillStyle = '#8f4f24';
         ctx.fillRect(sx, plat.y + 16, plat.w, plat.h - 16);
 
-        // Textura de terra
         for (let gx = plat.x + 12; gx < plat.x + plat.w - 16; gx += 32) {
           const rx = Math.round(gx - camX);
           ctx.fillStyle = '#6b3716';
@@ -1517,25 +2223,21 @@
           ctx.fillRect(rx + 6, plat.y + 48, 10, 8);
         }
 
-        // Camada de grama verde vibrante no topo
         ctx.fillStyle = '#4ad636';
         ctx.fillRect(sx, plat.y, plat.w, 16);
         ctx.fillStyle = '#89ff54';
         ctx.fillRect(sx, plat.y, plat.w, 5);
 
-        // Dentes irregulares da grama
         ctx.fillStyle = '#2fa122';
         for (let gx = plat.x; gx < plat.x + plat.w - 8; gx += 16) {
           const rx = Math.round(gx - camX);
           ctx.fillRect(rx + 2, plat.y + 15, 10, 6);
         }
 
-        // Contorno escuro externo
         ctx.strokeStyle = '#1d2b14';
         ctx.lineWidth = 3;
         ctx.strokeRect(sx, plat.y, plat.w, plat.h);
       } else {
-        // Plataforma suspensa de madeira com suporte
         ctx.fillStyle = '#9c5a27';
         ctx.fillRect(sx, plat.y, plat.w, plat.h);
         ctx.fillStyle = '#c4793b';
@@ -1544,14 +2246,12 @@
         ctx.lineWidth = 3;
         ctx.strokeRect(sx, plat.y, plat.w, plat.h);
 
-        // Pregos nas pontas
         ctx.fillStyle = '#261305';
         ctx.fillRect(sx + 8, plat.y + 11, 5, 5);
         ctx.fillRect(sx + plat.w - 13, plat.y + 11, 5, 5);
       }
     }
 
-    // Caixas de madeira reforçadas
     for (const c of world.crates) {
       const sx = Math.round(c.x - camX);
       if (sx + c.w < -20 || sx > W + 20) continue;
@@ -1566,7 +2266,6 @@
       ctx.strokeRect(sx, c.y, c.w, c.h);
       ctx.strokeRect(sx + 6, c.y + 6, c.w - 12, c.h - 12);
 
-      // Travessa diagonal
       ctx.beginPath();
       ctx.moveTo(sx + 7, c.y + 7);
       ctx.lineTo(sx + c.w - 7, c.y + c.h - 7);
@@ -1575,7 +2274,6 @@
   }
 
   function drawHazardsAndProps(camX) {
-    // 1. Obstáculos
     for (const h of world.hazards) {
       const sx = Math.round(h.x - camX);
       if (sx + h.w < -40 || sx > W + 40) continue;
@@ -1593,7 +2291,6 @@
           ctx.closePath();
           ctx.fill();
 
-          // Sombra metálica lateral
           ctx.fillStyle = '#8fa6ba';
           ctx.beginPath();
           ctx.moveTo(bx + spikeW / 2, h.y);
@@ -1607,7 +2304,6 @@
           ctx.stroke();
         }
       } else if (h.type === 'log') {
-        // Tronco suspenso por cordas (indica visualmente que deve agachar!)
         ctx.strokeStyle = '#3b2310';
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -1625,12 +2321,10 @@
         ctx.lineWidth = 3;
         ctx.strokeRect(sx, h.y, h.w, h.h);
 
-        // Seta amarela discreta indicando passagem por baixo
         ctx.fillStyle = '#ffd426';
         ctx.font = 'bold 12px Rubik, sans-serif';
         ctx.fillText('▼ AGACHE', sx + h.w / 2 - 30, h.y - 8);
       } else if (h.type === 'patrol') {
-        // Ouriço / Espinho patrulheiro
         ctx.fillStyle = '#4b2a63';
         ctx.beginPath();
         ctx.arc(sx + h.w / 2, h.y + h.h - 4, h.w / 2, Math.PI, 0);
@@ -1639,7 +2333,6 @@
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // Espinhos superiores
         ctx.fillStyle = '#ff5964';
         for (let s = 0; s < 3; s++) {
           const px = sx + 6 + s * 10;
@@ -1650,17 +2343,14 @@
           ctx.fill();
         }
 
-        // Olhos bravos
         ctx.fillStyle = '#fff';
         ctx.fillRect(sx + (h.vx > 0 ? 22 : 8), h.y + 14, 6, 5);
       }
     }
 
-    // 2. Checkpoint (Fogueira do Acampamento)
     const cp = world.checkpoint;
     const cpx = Math.round(cp.x - camX);
     if (cpx > -80 && cpx < W + 80) {
-      // Lenha cruzada
       ctx.fillStyle = '#6e3d19';
       ctx.fillRect(cpx - 18, cp.y - 10, 36, 10);
       if (cp.activated) {
@@ -1684,25 +2374,21 @@
       ctx.fillText(cp.activated ? 'CHECKPOINT ✓' : 'FOGUEIRA', cpx - 32, cp.y - 48);
     }
 
-    // 3. Chegada: Portal e Bandeira dos Desbravadores
     const gx = Math.round(world.goal.x - camX);
     if (gx > -120 && gx < W + 120) {
       const gy = world.goal.y;
-      // Mastro e Bandeira D1
       ctx.fillStyle = '#d8e2eb';
       ctx.fillRect(gx, gy - 170, 8, 170);
       ctx.strokeStyle = '#1b2631';
       ctx.lineWidth = 2.5;
       ctx.strokeRect(gx, gy - 170, 8, 170);
 
-      // Bandeira bicolor (Amarelo e Branco com triângulo)
       ctx.fillStyle = '#ffd426';
       ctx.fillRect(gx + 8, gy - 166, 78, 24);
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(gx + 8, gy - 142, 78, 24);
       ctx.strokeRect(gx + 8, gy - 166, 78, 48);
 
-      // Triângulo vermelho emblema
       ctx.fillStyle = '#de3626';
       ctx.beginPath();
       ctx.moveTo(gx + 34, gy - 154);
@@ -1711,7 +2397,6 @@
       ctx.closePath();
       ctx.fill();
 
-      // Barraca de acampamento ao fundo
       ctx.fillStyle = '#1e5aa8';
       ctx.beginPath();
       ctx.moveTo(gx + 55, gy);
@@ -1730,14 +2415,12 @@
       ctx.fill();
     }
 
-    // 4. Os 20 Lenços Amarelos Flutuantes com Aura Brilhante
     for (const sc of world.scarves) {
       if (sc.taken) continue;
       const sx = Math.round(sc.x - camX);
       if (sx < -40 || sx > W + 40) continue;
       const sy = Math.round(sc.y + Math.sin(world.elapsed * 4.5 + sc.phase) * 5);
 
-      // Brilho radial suave atrás do lenço
       const glow = ctx.createRadialGradient(sx, sy, 2, sx, sy, 24);
       glow.addColorStop(0, 'rgba(255, 244, 130, 0.85)');
       glow.addColorStop(1, 'rgba(255, 212, 38, 0)');
@@ -1759,18 +2442,15 @@
     const sx = Math.round(p.x - camX);
     const sy = Math.round(p.y);
 
-    // Piscar durante invulnerabilidade pós-dano
     if (p.invulnTimer > 0 && Math.floor(p.invulnTimer * 14) % 2 === 0) {
       return;
     }
 
-    // Sombra no chão abaixo do personagem
     ctx.fillStyle = 'rgba(10, 28, 16, 0.35)';
     ctx.beginPath();
     ctx.ellipse(sx + p.w / 2, sy + p.h, 22, 6, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Escolha do frame de animação do sprite
     let sprite = HERO_IDLE_1;
     if (p.ducking) {
       sprite = HERO_DUCK;
@@ -1797,31 +2477,26 @@
   function drawHUD() {
     const p = world.player;
 
-    // 1. Painel Esquerdo: Retrato do Desbravador + Vidas + Total de Lenços (0/20)
     ctx.fillStyle = 'rgba(8, 32, 64, 0.88)';
     ctx.strokeStyle = '#68a9ed';
     ctx.lineWidth = 2.5;
     roundRect(ctx, 14, 12, 188, 62, 12, true, true);
 
-    // Moldura do retrato
     ctx.fillStyle = '#124682';
     roundRect(ctx, 21, 18, 48, 50, 8, true, true);
     ctx.drawImage(HERO_PORTRAIT, 26, 25);
 
-    // Corações de Vida
     for (let i = 0; i < 3; i++) {
       ctx.globalAlpha = i < p.lives ? 1 : 0.25;
       ctx.drawImage(HEART_SPRITE, 78 + i * 26, 20);
     }
     ctx.globalAlpha = 1;
 
-    // Contador 0 / 20
     ctx.drawImage(SCARF_SPRITE, 76, 42, 22, 20);
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 17px Rubik, sans-serif';
     ctx.fillText(`${p.scarves} / 20`, 104, 58);
 
-    // 2. Placa Central: FASE 1 — A JORNADA DOS LENÇOS
     ctx.fillStyle = 'rgba(10, 28, 54, 0.9)';
     ctx.strokeStyle = '#92b6db';
     roundRect(ctx, 280, 12, 400, 48, 12, true, true);
@@ -1836,7 +2511,6 @@
     ctx.fillText('A JORNADA DOS LENÇOS', 492, 49);
     ctx.textAlign = 'left';
 
-    // 3. Painel Direito: Meta para o Título (0 / 10)
     const reachedGoal = p.scarves >= 10;
     ctx.fillStyle = reachedGoal ? 'rgba(20, 74, 38, 0.9)' : 'rgba(8, 32, 64, 0.88)';
     ctx.strokeStyle = reachedGoal ? '#57e378' : '#68a9ed';
@@ -1850,13 +2524,11 @@
     ctx.font = '900 19px Rubik, sans-serif';
     ctx.fillText(`${Math.min(p.scarves, 10)} / 10`, 702, 56);
 
-    // Troféu pixelado simples
     ctx.fillStyle = '#ffd426';
     ctx.fillRect(790, 26, 20, 16);
     ctx.fillRect(796, 42, 8, 10);
     ctx.fillRect(791, 52, 18, 5);
 
-    // 4. Barra discreta de progresso até o Acampamento Final
     const prog = Math.min(1, p.x / world.goal.x);
     ctx.fillStyle = 'rgba(6, 20, 40, 0.7)';
     roundRect(ctx, 280, 66, 400, 8, 4, true, false);
@@ -1880,7 +2552,6 @@
     if (!world) return;
     ctx.save();
 
-    // Efeito sutil de tremor de câmera ao sofrer impacto
     if (world.shakeTimer > 0) {
       const mag = world.shakeTimer * 24;
       ctx.translate((Math.random() - 0.5) * mag, (Math.random() - 0.5) * mag);
@@ -1893,7 +2564,6 @@
     drawHazardsAndProps(camX);
     drawPlayer(camX);
 
-    // Partículas
     for (const pt of world.particles) {
       ctx.globalAlpha = Math.max(0, pt.life / pt.maxLife);
       ctx.fillStyle = pt.color;
@@ -1901,7 +2571,6 @@
     }
     ctx.globalAlpha = 1;
 
-    // Textos flutuantes (+1 Lenço, Checkpoint, etc.)
     for (const ft of world.floatingTexts) {
       ctx.globalAlpha = Math.min(1, ft.life * 1.4);
       ctx.font = '900 15px Rubik, sans-serif';
@@ -1932,8 +2601,10 @@
     requestAnimationFrame(gameLoop);
   }
 
-  // Inicializa o mundo em segundo plano para exibir o cenário já na tela inicial
+  // Inicializa o mundo em segundo plano e sincroniza insígnias/ranking com o Firebase
   resetGame();
+  renderDeviceInsignias();
+  fetchGlobalRanking();
   requestAnimationFrame(gameLoop);
 })();
 </script>
