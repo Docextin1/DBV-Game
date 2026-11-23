@@ -304,6 +304,39 @@
       margin: 0 0 14px;
     }
 
+    /* Seletor discreto de Fases dentro do Modal */
+    .stage-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .stage-pill {
+      padding: 9px 10px;
+      border-radius: 12px;
+      border: 2px solid #3c6ea8;
+      background: rgba(5, 19, 38, 0.75);
+      color: #b7d7fa;
+      font-family: 'Rubik', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+
+    .stage-pill.active {
+      border-color: var(--gold);
+      background: rgba(255, 212, 38, 0.18);
+      color: var(--gold);
+      box-shadow: 0 0 12px rgba(255, 212, 38, 0.25);
+    }
+
+    .stage-pill.locked {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -332,7 +365,7 @@
     }
 
     /* 
-       INSÍGNIAS DO DISPOSITIVO (DESBRAVADOR + PÓDIO TOP 3 BRILHANT */
+       INSÍGNIAS DO DISPOSITIVO (DESBRAVADOR + PÓDIO TOP 3 BRILHANTE) */
     .insignias-shelf {
       display: flex;
       flex-wrap: wrap;
@@ -513,6 +546,32 @@
       padding: 10px;
       margin-bottom: 14px;
       text-align: left;
+    }
+
+    .ranking-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .rank-tab-btn {
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1.5px solid #3c6ea8;
+      background: rgba(16, 44, 82, 0.55);
+      color: #b7d7fa;
+      font-family: 'Rubik', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .rank-tab-btn.active {
+      border-color: var(--gold);
+      background: rgba(255, 212, 38, 0.22);
+      color: var(--gold);
     }
 
     .ranking-header {
@@ -715,11 +774,17 @@
       <div class="badge-tag" id="modalBadge">CLUBE DE DESBRAVADORES</div>
       <h1 class="modal-title" id="modalTitle">A JORNADA DOS LENÇOS</h1>
 
+      <!-- Seletor de Fases (Fase 2 libera ao vencer a Fase 1) -->
+      <div class="stage-selector" id="stageSelector">
+        <button type="button" class="stage-pill active" id="btnSelectStage1">FASE 1 · JORNADA</button>
+        <button type="button" class="stage-pill locked" id="btnSelectStage2">🔒 FASE 2 · TRILHA DO BRAVO</button>
+      </div>
+
       <!-- Prateleira de Insígnias do Dispositivo (Desbravador + Top 3 Ouro/Prata/Bronze) -->
       <div class="insignias-shelf hidden" id="insigniasShelf"></div>
 
       <p class="modal-desc" id="modalDesc">
-      Abraao Gessé o convida a  Explorar a trilha da floresta! saltar sobre precipícios, e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho! MARANATA.<br><br>
+      Abraao Gessé o convida a Explorar a trilha da floresta! saltar sobre precipícios, e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho! MARANATA.<br><br>
         Consiga pelo menos <strong>10 lenços</strong> até o acampamento final para conquistar o título de <strong>DESBRAVADOR</strong>!
       </p>
 
@@ -740,7 +805,7 @@
 
       <!-- Formulário para salvar o nome no Ranking Global (apenas se venceu com >= 10 lenços) -->
       <div class="record-form hidden" id="recordForm">
-        <label for="playerNameInput">🏅 SALVE SEU TEMPO NO RANKING GLOBAL (TOP 50):</label>
+        <label for="playerNameInput" id="recordFormLabel">🏅 SALVE SEU TEMPO NO RANKING GLOBAL (TOP 50):</label>
         <div class="record-input-row">
           <input
             type="text"
@@ -754,10 +819,14 @@
         </div>
       </div>
 
-      <!-- Painel do Ranking Global Top 50 (Firebase) -->
+      <!-- Painel do Ranking Global Top 50 Independente por Fase (Firebase) -->
       <div class="ranking-panel hidden" id="rankingPanel">
+        <div class="ranking-tabs">
+          <button type="button" class="rank-tab-btn active" id="tabRankStage1">FASE 1 · JORNADA</button>
+          <button type="button" class="rank-tab-btn" id="tabRankStage2">FASE 2 · TRILHA DO BRAVO</button>
+        </div>
         <div class="ranking-header">
-          <span>🏆 RANKING GLOBAL — TOP 50</span>
+          <span id="rankingTitleLabel">🏆 RANKING FASE 1 — TOP 50</span>
           <span id="rankingStatus">CARREGANDO...</span>
         </div>
         <div class="ranking-list" id="rankingList"></div>
@@ -765,6 +834,7 @@
 
       <div class="modal-actions-stack">
         <button class="primary-btn" id="btnStart">▶ INICIAR AVENTURA</button>
+        <button class="secondary-btn hidden" id="btnNextStage">▶ IR PARA FASE 2: A TRILHA DO BRAVO</button>
         <button class="secondary-btn" id="btnToggleRanking">🏆 VER RANKING TOP 50</button>
       </div>
 
@@ -781,14 +851,13 @@
   'use strict';
 
   /**
-   *
-   * 0. INTEGRAÇÃO COM FIREBASE REALTIME DATABASE + INSÍGNIAS DO DISPOSITIVO
-   * 
+   * 0. INTEGRAÇÃO COM FIREBASE REALTIME DATABASE + RANKING POR FASE + INSÍGNIAS
    */
   const FIREBASE_DB_URL = 'https://dbv-game-default-rtdb.firebaseio.com';
   const STORAGE_KEYS = {
     DEVICE_ID: 'dbv_game_device_id_v1',
     HAS_DBV_BADGE: 'dbv_game_has_desbravador_badge_v1',
+    STAGE2_UNLOCKED: 'dbv_game_stage2_unlocked_v1',
     SAVED_NAME: 'dbv_game_player_name_v1'
   };
 
@@ -807,7 +876,9 @@
   }
 
   const DEVICE_ID = getOrCreateDeviceId();
-  let cachedTop50 = [];
+  const cachedTop50ByStage = { 1: [], 2: [] };
+  let activeRankingStage = 1;
+  let selectedStage = 1;
   let scoreAlreadySavedThisRun = false;
 
   function hasPermanentDbvBadge() {
@@ -822,6 +893,21 @@
     try {
       localStorage.setItem(STORAGE_KEYS.HAS_DBV_BADGE, 'true');
     } catch (_) {}
+  }
+
+  function isStage2Unlocked() {
+    try {
+      return localStorage.getItem(STORAGE_KEYS.STAGE2_UNLOCKED) === 'true' || hasPermanentDbvBadge();
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function unlockStage2() {
+    try {
+      localStorage.setItem(STORAGE_KEYS.STAGE2_UNLOCKED, 'true');
+    } catch (_) {}
+    updateStageSelectorUI();
   }
 
   function getSavedPlayerName() {
@@ -854,73 +940,103 @@
       .replace(/"/g, '&quot;');
   }
 
-  // Busca todos os registros no Firebase e retorna o Top 50 ordenado pelo menor tempo
-  async function fetchGlobalRanking() {
+  function getStageNodeName(stageNum) {
+    return stageNum === 2 ? 'fase_2' : 'fase_1';
+  }
+
+  function parseFirebaseRankingObject(data) {
+    const entries = [];
+    if (data && typeof data === 'object') {
+      for (const [key, val] of Object.entries(data)) {
+        if (!val || typeof val !== 'object') continue;
+        const scarves = Number(val.scarves) || 0;
+        const time = Number(val.time);
+        if (scarves >= 10 && Number.isFinite(time) && time > 0) {
+          entries.push({
+            key,
+            deviceId: val.deviceId || '',
+            name: String(val.name || 'Desbravador').slice(0, 22),
+            scarves,
+            time,
+            createdAt: Number(val.createdAt) || 0
+          });
+        }
+      }
+    }
+    entries.sort((a, b) => {
+      if (Math.abs(a.time - b.time) > 0.001) return a.time - b.time;
+      if (b.scarves !== a.scarves) return b.scarves - a.scarves;
+      return a.createdAt - b.createdAt;
+    });
+    return entries.slice(0, 50);
+  }
+
+  // Busca todos os registros da fase selecionada no Firebase
+  async function fetchGlobalRanking(stageNum = activeRankingStage) {
+    activeRankingStage = stageNum;
     const statusEl = document.getElementById('rankingStatus');
+    const titleEl = document.getElementById('rankingTitleLabel');
+    const tab1 = document.getElementById('tabRankStage1');
+    const tab2 = document.getElementById('tabRankStage2');
+
+    if (tab1) tab1.classList.toggle('active', stageNum === 1);
+    if (tab2) tab2.classList.toggle('active', stageNum === 2);
+    if (titleEl) {
+      titleEl.textContent = stageNum === 2
+        ? '🏆 RANKING FASE 2 · BRAVO — TOP 50'
+        : '🏆 RANKING FASE 1 · JORNADA — TOP 50';
+    }
     if (statusEl) statusEl.textContent = 'ATUALIZANDO...';
 
+    const node = getStageNodeName(stageNum);
+
     try {
-      const res = await fetch(`${FIREBASE_DB_URL}/ranking.json`, { cache: 'no-store' });
+      const res = await fetch(`${FIREBASE_DB_URL}/ranking/${node}.json`, { cache: 'no-store' });
       if (!res.ok) throw new Error('Falha ao consultar ranking');
       const data = await res.json();
 
-      const entries = [];
-      if (data && typeof data === 'object') {
-        for (const [key, val] of Object.entries(data)) {
-          if (!val || typeof val !== 'object') continue;
-          const scarves = Number(val.scarves) || 0;
-          const time = Number(val.time);
-          // Só contabiliza quem pegou pelo menos 10 lenços!
-          if (scarves >= 10 && Number.isFinite(time) && time > 0) {
-            entries.push({
-              key,
-              deviceId: val.deviceId || '',
-              name: String(val.name || 'Desbravador').slice(0, 22),
-              scarves,
-              time,
-              createdAt: Number(val.createdAt) || 0
-            });
-          }
+      let parsed = parseFirebaseRankingObject(data);
+
+      // Compatibilidade retroativa: se Fase 1 ainda estiver vazia no nó novo, lê registros legados de /ranking.json
+      if (stageNum === 1 && parsed.length === 0) {
+        const legacyRes = await fetch(`${FIREBASE_DB_URL}/ranking.json`, { cache: 'no-store' });
+        if (legacyRes.ok) {
+          const legacyData = await legacyRes.json();
+          parsed = parseFirebaseRankingObject(legacyData);
         }
       }
 
-      // Ordenação: 1º Menor Tempo; 2º Desempate por mais lenços; 3º Mais antigo
-      entries.sort((a, b) => {
-        if (Math.abs(a.time - b.time) > 0.001) return a.time - b.time;
-        if (b.scarves !== a.scarves) return b.scarves - a.scarves;
-        return a.createdAt - b.createdAt;
-      });
-
-      cachedTop50 = entries.slice(0, 50);
-      if (statusEl) statusEl.textContent = `${cachedTop50.length} / 50`;
+      cachedTop50ByStage[stageNum] = parsed;
+      if (statusEl) statusEl.textContent = `${parsed.length} / 50`;
       renderRankingList();
       renderDeviceInsignias();
-      return cachedTop50;
+      return parsed;
     } catch (err) {
       if (statusEl) statusEl.textContent = 'OFFLINE';
       renderRankingList(true);
       renderDeviceInsignias();
-      return cachedTop50;
+      return cachedTop50ByStage[stageNum];
     }
   }
 
-  // Envia ou atualiza o recorde do dispositivo no Firebase
-  async function submitScoreToFirebase(playerName, timeSeconds, scarvesCount) {
+  // Envia ou atualiza o recorde do dispositivo no Firebase para a fase específica
+  async function submitScoreToFirebase(stageNum, playerName, timeSeconds, scarvesCount) {
     if (scarvesCount < 10) return false;
     const cleanName = playerName.trim().slice(0, 22) || 'Desbravador';
     setSavedPlayerName(cleanName);
 
+    const node = getStageNodeName(stageNum);
     const payload = {
       deviceId: DEVICE_ID,
       name: cleanName,
       time: Number(timeSeconds.toFixed(2)),
       scarves: scarvesCount,
+      stage: stageNum,
       createdAt: Date.now()
     };
 
     try {
-      // Verifica se este dispositivo já possui um registro no Firebase para manter apenas o melhor tempo dele
-      const existingRes = await fetch(`${FIREBASE_DB_URL}/ranking.json`, { cache: 'no-store' });
+      const existingRes = await fetch(`${FIREBASE_DB_URL}/ranking/${node}.json`, { cache: 'no-store' });
       const existingData = existingRes.ok ? await existingRes.json() : null;
 
       let existingKey = null;
@@ -939,51 +1055,49 @@
       }
 
       if (existingKey && existingBestTime <= payload.time) {
-        // Já possui um tempo melhor salvo: apenas atualiza o nome se mudou
-        await fetch(`${FIREBASE_DB_URL}/ranking/${existingKey}.json`, {
+        await fetch(`${FIREBASE_DB_URL}/ranking/${node}/${existingKey}.json`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: cleanName })
         });
       } else if (existingKey) {
-        // Bateu o próprio recorde pessoal: substitui pelo novo tempo mais rápido
-        await fetch(`${FIREBASE_DB_URL}/ranking/${existingKey}.json`, {
+        await fetch(`${FIREBASE_DB_URL}/ranking/${node}/${existingKey}.json`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
       } else {
-        // Primeiro registro deste dispositivo no ranking global
-        await fetch(`${FIREBASE_DB_URL}/ranking.json`, {
+        await fetch(`${FIREBASE_DB_URL}/ranking/${node}.json`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
       }
 
-      await fetchGlobalRanking();
+      await fetchGlobalRanking(stageNum);
       return true;
     } catch (_) {
       return false;
     }
   }
 
-  // Renderiza a lista do Top 50 no painel
   function renderRankingList(hasError = false) {
     const listEl = document.getElementById('rankingList');
     if (!listEl) return;
 
-    if (hasError && cachedTop50.length === 0) {
+    const currentList = cachedTop50ByStage[activeRankingStage] || [];
+
+    if (hasError && currentList.length === 0) {
       listEl.innerHTML = `<div style="padding:12px;text-align:center;color:#9fc4eb;font-size:12px;">Não foi possível conectar ao ranking online agora.</div>`;
       return;
     }
 
-    if (cachedTop50.length === 0) {
-      listEl.innerHTML = `<div style="padding:12px;text-align:center;color:#9fc4eb;font-size:12px;">Nenhum desbravador no ranking ainda. Seja o 1º a concluir com 10+ lenços!</div>`;
+    if (currentList.length === 0) {
+      listEl.innerHTML = `<div style="padding:12px;text-align:center;color:#9fc4eb;font-size:12px;">Nenhum desbravador no ranking desta fase ainda. Seja o 1º a concluir com 10+ lenços!</div>`;
       return;
     }
 
-    listEl.innerHTML = cachedTop50.map((item, index) => {
+    listEl.innerHTML = currentList.map((item, index) => {
       const pos = index + 1;
       const isMe = item.deviceId === DEVICE_ID;
       let topClass = '';
@@ -1003,9 +1117,6 @@
     }).join('');
   }
 
-  // Renderiza as insígnias do dispositivo:
-  // 1) Insígnia Permanente de Desbravador (salva no dispositivo)
-  // 2) Insígnia exclusiva Ouro / Prata / Bronze SE o dispositivo estiver no Top 3 atual do Firebase
   function renderDeviceInsignias() {
     const shelf = document.getElementById('insigniasShelf');
     if (!shelf) return;
@@ -1021,23 +1132,26 @@
       `);
     }
 
-    // Verifica qual a melhor posição atual deste dispositivo no Top 3 do ranking global
-    const myRankIndex = cachedTop50.findIndex(item => item.deviceId === DEVICE_ID);
-    if (myRankIndex === 0) {
+    const r1 = (cachedTop50ByStage[1] || []).findIndex(item => item.deviceId === DEVICE_ID);
+    const r2 = (cachedTop50ByStage[2] || []).findIndex(item => item.deviceId === DEVICE_ID);
+    const bestIndices = [r1, r2].filter(idx => idx !== -1);
+    const myBestRankIndex = bestIndices.length > 0 ? Math.min(...bestIndices) : -1;
+
+    if (myBestRankIndex === 0) {
       badgesHtml.push(`
-        <div class="insignia-pill insignia-gold insignia-shiny" title="1º Lugar no Ranking Geral!">
+        <div class="insignia-pill insignia-gold insignia-shiny" title="1º Lugar no Ranking!">
           <span>🥇 INSÍGNIA OURO · TOP 1</span>
         </div>
       `);
-    } else if (myRankIndex === 1) {
+    } else if (myBestRankIndex === 1) {
       badgesHtml.push(`
-        <div class="insignia-pill insignia-silver insignia-shiny" title="2º Lugar no Ranking Geral!">
+        <div class="insignia-pill insignia-silver insignia-shiny" title="2º Lugar no Ranking!">
           <span>🥈 INSÍGNIA PRATA · TOP 2</span>
         </div>
       `);
-    } else if (myRankIndex === 2) {
+    } else if (myBestRankIndex === 2) {
       badgesHtml.push(`
-        <div class="insignia-pill insignia-bronze insignia-shiny" title="3º Lugar no Ranking Geral!">
+        <div class="insignia-pill insignia-bronze insignia-shiny" title="3º Lugar no Ranking!">
           <span>🥉 INSÍGNIA BRONZE · TOP 3</span>
         </div>
       `);
@@ -1053,9 +1167,7 @@
   }
 
   /**
-   * ============================================================================
-   * 1. MOTOR DE ÁUDIO RETRÔ (WEB AUDIO API) - SEM DEPENDÊNCIAS EXTERNAS
-   * ============================================================================
+   * 1. MOTOR DE ÁUDIO RETRÔ (WEB AUDIO API)
    */
   class SoundEngine {
     constructor() {
@@ -1105,6 +1217,12 @@
       this.playTone(1318, 1760, 0.16, 'triangle', 0.16, 0.07);
     }
 
+    pipe() {
+      this.playTone(320, 140, 0.11, 'square', 0.14, 0);
+      this.playTone(280, 110, 0.11, 'square', 0.14, 0.11);
+      this.playTone(240, 90, 0.15, 'square', 0.14, 0.22);
+    }
+
     checkpoint() {
       [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
         this.playTone(f, f * 1.02, 0.12, 'square', 0.1, i * 0.07);
@@ -1138,9 +1256,7 @@
   const sfx = new SoundEngine();
 
   /**
-   * 
    * 2. GERADOR DE SPRITES PIXEL ART MATRICIAL
-   * 
    */
   const PALETTE = {
     'K': '#141013',
@@ -1374,15 +1490,12 @@
   ], 2);
 
   /**
-   * 
    * 3. CONFIGURAÇÃO DO CANVAS E ESTADO DO JOGO
-   * 
    */
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   const W = 960;
   const H = 540;
-  const WORLD_WIDTH = 7600;
 
   // Elementos da UI Modal
   const modalLayer = document.getElementById('modal-layer');
@@ -1394,17 +1507,24 @@
   const statTime = document.getElementById('statTime');
   const statRank = document.getElementById('statRank');
   const btnStart = document.getElementById('btnStart');
+  const btnNextStage = document.getElementById('btnNextStage');
   const btnToggleRanking = document.getElementById('btnToggleRanking');
   const btnPause = document.getElementById('btnPause');
   const btnMute = document.getElementById('btnMute');
   const btnFullscreen = document.getElementById('btnFullscreen');
   const gameWrapper = document.getElementById('game-wrapper');
 
+  const stageSelector = document.getElementById('stageSelector');
+  const btnSelectStage1 = document.getElementById('btnSelectStage1');
+  const btnSelectStage2 = document.getElementById('btnSelectStage2');
+
   const recordForm = document.getElementById('recordForm');
+  const recordFormLabel = document.getElementById('recordFormLabel');
   const playerNameInput = document.getElementById('playerNameInput');
   const btnSaveScore = document.getElementById('btnSaveScore');
   const rankingPanel = document.getElementById('rankingPanel');
-  const controlsLegend = document.getElementById('controlsLegend');
+  const tabRankStage1 = document.getElementById('tabRankStage1');
+  const tabRankStage2 = document.getElementById('tabRankStage2');
 
   // Estado de Entrada (Teclado + Multi-Touch)
   const keys = {
@@ -1419,11 +1539,79 @@
   let world = null;
 
   /**
-   * 
-   * 4. CONSTRUÇÃO DA FASE 1 (TERRENOS, PLATAFORMAS, OBSTÁCULOS E 20 LENÇOS)
-   * 
+   * 3.1 TELA CHEIA AUTOMÁTICA NO PRIMEIRO TOQUE / CLIQUE
    */
-  function createLevelData() {
+  let autoFullscreenAttempted = false;
+
+  function enterFullscreenNow() {
+    const doc = document;
+    const isFs = doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement;
+    if (isFs) return;
+    const req = gameWrapper.requestFullscreen || gameWrapper.webkitRequestFullscreen || gameWrapper.msRequestFullscreen;
+    if (req) {
+      req.call(gameWrapper).catch(() => {});
+    }
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(() => {});
+    }
+  }
+
+  function handleFirstInteractionFullscreen() {
+    if (autoFullscreenAttempted) return;
+    autoFullscreenAttempted = true;
+    enterFullscreenNow();
+  }
+
+  window.addEventListener('pointerdown', handleFirstInteractionFullscreen, { passive: true });
+  window.addEventListener('keydown', handleFirstInteractionFullscreen, { passive: true });
+
+  /**
+   * 3.2 CONTROLE DE SELEÇÃO DE FASE NO MENU
+   */
+  function updateStageSelectorUI() {
+    const unlocked = isStage2Unlocked();
+    btnSelectStage1.classList.toggle('active', selectedStage === 1);
+    btnSelectStage2.classList.toggle('active', selectedStage === 2);
+    btnSelectStage2.classList.toggle('locked', !unlocked);
+    btnSelectStage2.textContent = unlocked
+      ? 'FASE 2 · TRILHA DO BRAVO'
+      : '🔒 FASE 2 · TRILHA DO BRAVO';
+  }
+
+  function applyMenuStageInfo(stageNum) {
+    selectedStage = stageNum;
+    updateStageSelectorUI();
+    if (stageNum === 2) {
+      modalBadge.textContent = 'FASE 2 · DESAFIO AVANÇADO';
+      modalTitle.textContent = 'A TRILHA DO BRAVO';
+      modalDesc.innerHTML = `Encare plataformas móveis que sobem e descem, totens de pedra e inimigos velozes! Procure o <strong>Cano Verde secreto</strong> e agache sobre ele para entrar na <strong>Fase Bônus</strong>!`;
+      btnStart.textContent = '▶ INICIAR FASE 2';
+    } else {
+      modalBadge.textContent = 'CLUBE DE DESBRAVADORES';
+      modalTitle.textContent = 'A JORNADA DOS LENÇOS';
+      modalDesc.innerHTML = `Abraao Gessé o convida a Explorar a trilha da floresta! saltar sobre precipícios, e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho! MARANATA.<br><br>Consiga pelo menos <strong>10 lenços</strong> até o acampamento final para conquistar o título de <strong>DESBRAVADOR</strong>!`;
+      btnStart.textContent = '▶ INICIAR AVENTURA';
+    }
+  }
+
+  btnSelectStage1.addEventListener('click', () => {
+    sfx.init();
+    applyMenuStageInfo(1);
+  });
+
+  btnSelectStage2.addEventListener('click', () => {
+    sfx.init();
+    if (!isStage2Unlocked()) {
+      modalDesc.innerHTML = `🔒 Conclua a <strong>Fase 1</strong> com pelo menos <strong>10 lenços</strong> para desbloquear <strong>A Trilha do Bravo</strong>!`;
+      return;
+    }
+    applyMenuStageInfo(2);
+  });
+
+  /**
+   * 4. CONSTRUÇÃO DAS FASES (FASE 1, FASE 2 "A TRILHA DO BRAVO" + SALA BÔNUS)
+   */
+  function createStage1Data() {
     const platforms = [
       { x: 0,    y: 432, w: 760,  h: 120, style: 'ground' },
       { x: 760,  y: 468, w: 220,  h: 90,  style: 'ground' },
@@ -1511,23 +1699,228 @@
     }));
 
     return {
+      stage: 1,
+      stageLabel: 'FASE 1',
+      stageTitle: 'A JORNADA DOS LENÇOS',
+      theme: 'forest',
+      worldWidth: 7600,
       platforms,
+      movingPlatforms: [],
       crates,
       hazards,
+      pipes: [],
       scarves,
       checkpoint: { x: 4160, y: 432, activated: false },
       goal: { x: 7340, y: 432 }
     };
   }
 
-  function resetGame() {
+  /**
+   * FASE 2: "A TRILHA DO BRAVO"
+   * Inclui plataformas elevadoras, obstáculos que sobem e descem, inimigos mais ágeis
+   * e um Cano Verde secreto estilo Super Mario que leva à Sala Bônus Subterrânea!
+   */
+  function createStage2Data() {
+    const platforms = [
+      { x: 0,    y: 432, w: 660,  h: 120, style: 'ground' },
+      { x: 760,  y: 380, w: 220,  h: 170, style: 'ground' },
+      { x: 1090, y: 432, w: 690,  h: 120, style: 'ground' },
+
+      // Plataformas altas iniciais
+      { x: 1240, y: 310, w: 140,  h: 28,  style: 'wood' },
+      { x: 1480, y: 240, w: 150,  h: 28,  style: 'wood' },
+
+      // Travessia sobre abismo com plataformas elevadoras (movingPlatforms)
+      { x: 2460, y: 432, w: 660,  h: 120, style: 'ground' },
+      { x: 2660, y: 310, w: 150,  h: 28,  style: 'wood' },
+
+      // Área central com o CANO SECRETO (x: 3490)
+      { x: 3240, y: 432, w: 620,  h: 120, style: 'ground' },
+      { x: 3440, y: 330, w: 190,  h: 28,  style: 'wood' },
+
+      // Checkpoint após o cano (x: 3980)
+      { x: 3960, y: 432, w: 680,  h: 120, style: 'ground' },
+      { x: 4220, y: 295, w: 160,  h: 28,  style: 'wood' },
+
+      // Trecho montanhoso com pilares móveis
+      { x: 4770, y: 375, w: 250,  h: 175, style: 'ground' },
+      { x: 5130, y: 320, w: 260,  h: 230, style: 'ground' },
+      { x: 5520, y: 432, w: 820,  h: 120, style: 'ground' },
+      { x: 5750, y: 285, w: 160,  h: 28,  style: 'wood' },
+      { x: 6020, y: 225, w: 160,  h: 28,  style: 'wood' },
+
+      // Reta final para o acampamento do Bravo
+      { x: 6760, y: 432, w: 1140, h: 120, style: 'ground' }
+    ];
+
+    // Plataformas que SOBEM E DESCEM (Elevadores)
+    const movingPlatforms = [
+      { x: 1870, baseY: 340, w: 135, h: 26, ampY: 95, speed: 2.2, phase: 0,   y: 340, prevY: 340, style: 'wood' },
+      { x: 2150, baseY: 310, w: 135, h: 26, ampY: 105, speed: 2.5, phase: 2.1, y: 310, prevY: 310, style: 'wood' },
+      { x: 6460, baseY: 330, w: 145, h: 26, ampY: 110, speed: 2.6, phase: 0.8, y: 330, prevY: 330, style: 'wood' }
+    ];
+
+    const crates = [
+      { x: 450,  y: 384, w: 48, h: 48 },
+      { x: 1150, y: 384, w: 48, h: 48 },
+      { x: 2520, y: 384, w: 48, h: 48 },
+      { x: 4090, y: 384, w: 48, h: 48 },
+      { x: 4138, y: 384, w: 48, h: 48 },
+      { x: 4138, y: 336, w: 48, h: 48 },
+      { x: 5620, y: 384, w: 48, h: 48 },
+      { x: 6900, y: 384, w: 48, h: 48 }
+    ];
+
+    const hazards = [
+      // Espinhos e inimigos mais rápidos
+      { type: 'patrol', x: 510,  y: 404, w: 38, h: 28, minX: 500,  maxX: 640,  vx: 135 },
+      { type: 'spikes', x: 830,  y: 356, w: 88, h: 24 },
+
+      // NOVO OBSTÁCULO QUE SOBE E DESCE (Totem / Pilar de Rocha com Espinhos)
+      { type: 'bobber', x: 1360, baseY: 356, w: 44, h: 76, ampY: 95, speed: 3.1, phase: 0.4, y: 356 },
+
+      { type: 'log',    x: 1580, y: 342, w: 120, h: 36 },
+      { type: 'patrol', x: 2740, y: 404, w: 38, h: 28, minX: 2580, maxX: 3080, vx: 155 },
+
+      // Segundo obstáculo que sobe e desce antes do cano secreto
+      { type: 'bobber', x: 2940, baseY: 356, w: 44, h: 76, ampY: 105, speed: 3.4, phase: 2.0, y: 356 },
+
+      { type: 'spikes', x: 3300, y: 408, w: 110, h: 24 },
+      { type: 'patrol', x: 3680, y: 404, w: 38, h: 28, minX: 3430, maxX: 3830, vx: 150 },
+
+      // Trecho pós-checkpoint
+      { type: 'bobber', x: 4420, baseY: 356, w: 44, h: 76, ampY: 100, speed: 3.5, phase: 1.1, y: 356 },
+      { type: 'spikes', x: 4850, y: 351, w: 88, h: 24 },
+      { type: 'spikes', x: 5215, y: 296, w: 88, h: 24 },
+      { type: 'log',    x: 5830, y: 342, w: 130, h: 36 },
+      { type: 'patrol', x: 6040, y: 404, w: 38, h: 28, minX: 5700, maxX: 6300, vx: 170 },
+
+      // Último obstáculo que sobe e desce antes da chegada
+      { type: 'bobber', x: 7160, baseY: 356, w: 44, h: 76, ampY: 110, speed: 3.8, phase: 0.2, y: 356 },
+      { type: 'spikes', x: 7340, y: 408, w: 110, h: 24 }
+    ];
+
+    // Cano Verde estilo Super Mario sobre a plataforma elevada (x: 3495, y: 266)
+    const pipes = [
+      {
+        x: 3495,
+        y: 266,
+        w: 68,
+        h: 64,
+        action: 'enter_bonus',
+        label: '▼ AGACHE NO CANO'
+      }
+    ];
+
+    // 16 lenços na trilha principal + 4 lenços exclusivos dentro da Sala Bônus = 20 lenços!
+    const mainScarfCoords = [
+      [350, 375],
+      [474, 325],
+      [875, 290],
+      [1310, 255],
+      [1555, 185],
+      [1640, 392],
+      [1935, 220],
+      [2215, 195],
+      [2735, 255],
+      [3530, 215], // Bem acima do cano secreto para chamar atenção!
+      [4300, 240],
+      [4895, 285],
+      [5260, 230],
+      [5895, 392],
+      [6100, 170],
+      [7240, 260]
+    ];
+
+    const scarves = mainScarfCoords.map(([x, y], idx) => ({
+      id: idx + 1,
+      x,
+      y,
+      taken: false,
+      phase: idx * 0.55
+    }));
+
+    return {
+      stage: 2,
+      stageLabel: 'FASE 2',
+      stageTitle: 'A TRILHA DO BRAVO',
+      theme: 'sunset',
+      worldWidth: 7900,
+      platforms,
+      movingPlatforms,
+      crates,
+      hazards,
+      pipes,
+      scarves,
+      checkpoint: { x: 4010, y: 432, activated: false },
+      goal: { x: 7640, y: 432 },
+      bonusRoom: createBonusRoomData()
+    };
+  }
+
+  /**
+   * SALA BÔNUS SUBTERRÂNEA (ESTILO SUPER MARIO)
+   * Acessada ao agachar em cima do Cano Verde na Fase 2!
+   */
+  function createBonusRoomData() {
+    const platforms = [
+      { x: 0,   y: 448, w: 1280, h: 100, style: 'brick_ground' },
+      { x: 0,   y: 0,   w: 44,   h: 460, style: 'brick_wall' },
+      { x: 1236,y: 0,   w: 44,   h: 460, style: 'brick_wall' },
+      { x: 240, y: 330, w: 170,  h: 28,  style: 'brick_plat' },
+      { x: 490, y: 250, w: 260,  h: 28,  style: 'brick_plat' },
+      { x: 830, y: 330, w: 170,  h: 28,  style: 'brick_plat' }
+    ];
+
+    // 4 lenços secretos dentro da sala bônus (completando os 20 da Fase 2!)
+    const bonusScarfCoords = [
+      [325, 275],
+      [555, 195],
+      [685, 195],
+      [915, 275]
+    ];
+
+    const scarves = bonusScarfCoords.map(([x, y], idx) => ({
+      id: 17 + idx,
+      x,
+      y,
+      taken: false,
+      phase: idx * 0.6
+    }));
+
+    // Cano de saída no final da sala bônus (x: 1085)
+    const pipes = [
+      {
+        x: 1085,
+        y: 376,
+        w: 72,
+        h: 72,
+        action: 'exit_bonus',
+        label: '▼ AGACHE P/ SAIR'
+      }
+    ];
+
+    return {
+      worldWidth: 1280,
+      platforms,
+      scarves,
+      pipes,
+      returnX: 3710,
+      returnY: 340
+    };
+  }
+
+  function resetGame(stageToLoad = selectedStage) {
+    selectedStage = stageToLoad;
     scoreAlreadySavedThisRun = false;
-    const level = createLevelData();
+    const level = stageToLoad === 2 ? createStage2Data() : createStage1Data();
     world = {
       ...level,
+      inBonus: false,
       elapsed: 0,
       camX: 0,
       shakeTimer: 0,
+      pipeCooldown: 0,
       particles: [],
       floatingTexts: [],
       player: {
@@ -1554,9 +1947,7 @@
   }
 
   /**
-   * ============================================================================
    * 5. CONTROLES DE TECLADO E TOUCH (MULTI-TOUCH RESPONSIVO)
-   * ============================================================================
    */
   function triggerJumpPress() {
     sfx.init();
@@ -1574,7 +1965,6 @@
   }
 
   window.addEventListener('keydown', (e) => {
-    // Não interceptar teclas enquanto o jogador digita seu nome no input
     if (document.activeElement === playerNameInput) return;
 
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) {
@@ -1659,10 +2049,7 @@
     const doc = document;
     const isFs = doc.fullscreenElement || doc.webkitFullscreenElement;
     if (!isFs) {
-      const req = gameWrapper.requestFullscreen || gameWrapper.webkitRequestFullscreen || gameWrapper.msRequestFullscreen;
-      if (req) {
-        req.call(gameWrapper).catch(() => {});
-      }
+      enterFullscreenNow();
     } else {
       const exit = doc.exitFullscreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
       if (exit) {
@@ -1685,18 +2072,24 @@
     if (gameState === 'PLAYING') {
       gameState = 'PAUSED';
       btnPause.textContent = '▶';
-      modalBadge.textContent = 'JOGO PAUSADO';
+      stageSelector.classList.remove('hidden');
+      updateStageSelectorUI();
+      modalBadge.textContent = `${world.stageLabel} · JOGO PAUSADO`;
       modalTitle.textContent = 'DESCANSO NA TRILHA';
-      modalDesc.innerHTML = 'Respire fundo, Desbravador! Clique abaixo para continuar sua missão.';
+      modalDesc.innerHTML = 'Respire fundo, Desbravador! Clique abaixo para continuar sua missão ou trocar de fase.';
       modalStats.classList.add('hidden');
       recordForm.classList.add('hidden');
       rankingPanel.classList.add('hidden');
+      btnNextStage.classList.add('hidden');
       btnToggleRanking.classList.remove('hidden');
       btnToggleRanking.textContent = '🏆 VER RANKING TOP 50';
       btnStart.textContent = '▶ CONTINUAR';
       renderDeviceInsignias();
       modalLayer.classList.remove('hidden');
     } else if (gameState === 'PAUSED') {
+      if (world && world.stage !== selectedStage) {
+        resetGame(selectedStage);
+      }
       gameState = 'PLAYING';
       btnPause.textContent = '❚❚';
       modalLayer.classList.add('hidden');
@@ -1707,31 +2100,49 @@
 
   btnStart.addEventListener('click', () => {
     sfx.init();
-    if (gameState === 'PAUSED') {
+    enterFullscreenNow();
+    if (gameState === 'PAUSED' && world && world.stage === selectedStage) {
       togglePause();
       return;
     }
-    resetGame();
+    resetGame(selectedStage);
     gameState = 'PLAYING';
     btnPause.textContent = '❚❚';
     modalLayer.classList.add('hidden');
   });
 
-  // Botão para alternar visualização do Ranking Top 50 a qualquer momento no modal
+  btnNextStage.addEventListener('click', () => {
+    sfx.init();
+    enterFullscreenNow();
+    resetGame(2);
+    gameState = 'PLAYING';
+    btnPause.textContent = '❚❚';
+    modalLayer.classList.add('hidden');
+  });
+
   btnToggleRanking.addEventListener('click', () => {
     sfx.init();
     const isHidden = rankingPanel.classList.contains('hidden');
     if (isHidden) {
       rankingPanel.classList.remove('hidden');
       btnToggleRanking.textContent = '▲ OCULTAR RANKING';
-      fetchGlobalRanking();
+      fetchGlobalRanking(selectedStage);
     } else {
       rankingPanel.classList.add('hidden');
       btnToggleRanking.textContent = '🏆 VER RANKING TOP 50';
     }
   });
 
-  // Salvar nome e tempo no Firebase ao concluir a fase com >= 10 lenços
+  tabRankStage1.addEventListener('click', () => {
+    sfx.init();
+    fetchGlobalRanking(1);
+  });
+
+  tabRankStage2.addEventListener('click', () => {
+    sfx.init();
+    fetchGlobalRanking(2);
+  });
+
   btnSaveScore.addEventListener('click', async () => {
     if (scoreAlreadySavedThisRun || !world) return;
     const p = world.player;
@@ -1746,7 +2157,7 @@
     btnSaveScore.disabled = true;
     btnSaveScore.textContent = 'SALVANDO...';
 
-    const ok = await submitScoreToFirebase(rawName, world.elapsed, p.scarves);
+    const ok = await submitScoreToFirebase(world.stage, rawName, world.elapsed, p.scarves);
     if (ok) {
       scoreAlreadySavedThisRun = true;
       recordForm.classList.add('hidden');
@@ -1766,9 +2177,7 @@
   });
 
   /**
-   * ============================================================================
-   * 6. FÍSICA, COLISÕES E LÓGICA DE JOGO
-   * ============================================================================
+   * 6. FÍSICA, COLISÕES, CANO SECRETO E LÓGICA DE JOGO
    */
   function aabb(ax, ay, aw, ah, bx, by, bw, bh) {
     return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
@@ -1797,7 +2206,7 @@
       y,
       text,
       color,
-      life: 0.9
+      life: 0.95
     });
   }
 
@@ -1823,48 +2232,92 @@
     const secs = String(Math.floor(world.elapsed % 60)).padStart(2, '0');
 
     let rank = 'ASPIRANTE';
-    if (won && p.scarves === 20) rank = 'LENDA 100%';
+    if (won && p.scarves === 20) rank = world.stage === 2 ? 'BRAVO LENDA' : 'LENDA 100%';
     else if (won && p.scarves >= 15) rank = 'EXPLORADOR';
-    else if (won) rank = 'DESBRAVADOR';
+    else if (won) rank = world.stage === 2 ? 'BRAVO DBV' : 'DESBRAVADOR';
 
+    stageSelector.classList.remove('hidden');
     modalStats.classList.remove('hidden');
     statScarves.textContent = `${p.scarves} / 20`;
     statTime.textContent = `${mins}:${secs}`;
     statRank.textContent = rank;
 
     if (won && p.scarves >= 10) {
-      // Conquista permanente da Insígnia de Desbravador no dispositivo!
       unlockPermanentDbvBadge();
+      if (world.stage === 1) {
+        unlockStage2();
+      }
       sfx.win();
-      modalBadge.textContent = '🏅 INSÍGNIA DESBRAVADOR CONQUISTADA!';
-      modalTitle.textContent = p.scarves === 20 ? 'DESBRAVADOR MESTRE!' : 'TÍTULO CONQUISTADO!';
-      modalDesc.innerHTML = `Parabéns! Você chegou ao acampamento com <strong>${p.scarves} de 20 lenços</strong> em <strong>${formatTimeMMSS(world.elapsed)}</strong> e desbloqueou a <strong>Insígnia de Desbravador</strong>!`;
 
-      // Exibe o campo para colocar o nome e entrar no Top 50 Global
+      if (world.stage === 1) {
+        modalBadge.textContent = '🏅 FASE 2 DESBLOQUEADA: A TRILHA DO BRAVO!';
+        modalTitle.textContent = p.scarves === 20 ? 'DESBRAVADOR MESTRE!' : 'TÍTULO CONQUISTADO!';
+        modalDesc.innerHTML = `Parabéns! Você concluiu a <strong>Fase 1</strong> com <strong>${p.scarves} de 20 lenços</strong> em <strong>${formatTimeMMSS(world.elapsed)}</strong> e liberou <strong>A Trilha do Bravo (Fase 2)</strong>!`;
+        btnNextStage.classList.remove('hidden');
+      } else {
+        modalBadge.textContent = '🔥 CAMPEÃO DA TRILHA DO BRAVO!';
+        modalTitle.textContent = p.scarves === 20 ? 'BRAVO SUPREMO 100%!' : 'TRILHA CONCLUÍDA!';
+        modalDesc.innerHTML = `Incrível! Você superou <strong>A Trilha do Bravo</strong> com <strong>${p.scarves} de 20 lenços</strong> em <strong>${formatTimeMMSS(world.elapsed)}</strong>!`;
+        btnNextStage.classList.add('hidden');
+      }
+
+      recordFormLabel.textContent = `🏅 SALVE SEU TEMPO NO RANKING DA ${world.stageLabel} (TOP 50):`;
       recordForm.classList.remove('hidden');
       playerNameInput.value = getSavedPlayerName();
       btnSaveScore.disabled = false;
       btnSaveScore.textContent = 'SALVAR';
 
-      // Exibe também o Ranking Top 50 atualizado
       rankingPanel.classList.remove('hidden');
       btnToggleRanking.textContent = '▲ OCULTAR RANKING';
-      fetchGlobalRanking();
+      fetchGlobalRanking(world.stage);
     } else {
       sfx.lose();
+      btnNextStage.classList.add('hidden');
       recordForm.classList.add('hidden');
       rankingPanel.classList.remove('hidden');
       btnToggleRanking.textContent = '▲ OCULTAR RANKING';
-      fetchGlobalRanking();
+      fetchGlobalRanking(world.stage);
 
-      modalBadge.textContent = 'FIM DA EXPEDIÇÃO';
+      modalBadge.textContent = `${world.stageLabel} · FIM DA EXPEDIÇÃO`;
       modalTitle.textContent = 'QUASE LÁ!';
       modalDesc.innerHTML = customReason || `Você chegou ao fim com <strong>${p.scarves}/10 lenços</strong> necessários para entrar no ranking. Explore as plataformas altas e tente novamente!`;
     }
 
+    updateStageSelectorUI();
     renderDeviceInsignias();
-    btnStart.textContent = '↻ JOGAR NOVAMENTE';
+    btnStart.textContent = `↻ JOGAR ${world.stageLabel} NOVAMENTE`;
     modalLayer.classList.remove('hidden');
+  }
+
+  function enterBonusRoom() {
+    if (!world.bonusRoom) return;
+    world.inBonus = true;
+    world.pipeCooldown = 0.65;
+    sfx.pipe();
+    const p = world.player;
+    p.x = 110;
+    p.y = 350;
+    p.vx = 0;
+    p.vy = 0;
+    world.camX = 0;
+    world.particles = [];
+    spawnParticles(p.x + p.w / 2, p.y + p.h / 2, '#57e378', 22, 180);
+    spawnFloatingText(p.x - 10, p.y - 16, 'FASE BÔNUS!', '#7dff9b');
+  }
+
+  function exitBonusRoom() {
+    if (!world.bonusRoom) return;
+    world.inBonus = false;
+    world.pipeCooldown = 0.65;
+    sfx.pipe();
+    const p = world.player;
+    p.x = world.bonusRoom.returnX;
+    p.y = world.bonusRoom.returnY;
+    p.vx = 0;
+    p.vy = -220;
+    world.particles = [];
+    spawnParticles(p.x + p.w / 2, p.y + p.h / 2, '#57e378', 22, 180);
+    spawnFloatingText(p.x - 15, p.y - 20, 'DE VOLTA À TRILHA!', '#ffd426');
   }
 
   function update(dt) {
@@ -1875,6 +2328,34 @@
     const p = world.player;
     if (p.invulnTimer > 0) p.invulnTimer -= dt;
     if (world.shakeTimer > 0) world.shakeTimer -= dt;
+    if (world.pipeCooldown > 0) world.pipeCooldown -= dt;
+
+    // Atualiza plataformas móveis e obstáculos que sobem/descem na fase principal
+    if (!world.inBonus) {
+      for (const mp of world.movingPlatforms) {
+        mp.prevY = mp.y;
+        mp.y = mp.baseY + Math.sin(world.elapsed * mp.speed + mp.phase) * mp.ampY;
+
+        // Se o jogador estava apoiado nesta plataforma no frame anterior, acompanha o movimento dela antes da colisão
+        const footY = p.y + p.h;
+        const onThisPlatHoriz = (p.x + p.w - 4 > mp.x) && (p.x + 4 < mp.x + mp.w);
+        if (p.onGround && p.vy >= 0 && onThisPlatHoriz && Math.abs(footY - mp.prevY) <= 10) {
+          p.y = mp.y - p.h;
+        }
+      }
+      for (const h of world.hazards) {
+        if (h.type === 'bobber') {
+          h.y = h.baseY + Math.sin(world.elapsed * h.speed + h.phase) * h.ampY;
+        }
+      }
+    }
+
+    const activeWorldWidth = world.inBonus ? world.bonusRoom.worldWidth : world.worldWidth;
+    const activePlatforms = world.inBonus ? world.bonusRoom.platforms : world.platforms;
+    const activeMovingPlats = world.inBonus ? [] : world.movingPlatforms;
+    const activeCrates = world.inBonus ? [] : world.crates;
+    const activePipes = world.inBonus ? world.bonusRoom.pipes : world.pipes;
+    const activeScarves = world.inBonus ? world.bonusRoom.scarves : world.scarves;
 
     const moveDir = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
     p.ducking = keys.duck && p.onGround;
@@ -1895,14 +2376,18 @@
     p.h = p.ducking ? 54 : 84;
     p.y = prevBottom - p.h;
 
-    const solids = [...world.platforms, ...world.crates];
-    const logs = world.hazards.filter(h => h.type === 'log');
+    const solids = [...activePlatforms, ...activeMovingPlats, ...activeCrates, ...activePipes];
+    const logs = world.inBonus ? [] : world.hazards.filter(h => h.type === 'log');
 
     p.x += p.vx * dt;
-    p.x = Math.max(16, Math.min(WORLD_WIDTH - p.w - 16, p.x));
+    p.x = Math.max(16, Math.min(activeWorldWidth - p.w - 16, p.x));
 
     for (const s of solids) {
       if (aabb(p.x, p.y, p.w, p.h, s.x, s.y, s.w, s.h)) {
+        // Ignora empurrão lateral se os pés do personagem já estiverem no topo de uma plataforma móvel
+        if (typeof s.prevY === 'number' && (p.y + p.h) <= s.y + 12) {
+          continue;
+        }
         if (p.vx > 0) p.x = s.x - p.w;
         else if (p.vx < 0) p.x = s.x + s.w;
         p.vx = 0;
@@ -1942,6 +2427,7 @@
     p.vy = Math.min(p.vy, 920);
     p.y += p.vy * dt;
     p.onGround = false;
+    let standingPlatform = null;
 
     for (const s of solids) {
       if (aabb(p.x, p.y, p.w, p.h, s.x, s.y, s.w, s.h)) {
@@ -1949,9 +2435,24 @@
           p.y = s.y - p.h;
           p.vy = 0;
           p.onGround = true;
+          standingPlatform = s;
         } else if (p.vy < 0) {
           p.y = s.y + s.h;
           p.vy = 0;
+        }
+      }
+    }
+
+    // Verifica se o jogador agachou em cima de um Cano Verde estilo Super Mario!
+    if (standingPlatform && standingPlatform.action && p.ducking && world.pipeCooldown <= 0) {
+      const playerCenterX = p.x + p.w / 2;
+      if (playerCenterX >= standingPlatform.x + 8 && playerCenterX <= standingPlatform.x + standingPlatform.w - 8) {
+        if (standingPlatform.action === 'enter_bonus') {
+          enterBonusRoom();
+          return;
+        } else if (standingPlatform.action === 'exit_bonus') {
+          exitBonusRoom();
+          return;
         }
       }
     }
@@ -1981,6 +2482,9 @@
         endGame(false, 'Você caiu em um precipício da trilha! Tente novamente.');
         return;
       }
+      if (world.inBonus) {
+        world.inBonus = false;
+      }
       p.x = p.spawnX;
       p.y = p.spawnY - 40;
       p.vx = 0;
@@ -2001,27 +2505,29 @@
       p.animTimer += dt * 2.5;
     }
 
-    for (const h of world.hazards) {
-      if (h.type === 'log') continue;
+    if (!world.inBonus) {
+      for (const h of world.hazards) {
+        if (h.type === 'log') continue;
 
-      if (h.type === 'patrol') {
-        h.x += h.vx * dt;
-        if (h.x <= h.minX) {
-          h.x = h.minX;
-          h.vx = Math.abs(h.vx);
-        } else if (h.x + h.w >= h.maxX) {
-          h.x = h.maxX - h.w;
-          h.vx = -Math.abs(h.vx);
+        if (h.type === 'patrol') {
+          h.x += h.vx * dt;
+          if (h.x <= h.minX) {
+            h.x = h.minX;
+            h.vx = Math.abs(h.vx);
+          } else if (h.x + h.w >= h.maxX) {
+            h.x = h.maxX - h.w;
+            h.vx = -Math.abs(h.vx);
+          }
         }
-      }
 
-      if (aabb(p.x + 5, p.y + 4, p.w - 10, p.h - 6, h.x + 3, h.y + 3, h.w - 6, h.h - 4)) {
-        damagePlayer();
-        if (gameState === 'ENDED') return;
+        if (aabb(p.x + 5, p.y + 4, p.w - 10, p.h - 6, h.x + 4, h.y + 4, h.w - 8, h.h - 6)) {
+          damagePlayer();
+          if (gameState === 'ENDED') return;
+        }
       }
     }
 
-    for (const sc of world.scarves) {
+    for (const sc of activeScarves) {
       if (sc.taken) continue;
       const bobY = sc.y + Math.sin(world.elapsed * 4.5 + sc.phase) * 5;
       if (aabb(p.x - 4, p.y - 4, p.w + 8, p.h + 8, sc.x - 16, bobY - 16, 32, 32)) {
@@ -2033,23 +2539,25 @@
       }
     }
 
-    const cp = world.checkpoint;
-    if (!cp.activated && Math.abs(p.x - cp.x) < 48) {
-      cp.activated = true;
-      p.spawnX = cp.x - 10;
-      p.spawnY = cp.y - 90;
-      sfx.checkpoint();
-      spawnParticles(cp.x, cp.y - 30, '#ffae19', 22, 200);
-      spawnFloatingText(cp.x - 45, cp.y - 75, 'CHECKPOINT!', '#7dff9b');
-    }
+    if (!world.inBonus) {
+      const cp = world.checkpoint;
+      if (!cp.activated && Math.abs(p.x - cp.x) < 48) {
+        cp.activated = true;
+        p.spawnX = cp.x - 10;
+        p.spawnY = cp.y - 90;
+        sfx.checkpoint();
+        spawnParticles(cp.x, cp.y - 30, '#ffae19', 22, 200);
+        spawnFloatingText(cp.x - 45, cp.y - 75, 'CHECKPOINT!', '#7dff9b');
+      }
 
-    if (p.x + p.w >= world.goal.x) {
-      endGame(p.scarves >= 10);
-      return;
+      if (p.x + p.w >= world.goal.x) {
+        endGame(p.scarves >= 10);
+        return;
+      }
     }
 
     const lookAhead = p.face * 75;
-    const targetCam = Math.max(0, Math.min(WORLD_WIDTH - W, p.x - W * 0.34 + lookAhead));
+    const targetCam = Math.max(0, Math.min(activeWorldWidth - W, p.x - W * 0.34 + lookAhead));
     world.camX += (targetCam - world.camX) * Math.min(1, dt * 7.5);
 
     for (const pt of world.particles) {
@@ -2068,17 +2576,15 @@
   }
 
   /**
-   * 
-   * 7. RENDERIZAÇÃO PIXEL ART (CENÁRIO PARALLAX, TERRENOS, SPRITES E HUD)
-   * 
+   * 7. RENDERIZAÇÃO PIXEL ART (CENÁRIO PARALLAX, TERRENOS, CANO MARIO E HUD)
    */
   function drawPixelCloud(x, y, scale) {
     ctx.save();
     ctx.translate(Math.round(x), Math.round(y));
     ctx.scale(scale, scale);
-    ctx.fillStyle = '#cbeeff';
+    ctx.fillStyle = world.theme === 'sunset' ? '#ffd9b3' : '#cbeeff';
     ctx.fillRect(-38, 8, 92, 16);
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = world.theme === 'sunset' ? '#fff4e6' : '#ffffff';
     ctx.fillRect(-34, 2, 84, 18);
     ctx.fillRect(-20, -14, 34, 22);
     ctx.fillRect(6, -24, 38, 30);
@@ -2086,11 +2592,55 @@
     ctx.restore();
   }
 
+  function drawBonusBackground(camX) {
+    ctx.fillStyle = '#071224';
+    ctx.fillRect(0, 0, W, H);
+
+    // Parede de tijolos subterrâneos em parallax
+    const tileW = 64;
+    const tileH = 32;
+    const shiftX = (camX * 0.35) % tileW;
+    ctx.fillStyle = '#0d2140';
+    for (let y = 0; y < H; y += tileH) {
+      const rowOffset = (Math.floor(y / tileH) % 2) * (tileW / 2);
+      for (let x = -tileW; x < W + tileW; x += tileW) {
+        const bx = Math.round(x - shiftX + rowOffset);
+        ctx.fillRect(bx + 2, y + 2, tileW - 4, tileH - 4);
+      }
+    }
+
+    // Cristais brilhantes decorativos no fundo da caverna bônus
+    const crystals = [190, 440, 720, 990];
+    for (const cx of crystals) {
+      const sx = Math.round(cx - camX * 0.5);
+      ctx.fillStyle = 'rgba(72, 219, 251, 0.22)';
+      ctx.beginPath();
+      ctx.moveTo(sx, 140);
+      ctx.lineTo(sx + 18, 95);
+      ctx.lineTo(sx + 36, 140);
+      ctx.lineTo(sx + 18, 175);
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+
   function drawBackground(camX) {
+    if (world.inBonus) {
+      drawBonusBackground(camX);
+      return;
+    }
+
     const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-    skyGrad.addColorStop(0, '#067cf5');
-    skyGrad.addColorStop(0.65, '#3eb5ff');
-    skyGrad.addColorStop(1, '#9be4ff');
+    if (world.theme === 'sunset') {
+      skyGrad.addColorStop(0, '#1e3c72');
+      skyGrad.addColorStop(0.45, '#d96b27');
+      skyGrad.addColorStop(0.82, '#ffae34');
+      skyGrad.addColorStop(1, '#ffe599');
+    } else {
+      skyGrad.addColorStop(0, '#067cf5');
+      skyGrad.addColorStop(0.65, '#3eb5ff');
+      skyGrad.addColorStop(1, '#9be4ff');
+    }
     ctx.fillStyle = skyGrad;
     ctx.fillRect(0, 0, W, H);
 
@@ -2106,7 +2656,7 @@
     const mShift = camX * 0.16;
     for (let i = -1; i < 4; i++) {
       const bx = i * mSpan - (mShift % mSpan);
-      ctx.fillStyle = '#4c88c9';
+      ctx.fillStyle = world.theme === 'sunset' ? '#6b3e5e' : '#4c88c9';
       ctx.beginPath();
       ctx.moveTo(bx, 440);
       ctx.lineTo(bx + 210, 185);
@@ -2114,7 +2664,7 @@
       ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = '#6da7e3';
+      ctx.fillStyle = world.theme === 'sunset' ? '#9e5868' : '#6da7e3';
       ctx.beginPath();
       ctx.moveTo(bx + 210, 185);
       ctx.lineTo(bx + 135, 310);
@@ -2123,7 +2673,7 @@
       ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = '#3872b2';
+      ctx.fillStyle = world.theme === 'sunset' ? '#4d2b47' : '#3872b2';
       ctx.beginPath();
       ctx.moveTo(bx + 300, 440);
       ctx.lineTo(bx + 490, 215);
@@ -2136,13 +2686,13 @@
     const bushShift = camX * 0.34;
     for (let i = -1; i < 8; i++) {
       const x = i * bushSpan - (bushShift % bushSpan);
-      ctx.fillStyle = '#1f7a5c';
+      ctx.fillStyle = world.theme === 'sunset' ? '#2d4a3e' : '#1f7a5c';
       ctx.beginPath();
       ctx.arc(x + 50, 355, 62, 0, Math.PI * 2);
       ctx.arc(x + 125, 340, 74, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = '#2fa168';
+      ctx.fillStyle = world.theme === 'sunset' ? '#3f6b53' : '#2fa168';
       ctx.beginPath();
       ctx.arc(x + 50, 348, 50, 0, Math.PI * 2);
       ctx.arc(x + 125, 332, 60, 0, Math.PI * 2);
@@ -2151,6 +2701,8 @@
   }
 
   function drawSceneryProps(camX) {
+    if (world.inBonus) return;
+
     const treePositions = [95, 660, 1520, 2290, 3450, 4410, 5740, 6540, 7200];
     for (const tx of treePositions) {
       const sx = tx - camX;
@@ -2165,13 +2717,21 @@
       ctx.lineWidth = 3;
       ctx.strokeRect(sx - 18, gy - 145, 36, 145);
 
-      const blobs = [
-        [0, -175, 68, '#1a7520'],
-        [-45, -145, 48, '#238f26'],
-        [45, -145, 48, '#238f26'],
-        [0, -195, 52, '#38b52e'],
-        [-25, -165, 42, '#54d437']
-      ];
+      const blobs = world.theme === 'sunset'
+        ? [
+            [0, -175, 68, '#7a3b12'],
+            [-45, -145, 48, '#a65117'],
+            [45, -145, 48, '#a65117'],
+            [0, -195, 52, '#d4741c'],
+            [-25, -165, 42, '#f09824']
+          ]
+        : [
+            [0, -175, 68, '#1a7520'],
+            [-45, -145, 48, '#238f26'],
+            [45, -145, 48, '#238f26'],
+            [0, -195, 52, '#38b52e'],
+            [-25, -165, 42, '#54d437']
+          ];
       for (const [ox, oy, r, col] of blobs) {
         ctx.fillStyle = col;
         ctx.beginPath();
@@ -2204,7 +2764,11 @@
   }
 
   function drawPlatforms(camX) {
-    for (const plat of world.platforms) {
+    const activePlatforms = world.inBonus ? world.bonusRoom.platforms : world.platforms;
+    const activeMovingPlats = world.inBonus ? [] : world.movingPlatforms;
+    const activeCrates = world.inBonus ? [] : world.crates;
+
+    for (const plat of activePlatforms) {
       const sx = Math.round(plat.x - camX);
       if (sx + plat.w < -40 || sx > W + 40) continue;
 
@@ -2221,9 +2785,9 @@
           ctx.fillRect(rx + 6, plat.y + 48, 10, 8);
         }
 
-        ctx.fillStyle = '#4ad636';
+        ctx.fillStyle = world.theme === 'sunset' ? '#63b82e' : '#4ad636';
         ctx.fillRect(sx, plat.y, plat.w, 16);
-        ctx.fillStyle = '#89ff54';
+        ctx.fillStyle = world.theme === 'sunset' ? '#a6e848' : '#89ff54';
         ctx.fillRect(sx, plat.y, plat.w, 5);
 
         ctx.fillStyle = '#2fa122';
@@ -2233,6 +2797,15 @@
         }
 
         ctx.strokeStyle = '#1d2b14';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(sx, plat.y, plat.w, plat.h);
+      } else if (plat.style && plat.style.startsWith('brick')) {
+        // Tijolos azuis clássicos de fase bônus subterrânea
+        ctx.fillStyle = '#235c9c';
+        ctx.fillRect(sx, plat.y, plat.w, plat.h);
+        ctx.fillStyle = '#4895e8';
+        ctx.fillRect(sx + 2, plat.y + 2, plat.w - 4, 6);
+        ctx.strokeStyle = '#09192e';
         ctx.lineWidth = 3;
         ctx.strokeRect(sx, plat.y, plat.w, plat.h);
       } else {
@@ -2250,7 +2823,31 @@
       }
     }
 
-    for (const c of world.crates) {
+    // Plataformas Elevadoras (Sobem e Descobrem)
+    for (const mp of activeMovingPlats) {
+      const sx = Math.round(mp.x - camX);
+      const sy = Math.round(mp.y);
+      if (sx + mp.w < -40 || sx > W + 40) continue;
+
+      // Guia vertical pontilhada sutil
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(sx + mp.w / 2, mp.baseY - mp.ampY);
+      ctx.lineTo(sx + mp.w / 2, mp.baseY + mp.ampY + mp.h);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#d4822a';
+      ctx.fillRect(sx, sy, mp.w, mp.h);
+      ctx.fillStyle = '#ffd426';
+      ctx.fillRect(sx + 3, sy + 3, mp.w - 6, 6);
+      ctx.strokeStyle = '#261305';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(sx, sy, mp.w, mp.h);
+    }
+
+    for (const c of activeCrates) {
       const sx = Math.round(c.x - camX);
       if (sx + c.w < -20 || sx > W + 20) continue;
 
@@ -2271,149 +2868,221 @@
     }
   }
 
+  function drawPipes(camX) {
+    const activePipes = world.inBonus ? world.bonusRoom.pipes : world.pipes;
+    for (const pipe of activePipes) {
+      const sx = Math.round(pipe.x - camX);
+      const sy = Math.round(pipe.y);
+      if (sx + pipe.w < -60 || sx > W + 60) continue;
+
+      const lipH = 18;
+      const bodyX = sx + 5;
+      const bodyW = pipe.w - 10;
+
+      // Corpo do Cano Verde (estilo Super Mario)
+      ctx.fillStyle = '#1fa838';
+      ctx.fillRect(bodyX, sy + lipH, bodyW, pipe.h - lipH);
+      ctx.fillStyle = '#57e36b';
+      ctx.fillRect(bodyX + 6, sy + lipH, 10, pipe.h - lipH);
+      ctx.fillStyle = '#116921';
+      ctx.fillRect(bodyX + bodyW - 12, sy + lipH, 12, pipe.h - lipH);
+      ctx.strokeStyle = '#09260e';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(bodyX, sy + lipH, bodyW, pipe.h - lipH);
+
+      // Borda superior do Cano
+      ctx.fillStyle = '#27c443';
+      ctx.fillRect(sx, sy, pipe.w, lipH);
+      ctx.fillStyle = '#7dff8e';
+      ctx.fillRect(sx + 6, sy + 2, 12, lipH - 4);
+      ctx.fillStyle = '#116921';
+      ctx.fillRect(sx + pipe.w - 14, sy + 2, 14, lipH - 4);
+      ctx.strokeRect(sx, sy, pipe.w, lipH);
+
+      // Indicação visual sutil para agachar
+      if (pipe.label) {
+        ctx.fillStyle = '#7dff9b';
+        ctx.font = '900 11px Rubik, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(pipe.label, sx + pipe.w / 2, sy - 8);
+        ctx.textAlign = 'left';
+      }
+    }
+  }
+
   function drawHazardsAndProps(camX) {
-    for (const h of world.hazards) {
-      const sx = Math.round(h.x - camX);
-      if (sx + h.w < -40 || sx > W + 40) continue;
+    drawPipes(camX);
 
-      if (h.type === 'spikes') {
-        const spikeW = 22;
-        const count = Math.floor(h.w / spikeW);
-        for (let i = 0; i < count; i++) {
-          const bx = sx + i * spikeW;
-          ctx.fillStyle = '#dce8f2';
+    if (!world.inBonus) {
+      for (const h of world.hazards) {
+        const sx = Math.round(h.x - camX);
+        const sy = Math.round(h.y);
+        if (sx + h.w < -40 || sx > W + 40) continue;
+
+        if (h.type === 'spikes') {
+          const spikeW = 22;
+          const count = Math.floor(h.w / spikeW);
+          for (let i = 0; i < count; i++) {
+            const bx = sx + i * spikeW;
+            ctx.fillStyle = '#dce8f2';
+            ctx.beginPath();
+            ctx.moveTo(bx, sy + h.h);
+            ctx.lineTo(bx + spikeW / 2, sy);
+            ctx.lineTo(bx + spikeW, sy + h.h);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#8fa6ba';
+            ctx.beginPath();
+            ctx.moveTo(bx + spikeW / 2, sy);
+            ctx.lineTo(bx + spikeW, sy + h.h);
+            ctx.lineTo(bx + spikeW / 2, sy + h.h);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.strokeStyle = '#1b2631';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+          }
+        } else if (h.type === 'bobber') {
+          // Totem / Obstáculo Móvel Vertical que Sobe e Desce
+          ctx.fillStyle = '#5c6675';
+          ctx.fillRect(sx, sy + 12, h.w, h.h - 12);
+          ctx.fillStyle = '#8693a6';
+          ctx.fillRect(sx + 5, sy + 14, 10, h.h - 16);
+          ctx.strokeStyle = '#1b222c';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(sx, sy + 12, h.w, h.h - 12);
+
+          // Ponta de espinho no topo do totem
+          ctx.fillStyle = '#ffd426';
           ctx.beginPath();
-          ctx.moveTo(bx, h.y + h.h);
-          ctx.lineTo(bx + spikeW / 2, h.y);
-          ctx.lineTo(bx + spikeW, h.y + h.h);
+          ctx.moveTo(sx, sy + 12);
+          ctx.lineTo(sx + h.w / 2, sy - 4);
+          ctx.lineTo(sx + h.w, sy + 12);
           ctx.closePath();
           ctx.fill();
-
-          ctx.fillStyle = '#8fa6ba';
-          ctx.beginPath();
-          ctx.moveTo(bx + spikeW / 2, h.y);
-          ctx.lineTo(bx + spikeW, h.y + h.h);
-          ctx.lineTo(bx + spikeW / 2, h.y + h.h);
-          ctx.closePath();
-          ctx.fill();
-
-          ctx.strokeStyle = '#1b2631';
-          ctx.lineWidth = 2.5;
           ctx.stroke();
-        }
-      } else if (h.type === 'log') {
-        ctx.strokeStyle = '#3b2310';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(sx + 16, 0);
-        ctx.lineTo(sx + 16, h.y);
-        ctx.moveTo(sx + h.w - 16, 0);
-        ctx.lineTo(sx + h.w - 16, h.y);
-        ctx.stroke();
 
-        ctx.fillStyle = '#6e411d';
-        ctx.fillRect(sx, h.y, h.w, h.h);
-        ctx.fillStyle = '#995e2c';
-        ctx.fillRect(sx + 4, h.y + 4, h.w - 8, 8);
-        ctx.strokeStyle = '#211105';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(sx, h.y, h.w, h.h);
+          // Olhos de totem
+          ctx.fillStyle = '#ff4d4d';
+          ctx.fillRect(sx + 10, sy + 28, 7, 7);
+          ctx.fillRect(sx + h.w - 17, sy + 28, 7, 7);
+        } else if (h.type === 'log') {
+          ctx.strokeStyle = '#3b2310';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(sx + 16, 0);
+          ctx.lineTo(sx + 16, sy);
+          ctx.moveTo(sx + h.w - 16, 0);
+          ctx.lineTo(sx + h.w - 16, sy);
+          ctx.stroke();
+
+          ctx.fillStyle = '#6e411d';
+          ctx.fillRect(sx, sy, h.w, h.h);
+          ctx.fillStyle = '#995e2c';
+          ctx.fillRect(sx + 4, sy + 4, h.w - 8, 8);
+          ctx.strokeStyle = '#211105';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(sx, sy, h.w, h.h);
+
+          ctx.fillStyle = '#ffd426';
+          ctx.font = 'bold 12px Rubik, sans-serif';
+          ctx.fillText('▼ AGACHE', sx + h.w / 2 - 30, sy - 8);
+        } else if (h.type === 'patrol') {
+          ctx.fillStyle = '#4b2a63';
+          ctx.beginPath();
+          ctx.arc(sx + h.w / 2, sy + h.h - 4, h.w / 2, Math.PI, 0);
+          ctx.fill();
+          ctx.strokeStyle = '#180c24';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+
+          ctx.fillStyle = '#ff5964';
+          for (let s = 0; s < 3; s++) {
+            const px = sx + 6 + s * 10;
+            ctx.beginPath();
+            ctx.moveTo(px, sy + 12);
+            ctx.lineTo(px + 4, sy - 4);
+            ctx.lineTo(px + 8, sy + 12);
+            ctx.fill();
+          }
+
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(sx + (h.vx > 0 ? 22 : 8), sy + 14, 6, 5);
+        }
+      }
+
+      const cp = world.checkpoint;
+      const cpx = Math.round(cp.x - camX);
+      if (cpx > -80 && cpx < W + 80) {
+        ctx.fillStyle = '#6e3d19';
+        ctx.fillRect(cpx - 18, cp.y - 10, 36, 10);
+        if (cp.activated) {
+          const flicker = Math.sin(world.elapsed * 18) * 4;
+          ctx.fillStyle = '#ff6a00';
+          ctx.beginPath();
+          ctx.moveTo(cpx - 14, cp.y - 10);
+          ctx.lineTo(cpx, cp.y - 42 + flicker);
+          ctx.lineTo(cpx + 14, cp.y - 10);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffe033';
+          ctx.beginPath();
+          ctx.moveTo(cpx - 7, cp.y - 10);
+          ctx.lineTo(cpx, cp.y - 28 - flicker);
+          ctx.lineTo(cpx + 7, cp.y - 10);
+          ctx.fill();
+        }
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 11px Rubik, sans-serif';
+        ctx.fillText(cp.activated ? 'CHECKPOINT ✓' : 'FOGUEIRA', cpx - 32, cp.y - 48);
+      }
+
+      const gx = Math.round(world.goal.x - camX);
+      if (gx > -120 && gx < W + 120) {
+        const gy = world.goal.y;
+        ctx.fillStyle = '#d8e2eb';
+        ctx.fillRect(gx, gy - 170, 8, 170);
+        ctx.strokeStyle = '#1b2631';
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(gx, gy - 170, 8, 170);
 
         ctx.fillStyle = '#ffd426';
-        ctx.font = 'bold 12px Rubik, sans-serif';
-        ctx.fillText('▼ AGACHE', sx + h.w / 2 - 30, h.y - 8);
-      } else if (h.type === 'patrol') {
-        ctx.fillStyle = '#4b2a63';
+        ctx.fillRect(gx + 8, gy - 166, 78, 24);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(gx + 8, gy - 142, 78, 24);
+        ctx.strokeRect(gx + 8, gy - 166, 78, 48);
+
+        ctx.fillStyle = '#de3626';
         ctx.beginPath();
-        ctx.arc(sx + h.w / 2, h.y + h.h - 4, h.w / 2, Math.PI, 0);
+        ctx.moveTo(gx + 34, gy - 154);
+        ctx.lineTo(gx + 58, gy - 154);
+        ctx.lineTo(gx + 46, gy - 130);
+        ctx.closePath();
         ctx.fill();
-        ctx.strokeStyle = '#180c24';
-        ctx.lineWidth = 3;
+
+        ctx.fillStyle = '#1e5aa8';
+        ctx.beginPath();
+        ctx.moveTo(gx + 55, gy);
+        ctx.lineTo(gx + 125, gy - 85);
+        ctx.lineTo(gx + 195, gy);
+        ctx.closePath();
+        ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#ff5964';
-        for (let s = 0; s < 3; s++) {
-          const px = sx + 6 + s * 10;
-          ctx.beginPath();
-          ctx.moveTo(px, h.y + 12);
-          ctx.lineTo(px + 4, h.y - 4);
-          ctx.lineTo(px + 8, h.y + 12);
-          ctx.fill();
-        }
-
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(sx + (h.vx > 0 ? 22 : 8), h.y + 14, 6, 5);
-      }
-    }
-
-    const cp = world.checkpoint;
-    const cpx = Math.round(cp.x - camX);
-    if (cpx > -80 && cpx < W + 80) {
-      ctx.fillStyle = '#6e3d19';
-      ctx.fillRect(cpx - 18, cp.y - 10, 36, 10);
-      if (cp.activated) {
-        const flicker = Math.sin(world.elapsed * 18) * 4;
-        ctx.fillStyle = '#ff6a00';
+        ctx.fillStyle = '#0c274d';
         ctx.beginPath();
-        ctx.moveTo(cpx - 14, cp.y - 10);
-        ctx.lineTo(cpx, cp.y - 42 + flicker);
-        ctx.lineTo(cpx + 14, cp.y - 10);
-        ctx.fill();
-
-        ctx.fillStyle = '#ffe033';
-        ctx.beginPath();
-        ctx.moveTo(cpx - 7, cp.y - 10);
-        ctx.lineTo(cpx, cp.y - 28 - flicker);
-        ctx.lineTo(cpx + 7, cp.y - 10);
+        ctx.moveTo(gx + 105, gy);
+        ctx.lineTo(gx + 125, gy - 45);
+        ctx.lineTo(gx + 145, gy);
+        ctx.closePath();
         ctx.fill();
       }
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 11px Rubik, sans-serif';
-      ctx.fillText(cp.activated ? 'CHECKPOINT ✓' : 'FOGUEIRA', cpx - 32, cp.y - 48);
     }
 
-    const gx = Math.round(world.goal.x - camX);
-    if (gx > -120 && gx < W + 120) {
-      const gy = world.goal.y;
-      ctx.fillStyle = '#d8e2eb';
-      ctx.fillRect(gx, gy - 170, 8, 170);
-      ctx.strokeStyle = '#1b2631';
-      ctx.lineWidth = 2.5;
-      ctx.strokeRect(gx, gy - 170, 8, 170);
-
-      ctx.fillStyle = '#ffd426';
-      ctx.fillRect(gx + 8, gy - 166, 78, 24);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(gx + 8, gy - 142, 78, 24);
-      ctx.strokeRect(gx + 8, gy - 166, 78, 48);
-
-      ctx.fillStyle = '#de3626';
-      ctx.beginPath();
-      ctx.moveTo(gx + 34, gy - 154);
-      ctx.lineTo(gx + 58, gy - 154);
-      ctx.lineTo(gx + 46, gy - 130);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.fillStyle = '#1e5aa8';
-      ctx.beginPath();
-      ctx.moveTo(gx + 55, gy);
-      ctx.lineTo(gx + 125, gy - 85);
-      ctx.lineTo(gx + 195, gy);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#0c274d';
-      ctx.beginPath();
-      ctx.moveTo(gx + 105, gy);
-      ctx.lineTo(gx + 125, gy - 45);
-      ctx.lineTo(gx + 145, gy);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    for (const sc of world.scarves) {
+    const activeScarves = world.inBonus ? world.bonusRoom.scarves : world.scarves;
+    for (const sc of activeScarves) {
       if (sc.taken) continue;
       const sx = Math.round(sc.x - camX);
       if (sx < -40 || sx > W + 40) continue;
@@ -2496,17 +3165,17 @@
     ctx.fillText(`${p.scarves} / 20`, 104, 58);
 
     ctx.fillStyle = 'rgba(10, 28, 54, 0.9)';
-    ctx.strokeStyle = '#92b6db';
+    ctx.strokeStyle = world.inBonus ? '#57e378' : '#92b6db';
     roundRect(ctx, 280, 12, 400, 48, 12, true, true);
     ctx.drawImage(SCARF_SPRITE, 294, 21, 28, 26);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '800 11px Rubik, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('FASE 1', 492, 29);
-    ctx.fillStyle = '#ffd426';
+    ctx.fillText(world.inBonus ? `${world.stageLabel} · SALA BÔNUS` : world.stageLabel, 492, 29);
+    ctx.fillStyle = world.inBonus ? '#7dff9b' : '#ffd426';
     ctx.font = '900 15px Rubik, sans-serif';
-    ctx.fillText('A JORNADA DOS LENÇOS', 492, 49);
+    ctx.fillText(world.inBonus ? 'CAVERNA SECRETA DOS LENÇOS' : world.stageTitle, 492, 49);
     ctx.textAlign = 'left';
 
     const reachedGoal = p.scarves >= 10;
@@ -2527,10 +3196,12 @@
     ctx.fillRect(796, 42, 8, 10);
     ctx.fillRect(791, 52, 18, 5);
 
-    const prog = Math.min(1, p.x / world.goal.x);
+    const prog = world.inBonus
+      ? Math.min(1, p.x / world.bonusRoom.worldWidth)
+      : Math.min(1, p.x / world.goal.x);
     ctx.fillStyle = 'rgba(6, 20, 40, 0.7)';
     roundRect(ctx, 280, 66, 400, 8, 4, true, false);
-    ctx.fillStyle = '#ffd426';
+    ctx.fillStyle = world.inBonus ? '#57e378' : '#ffd426';
     roundRect(ctx, 280, 66, Math.max(8, 400 * prog), 8, 4, true, false);
   }
 
@@ -2585,9 +3256,7 @@
   }
 
   /**
-   * ============================================================================
    * 8. LOOP PRINCIPAL (60 FPS ESTÁVEL)
-   * ============================================================================
    */
   function gameLoop(timestamp) {
     const dt = (timestamp - lastTimestamp) / 1000 || 0;
@@ -2599,10 +3268,11 @@
     requestAnimationFrame(gameLoop);
   }
 
-  // Inicializa o mundo em segundo plano e sincroniza insígnias/ranking com o Firebase
-  resetGame();
+  // Inicializa o mundo em segundo plano, atualiza seletor de fases e sincroniza ranking/insígnias
+  updateStageSelectorUI();
+  resetGame(1);
   renderDeviceInsignias();
-  fetchGlobalRanking();
+  fetchGlobalRanking(1);
   requestAnimationFrame(gameLoop);
 })();
 </script>
