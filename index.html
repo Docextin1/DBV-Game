@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Desbravador — A Jornada dos Lenços</title>
+  <title>Desbravador — A Jornada dos Lenços | Por Abraão Gessé</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@600;800;900&display=swap" rel="stylesheet">
@@ -69,9 +69,7 @@
       touch-action: none;
     }
 
-    /* 
-       AVISO DE ROTAÇÃO 
-       =============== */
+    /* AVISO DE ROTAÇÃO */
     #rotate-overlay {
       position: fixed;
       inset: 0;
@@ -153,6 +151,7 @@
       display: flex;
       gap: clamp(10px, 2vw, 18px);
       pointer-events: auto;
+      align-items: flex-end;
     }
 
     .pad-btn {
@@ -170,6 +169,11 @@
       cursor: pointer;
       touch-action: none;
       transition: transform 0.06s ease, background 0.1s ease;
+    }
+
+    .pad-btn.action-btn {
+      border-color: #ffd426;
+      background: radial-gradient(circle at 30% 30%, rgba(165, 65, 24, 0.88), rgba(65, 18, 8, 0.92));
     }
 
     .pad-btn.active, .pad-btn:active {
@@ -304,36 +308,55 @@
       margin: 0 0 14px;
     }
 
-    /* Seletor discreto de Fases dentro do Modal */
+    .creator-credit-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 5px 13px;
+      border-radius: 999px;
+      background: rgba(255, 212, 38, 0.12);
+      border: 1px solid rgba(255, 212, 38, 0.42);
+      color: #ffe885;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    /* Seletor compacto das 12 Fases dentro do Modal */
     .stage-selector {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 14px;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
     }
 
     .stage-pill {
-      padding: 9px 10px;
-      border-radius: 12px;
+      padding: 7px 4px;
+      border-radius: 10px;
       border: 2px solid #3c6ea8;
-      background: rgba(5, 19, 38, 0.75);
+      background: rgba(5, 19, 38, 0.78);
       color: #b7d7fa;
       font-family: 'Rubik', sans-serif;
       font-weight: 800;
-      font-size: 12px;
+      font-size: 11.5px;
       cursor: pointer;
       transition: all 0.12s ease;
     }
 
+    .stage-pill.boss-pill {
+      border-color: #7ea8d9;
+    }
+
     .stage-pill.active {
       border-color: var(--gold);
-      background: rgba(255, 212, 38, 0.18);
+      background: rgba(255, 212, 38, 0.22);
       color: var(--gold);
-      box-shadow: 0 0 12px rgba(255, 212, 38, 0.25);
+      box-shadow: 0 0 12px rgba(255, 212, 38, 0.28);
     }
 
     .stage-pill.locked {
-      opacity: 0.55;
+      opacity: 0.52;
       cursor: not-allowed;
     }
 
@@ -364,8 +387,7 @@
       color: var(--gold);
     }
 
-    /* 
-       INSÍGNIAS DO DISPOSITIVO (DESBRAVADOR + PÓDIO TOP 3 BRILHANTE) */
+    /* INSÍGNIAS DO DISPOSITIVO */
     .insignias-shelf {
       display: flex;
       flex-wrap: wrap;
@@ -389,7 +411,6 @@
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
     }
 
-    /* Insígnia Permanente de Desbravador */
     .insignia-dbv {
       background: linear-gradient(135deg, #1b4f91 0%, #0d2b52 100%);
       border: 2px solid #ffd426;
@@ -405,7 +426,6 @@
       flex-shrink: 0;
     }
 
-    /* Efeito de brilho deslizante para as insígnias do Top 3 */
     .insignia-shiny::after {
       content: '';
       position: absolute;
@@ -428,7 +448,6 @@
       55%, 100% { left: 135%; }
     }
 
-    /* 1º Lugar: Ouro Super Brilhoso */
     .insignia-gold {
       background: linear-gradient(135deg, #fff3a1 0%, #ffd426 42%, #d48800 100%);
       border: 2px solid #ffffff;
@@ -442,7 +461,6 @@
       to { box-shadow: 0 0 26px rgba(255, 238, 120, 1); }
     }
 
-    /* 2º Lugar: Prata Super Brilhosa */
     .insignia-silver {
       background: linear-gradient(135deg, #ffffff 0%, #d4dfe8 45%, #8c9ba8 100%);
       border: 2px solid #ffffff;
@@ -456,7 +474,6 @@
       to { box-shadow: 0 0 24px rgba(240, 248, 255, 0.98); }
     }
 
-    /* 3º Lugar: Bronze Super Brilhoso */
     .insignia-bronze {
       background: linear-gradient(135deg, #ffd1a6 0%, #d97c38 45%, #8a3e10 100%);
       border: 2px solid #ffe4cc;
@@ -470,8 +487,7 @@
       to { box-shadow: 0 0 24px rgba(255, 175, 110, 0.98); }
     }
 
-    /*
-       FORMULÁRIO DE REGISTRO DE NOME E TABELA RANKING TOP 50  */
+    /* FORMULÁRIO DE REGISTRO DE NOME E TABELA RANKING TOP 50 */
     .record-form {
       background: rgba(5, 19, 38, 0.82);
       border: 1.5px solid var(--gold);
@@ -550,20 +566,20 @@
 
     .ranking-tabs {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 5px;
       margin-bottom: 8px;
     }
 
     .rank-tab-btn {
-      padding: 6px 8px;
-      border-radius: 8px;
+      padding: 5px 4px;
+      border-radius: 7px;
       border: 1.5px solid #3c6ea8;
       background: rgba(16, 44, 82, 0.55);
       color: #b7d7fa;
       font-family: 'Rubik', sans-serif;
       font-weight: 800;
-      font-size: 11px;
+      font-size: 10.5px;
       cursor: pointer;
       text-transform: uppercase;
     }
@@ -740,7 +756,7 @@
 
   <!-- Botões superiores de Áudio, Tela Cheia e Pausa -->
   <div id="top-actions">
-    <button class="mini-btn" id="btnMute" title="Ativar/Desativar Som">🔊</button>
+    <button class="mini-btn" id="btnMute" title="Ativar/Desativar Som e Música">🔊</button>
     <button class="mini-btn" id="btnFullscreen" title="Tela Cheia (F)">⛶</button>
     <button class="mini-btn" id="btnPause" title="Pausar (P)">❚❚</button>
   </div>
@@ -757,6 +773,10 @@
     </div>
 
     <div class="touch-cluster">
+      <button class="pad-btn action-btn hidden" id="btnAction" aria-label="Poder / Espada">
+        <span id="btnActionIcon" style="font-size: 22px; margin: 0;">🔥</span>
+        <span id="btnActionText">FOGO</span>
+      </button>
       <button class="pad-btn" id="btnJump" aria-label="Pular">
         <svg viewBox="0 0 24 24"><path d="M5 15l7-7 7 7H5z"/></svg>
         <span>PULAR</span>
@@ -771,21 +791,18 @@
   <!-- Modal Inicial / Pausa / Fim de Fase / Ranking -->
   <div id="modal-layer">
     <div class="modal-card" id="modalCard">
-      <div class="badge-tag" id="modalBadge">CLUBE DE DESBRAVADORES</div>
+      <div class="badge-tag" id="modalBadge">CLUBE DE DESBRAVADORES · POR ABRAÃO GESSÉ</div>
       <h1 class="modal-title" id="modalTitle">A JORNADA DOS LENÇOS</h1>
 
-      <!-- Seletor de Fases (Fase 2 libera ao vencer a Fase 1) -->
-      <div class="stage-selector" id="stageSelector">
-        <button type="button" class="stage-pill active" id="btnSelectStage1">FASE 1 · JORNADA</button>
-        <button type="button" class="stage-pill locked" id="btnSelectStage2">🔒 FASE 2 · TRILHA DO BRAVO</button>
-      </div>
+      <!-- Seletor compacto das 12 Fases -->
+      <div class="stage-selector" id="stageSelector"></div>
 
       <!-- Prateleira de Insígnias do Dispositivo (Desbravador + Top 3 Ouro/Prata/Bronze) -->
       <div class="insignias-shelf hidden" id="insigniasShelf"></div>
 
       <p class="modal-desc" id="modalDesc">
-      Abraao Gessé o convida a Explorar a trilha da floresta! saltar sobre precipícios, e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho! MARANATA.<br><br>
-        Consiga pelo menos <strong>10 lenços</strong> até o acampamento final para conquistar o título de <strong>DESBRAVADOR</strong>!
+        <strong>Abraão Gessé</strong> convida você para esta grande aventura na trilha! Salte sobre precipícios, desvie dos obstáculos e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho. <strong>MARANATA!</strong><br><br>
+        Conquiste pelo menos <strong>10 lenços</strong> até o acampamento final para receber a insígnia de <strong>DESBRAVADOR</strong>!
       </p>
 
       <div class="stats-grid hidden" id="modalStats">
@@ -821,10 +838,7 @@
 
       <!-- Painel do Ranking Global Top 50 Independente por Fase (Firebase) -->
       <div class="ranking-panel hidden" id="rankingPanel">
-        <div class="ranking-tabs">
-          <button type="button" class="rank-tab-btn active" id="tabRankStage1">FASE 1 · JORNADA</button>
-          <button type="button" class="rank-tab-btn" id="tabRankStage2">FASE 2 · TRILHA DO BRAVO</button>
-        </div>
+        <div class="ranking-tabs" id="rankingTabs"></div>
         <div class="ranking-header">
           <span id="rankingTitleLabel">🏆 RANKING FASE 1 — TOP 50</span>
           <span id="rankingStatus">CARREGANDO...</span>
@@ -834,13 +848,17 @@
 
       <div class="modal-actions-stack">
         <button class="primary-btn" id="btnStart">▶ INICIAR AVENTURA</button>
-        <button class="secondary-btn hidden" id="btnNextStage">▶ IR PARA FASE 2: A TRILHA DO BRAVO</button>
+        <button class="secondary-btn hidden" id="btnNextStage">▶ IR PARA PRÓXIMA FASE</button>
         <button class="secondary-btn" id="btnToggleRanking">🏆 VER RANKING TOP 50</button>
       </div>
 
       <div class="controls-legend" id="controlsLegend">
-        <strong>PC:</strong> Setas ou WASD para mover · Espaço / ↑ para pular · ↓ para agachar<br>
+        <strong>PC:</strong> Setas ou WASD para mover · Espaço / ↑ pular · ↓ agachar · X atacar<br>
         <strong>Celular:</strong> Use os botões na tela (suporta toque simultâneo!)
+      </div>
+
+      <div class="creator-credit-pill" id="creatorCredits">
+        ✨ CRIAÇÃO E PRODUÇÃO: ABRAÃO GESSÉ · MARANATA
       </div>
     </div>
   </div>
@@ -851,13 +869,43 @@
   'use strict';
 
   /**
-   * 0. INTEGRAÇÃO COM FIREBASE REALTIME DATABASE + RANKING POR FASE + INSÍGNIAS
+   * 0. METADADOS DAS 12 FASES + INTEGRAÇÃO FIREBASE + INSÍGNIAS
    */
+  const TOTAL_STAGES = 12;
+  const STAGE_META = [
+    null,
+    { num: 1, title: 'A JORNADA DOS LENÇOS', short: '1', theme: 'forest', boss: null,
+      desc: '<strong>Abraão Gessé</strong> convida você para esta grande aventura na trilha! Salte sobre precipícios, desvie dos obstáculos e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho. <strong>MARANATA!</strong><br><br>Conquiste pelo menos <strong>10 lenços</strong> até o acampamento final para receber a insígnia de <strong>DESBRAVADOR</strong>!' },
+    { num: 2, title: 'A TRILHA DO BRAVO', short: '2', theme: 'sunset', boss: null,
+      desc: 'Encare plataformas móveis que sobem e descem, totens de pedra e inimigos velozes! Procure o <strong>Cano Verde secreto</strong> e agache sobre ele para entrar na <strong>Fase Bônus</strong>!' },
+    { num: 3, title: 'A PONTE DAS ÁGUAS', short: '3', theme: 'forest', boss: null,
+      desc: 'Trilha com ilhas suspensas, <strong>molas de impulso</strong> e os primeiros <strong>Blocos "?"</strong>! Bata por baixo dos blocos para liberar <strong>Fogo</strong>, <strong>Escudo (4s)</strong> e a <strong>Espada</strong>!' },
+    { num: 4, title: 'ARENA DO GUARDIÃO', short: '4👑', theme: 'sunset', boss: 'guardiao',
+      desc: '👑 <strong>1º CHEFÃO — GUARDIÃO DA FLORESTA:</strong> Atravesse as pontes pênseis e enfrente o colosso da floresta! Pule na cabeça dele ou use <strong>Fogo / Espada</strong> e cuidado com suas ondas de choque!' },
+    { num: 5, title: 'TORRES DE FOGO', short: '5', theme: 'canyon', boss: null,
+      desc: 'Cuidado com as <strong>Barras de Fogo Giratórias</strong> nos blocos pivôs e com os <strong>Espinhosos (Spinies)</strong> — não pule em cima dos espinhos deles! Use molas e encontre o Cano Secreto.' },
+    { num: 6, title: 'VENTOS DA MONTANHA', short: '6', theme: 'alpine', boss: null,
+      desc: 'Escale picos nevados usando <strong>molas de alto alcance</strong>, elevadores verticais, pontes que desabam e reaparecem e rajadas de vento nas alturas!' },
+    { num: 7, title: 'VALE NOTURNO', short: '7', theme: 'night', boss: null,
+      desc: 'Sob o céu estrelado, atravesse ruínas com <strong>barras de fogo duplas</strong>, aves rasantes e guardas saltadores. Descubra o <strong>Cano Verde secreto</strong> nas profundezas!' },
+    { num: 8, title: 'DESAFIO LUIZ FELIPE', short: '8👑', theme: 'canyon', boss: 'luiz_felipe',
+      desc: '👑 <strong>2º CHEFÃO — LUIZ FELIPE:</strong> Uma fase de precisão extrema com elevadores, molas e barras de fogo antes do duelo aéreo e terrestre contra o comandante <strong>LUIZ FELIPE</strong>!' },
+    { num: 9, title: 'SERRA DOS VENTOS', short: '9', theme: 'alpine', boss: null,
+      desc: 'Trilha montanhosa exclusiva com escadarias de gelo, <strong>pontes que caem e voltam</strong>, espinhosos patrulhando platôs e um Cano Bônus escondido no topo!' },
+    { num: 10, title: 'RUÍNAS SOLARES', short: '10', theme: 'sunset', boss: null,
+      desc: 'Um templo antigo repleto de <strong>barras de fogo giratórias</strong>, molas combinadas em sequência e plataformas móveis sobre desfiladeiros profundos!' },
+    { num: 11, title: 'CIDADELA ESTELAR', short: '11', theme: 'night', boss: null,
+      desc: 'A penúltima prova antes do criador! Combine <strong>Espada</strong>, <strong>Fogo</strong> e <strong>Molas</strong> para vencer os guardas noturnos e achar a caverna secreta.' },
+    { num: 12, title: 'TRONO DE ABRAÃO GESSÉ', short: '12👑', theme: 'storm', boss: 'abraao_gesse',
+      desc: '👑 <strong>CHEFÃO FINAL — ABRAÃO GESSÉ:</strong> O desafio supremo criado por <strong>Abraão Gessé</strong>! Supere todos os obstáculos da fortaleza e vença o Mestre <strong>ABRAÃO GESSÉ</strong> em sua arena real!' }
+  ];
+
   const FIREBASE_DB_URL = 'https://dbv-game-default-rtdb.firebaseio.com';
   const STORAGE_KEYS = {
     DEVICE_ID: 'dbv_game_device_id_v1',
     HAS_DBV_BADGE: 'dbv_game_has_desbravador_badge_v1',
-    STAGE2_UNLOCKED: 'dbv_game_stage2_unlocked_v1',
+    UNLOCKED_STAGE: 'dbv_game_unlocked_stage_v2',
+    LEGACY_STAGE2: 'dbv_game_stage2_unlocked_v1',
     SAVED_NAME: 'dbv_game_player_name_v1'
   };
 
@@ -876,7 +924,9 @@
   }
 
   const DEVICE_ID = getOrCreateDeviceId();
-  const cachedTop50ByStage = { 1: [], 2: [] };
+  const cachedTop50ByStage = {};
+  for (let i = 1; i <= TOTAL_STAGES; i++) cachedTop50ByStage[i] = [];
+
   let activeRankingStage = 1;
   let selectedStage = 1;
   let scoreAlreadySavedThisRun = false;
@@ -895,17 +945,28 @@
     } catch (_) {}
   }
 
-  function isStage2Unlocked() {
+  function getMaxUnlockedStage() {
     try {
-      return localStorage.getItem(STORAGE_KEYS.STAGE2_UNLOCKED) === 'true' || hasPermanentDbvBadge();
+      let maxSt = Number(localStorage.getItem(STORAGE_KEYS.UNLOCKED_STAGE)) || 1;
+      if (localStorage.getItem(STORAGE_KEYS.LEGACY_STAGE2) === 'true' || hasPermanentDbvBadge()) {
+        maxSt = Math.max(maxSt, 2);
+      }
+      return Math.min(TOTAL_STAGES, Math.max(1, maxSt));
     } catch (_) {
-      return false;
+      return 1;
     }
   }
 
-  function unlockStage2() {
+  function unlockUpToStage(stageNum) {
+    const clamped = Math.min(TOTAL_STAGES, Math.max(1, stageNum));
     try {
-      localStorage.setItem(STORAGE_KEYS.STAGE2_UNLOCKED, 'true');
+      const current = getMaxUnlockedStage();
+      if (clamped > current) {
+        localStorage.setItem(STORAGE_KEYS.UNLOCKED_STAGE, String(clamped));
+      }
+      if (clamped >= 2) {
+        localStorage.setItem(STORAGE_KEYS.LEGACY_STAGE2, 'true');
+      }
     } catch (_) {}
     updateStageSelectorUI();
   }
@@ -941,7 +1002,7 @@
   }
 
   function getStageNodeName(stageNum) {
-    return stageNum === 2 ? 'fase_2' : 'fase_1';
+    return `fase_${stageNum}`;
   }
 
   function parseFirebaseRankingObject(data) {
@@ -949,6 +1010,7 @@
     if (data && typeof data === 'object') {
       for (const [key, val] of Object.entries(data)) {
         if (!val || typeof val !== 'object') continue;
+        if (!('time' in val) && !('scarves' in val)) continue;
         const scarves = Number(val.scarves) || 0;
         const time = Number(val.time);
         if (scarves >= 10 && Number.isFinite(time) && time > 0) {
@@ -971,20 +1033,18 @@
     return entries.slice(0, 50);
   }
 
-  // Busca todos os registros da fase selecionada no Firebase
   async function fetchGlobalRanking(stageNum = activeRankingStage) {
     activeRankingStage = stageNum;
     const statusEl = document.getElementById('rankingStatus');
     const titleEl = document.getElementById('rankingTitleLabel');
-    const tab1 = document.getElementById('tabRankStage1');
-    const tab2 = document.getElementById('tabRankStage2');
+    const meta = STAGE_META[stageNum] || STAGE_META[1];
 
-    if (tab1) tab1.classList.toggle('active', stageNum === 1);
-    if (tab2) tab2.classList.toggle('active', stageNum === 2);
+    document.querySelectorAll('.rank-tab-btn').forEach(btn => {
+      btn.classList.toggle('active', Number(btn.dataset.stage) === stageNum);
+    });
+
     if (titleEl) {
-      titleEl.textContent = stageNum === 2
-        ? '🏆 RANKING FASE 2 · BRAVO — TOP 50'
-        : '🏆 RANKING FASE 1 · JORNADA — TOP 50';
+      titleEl.textContent = `🏆 FASE ${stageNum} · ${meta.title} — TOP 50`;
     }
     if (statusEl) statusEl.textContent = 'ATUALIZANDO...';
 
@@ -994,16 +1054,33 @@
       const res = await fetch(`${FIREBASE_DB_URL}/ranking/${node}.json`, { cache: 'no-store' });
       if (!res.ok) throw new Error('Falha ao consultar ranking');
       const data = await res.json();
-
       let parsed = parseFirebaseRankingObject(data);
 
-      // Compatibilidade retroativa: se Fase 1 ainda estiver vazia no nó novo, lê registros legados de /ranking.json
-      if (stageNum === 1 && parsed.length === 0) {
-        const legacyRes = await fetch(`${FIREBASE_DB_URL}/ranking.json`, { cache: 'no-store' });
-        if (legacyRes.ok) {
-          const legacyData = await legacyRes.json();
-          parsed = parseFirebaseRankingObject(legacyData);
-        }
+      if (stageNum === 1) {
+        try {
+          const legacyRes = await fetch(`${FIREBASE_DB_URL}/ranking.json`, { cache: 'no-store' });
+          if (legacyRes.ok) {
+            const legacyData = await legacyRes.json();
+            const legacyEntries = parseFirebaseRankingObject(legacyData);
+            const byDeviceOrName = new Map();
+
+            for (const item of [...legacyEntries, ...parsed]) {
+              const uid = item.deviceId || `name_${item.name.toLowerCase()}`;
+              const prev = byDeviceOrName.get(uid);
+              if (!prev || item.time < prev.time || (Math.abs(item.time - prev.time) <= 0.001 && item.scarves > prev.scarves)) {
+                byDeviceOrName.set(uid, item);
+              }
+            }
+
+            parsed = Array.from(byDeviceOrName.values());
+            parsed.sort((a, b) => {
+              if (Math.abs(a.time - b.time) > 0.001) return a.time - b.time;
+              if (b.scarves !== a.scarves) return b.scarves - a.scarves;
+              return a.createdAt - b.createdAt;
+            });
+            parsed = parsed.slice(0, 50);
+          }
+        } catch (_) {}
       }
 
       cachedTop50ByStage[stageNum] = parsed;
@@ -1019,7 +1096,6 @@
     }
   }
 
-  // Envia ou atualiza o recorde do dispositivo no Firebase para a fase específica
   async function submitScoreToFirebase(stageNum, playerName, timeSeconds, scarvesCount) {
     if (scarvesCount < 10) return false;
     const cleanName = playerName.trim().slice(0, 22) || 'Desbravador';
@@ -1132,9 +1208,11 @@
       `);
     }
 
-    const r1 = (cachedTop50ByStage[1] || []).findIndex(item => item.deviceId === DEVICE_ID);
-    const r2 = (cachedTop50ByStage[2] || []).findIndex(item => item.deviceId === DEVICE_ID);
-    const bestIndices = [r1, r2].filter(idx => idx !== -1);
+    const bestIndices = [];
+    for (let s = 1; s <= TOTAL_STAGES; s++) {
+      const idx = (cachedTop50ByStage[s] || []).findIndex(item => item.deviceId === DEVICE_ID);
+      if (idx !== -1) bestIndices.push(idx);
+    }
     const myBestRankIndex = bestIndices.length > 0 ? Math.min(...bestIndices) : -1;
 
     if (myBestRankIndex === 0) {
@@ -1167,12 +1245,16 @@
   }
 
   /**
-   * 1. MOTOR DE ÁUDIO RETRÔ (WEB AUDIO API)
+   * 1. MOTOR DE ÁUDIO RETRÔ + TRILHA SONORA CHIPTUNE 16-BITS DINÂMICA (WEB AUDIO API)
    */
   class SoundEngine {
     constructor() {
       this.ctx = null;
       this.muted = false;
+      this.bgmTimer = null;
+      this.bgmStep = 0;
+      this.bgmMode = 'adventure'; // 'adventure' | 'boss'
+      this.bgmRunning = false;
     }
 
     init() {
@@ -1187,7 +1269,100 @@
 
     toggleMute() {
       this.muted = !this.muted;
+      if (this.muted) {
+        this.stopMusic();
+      } else if (gameState === 'PLAYING') {
+        this.startMusic(this.bgmMode);
+      }
       return this.muted;
+    }
+
+    setMusicMode(mode) {
+      if (this.bgmMode === mode && this.bgmRunning) return;
+      this.bgmMode = mode;
+      this.bgmStep = 0;
+      if (this.bgmRunning && !this.muted) {
+        this.stopMusic();
+        this.startMusic(mode);
+      }
+    }
+
+    startMusic(mode = this.bgmMode) {
+      this.init();
+      this.bgmMode = mode;
+      if (this.muted || !this.ctx) return;
+      if (this.bgmRunning) return;
+      this.bgmRunning = true;
+
+      // Melodia alegre estilo Super Mario World / Tiny Toon (Aventura)
+      const advLead = [
+        659.25, 0, 659.25, 0, 523.25, 659.25, 783.99, 0,
+        392.00, 0, 523.25, 0, 392.00, 329.63, 440.00, 493.88,
+        466.16, 440.00, 392.00, 659.25, 783.99, 880.00, 698.46, 783.99,
+        659.25, 523.25, 587.33, 493.88, 523.25, 0, 392.00, 0
+      ];
+      const advBass = [
+        130.81, 196.00, 130.81, 196.00, 130.81, 196.00, 130.81, 196.00,
+        98.00,  146.83, 98.00,  146.83, 110.00, 164.81, 123.47, 185.00,
+        174.61, 220.00, 174.61, 220.00, 130.81, 196.00, 174.61, 196.00,
+        130.81, 196.00, 98.00,  146.83, 130.81, 196.00, 130.81, 0
+      ];
+
+      // Melodia tensa e rápida estilo Bowser / Eggman Boss Battle
+      const bossLead = [
+        220.00, 233.08, 220.00, 261.63, 220.00, 293.66, 277.18, 233.08,
+        220.00, 233.08, 220.00, 329.63, 311.13, 293.66, 261.63, 233.08,
+        196.00, 207.65, 196.00, 246.94, 196.00, 277.18, 261.63, 207.65,
+        220.00, 261.63, 329.63, 440.00, 415.30, 349.23, 329.63, 277.18
+      ];
+      const bossBass = [
+        110.00, 110.00, 116.54, 116.54, 110.00, 110.00, 138.59, 116.54,
+        110.00, 110.00, 116.54, 116.54, 146.83, 138.59, 130.81, 116.54,
+        98.00,  98.00,  103.83, 103.83, 98.00,  98.00,  130.81, 103.83,
+        110.00, 130.81, 164.81, 220.00, 207.65, 174.61, 164.81, 138.59
+      ];
+
+      const stepMs = this.bgmMode === 'boss' ? 125 : 165;
+
+      const tick = () => {
+        if (!this.bgmRunning || this.muted || !this.ctx || gameState !== 'PLAYING') return;
+        const leadArr = this.bgmMode === 'boss' ? bossLead : advLead;
+        const bassArr = this.bgmMode === 'boss' ? bossBass : advBass;
+        const idx = this.bgmStep % leadArr.length;
+        const leadFreq = leadArr[idx];
+        const bassFreq = bassArr[idx];
+
+        if (leadFreq > 0) {
+          this.playTone(
+            leadFreq,
+            leadFreq * 0.995,
+            (stepMs / 1000) * 0.85,
+            this.bgmMode === 'boss' ? 'sawtooth' : 'square',
+            this.bgmMode === 'boss' ? 0.032 : 0.028
+          );
+        }
+        if (bassFreq > 0) {
+          this.playTone(
+            bassFreq,
+            bassFreq,
+            (stepMs / 1000) * 0.9,
+            'triangle',
+            0.042
+          );
+        }
+        this.bgmStep++;
+      };
+
+      tick();
+      this.bgmTimer = setInterval(tick, stepMs);
+    }
+
+    stopMusic() {
+      this.bgmRunning = false;
+      if (this.bgmTimer) {
+        clearInterval(this.bgmTimer);
+        this.bgmTimer = null;
+      }
     }
 
     playTone(freq, endFreq, duration, type = 'square', gainVal = 0.12, delay = 0) {
@@ -1212,9 +1387,35 @@
       this.playTone(210, 560, 0.16, 'square', 0.11);
     }
 
+    spring() {
+      this.playTone(260, 920, 0.24, 'triangle', 0.16);
+    }
+
     scarf() {
       this.playTone(880, 1175, 0.08, 'triangle', 0.16, 0);
       this.playTone(1318, 1760, 0.16, 'triangle', 0.16, 0.07);
+    }
+
+    blockHit() {
+      this.playTone(300, 620, 0.1, 'square', 0.13);
+    }
+
+    powerup() {
+      [440, 554, 659, 880, 1108].forEach((f, i) => {
+        this.playTone(f, f * 1.04, 0.1, 'triangle', 0.14, i * 0.055);
+      });
+    }
+
+    fireball() {
+      this.playTone(680, 190, 0.14, 'sawtooth', 0.12);
+    }
+
+    swordSlash() {
+      this.playTone(950, 260, 0.11, 'triangle', 0.15);
+    }
+
+    bossHit() {
+      this.playTone(180, 520, 0.18, 'square', 0.16);
     }
 
     pipe() {
@@ -1238,6 +1439,7 @@
     }
 
     win() {
+      this.stopMusic();
       const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
       const times = [0, 0.11, 0.22, 0.34, 0.50, 0.64];
       notes.forEach((n, i) => {
@@ -1246,6 +1448,7 @@
     }
 
     lose() {
+      this.stopMusic();
       const notes = [392, 349.23, 329.63, 261.63];
       notes.forEach((n, i) => {
         this.playTone(n, n * 0.92, 0.22, 'sawtooth', 0.11, i * 0.18);
@@ -1256,7 +1459,7 @@
   const sfx = new SoundEngine();
 
   /**
-   * 2. GERADOR DE SPRITES PIXEL ART MATRICIAL
+   * 2. GERADOR DE SPRITES PIXEL ART MATRICIAL (HERÓI + 3 CHEFÕES ANIMADOS)
    */
   const PALETTE = {
     'K': '#141013',
@@ -1268,12 +1471,21 @@
     'W': '#f5f6f2',
     'w': '#c5ced9',
     'R': '#de3626',
+    'r': '#8f1911',
     'Y': '#ffd426',
     'y': '#cf8300',
     'P': '#32402b',
     'p': '#1e2619',
     'B': '#61351a',
-    'b': '#381c0c'
+    'b': '#381c0c',
+    'G': '#249e44',
+    'g': '#125924',
+    'C': '#1e78ff',
+    'c': '#0d3b8c',
+    'V': '#7d2ae8',
+    'v': '#45118a',
+    'M': '#788696',
+    'm': '#414c59'
   };
 
   function bakeSprite(rows, scale = 3) {
@@ -1370,8 +1582,7 @@
     ...HEAD_BASE,
     "......KYYYYYYYYYKK......",
     ".....KWWWWyYYYyyWWK.....",
-    "....KWRRWWWKYYKWWWWK....",
-    "....KSSRRWWKYYKWWSSK....",
+    "....KWRRWWKYYKWWSSK.....",
     ".....KsSWWWKyyKWWsK.....",
     "......KKWWWWWWWWKK......",
     ".......KPPPPPPPPK.......",
@@ -1489,6 +1700,121 @@
     ".....K....."
   ], 2);
 
+  // SPRITE 1º CHEFÃO: GUARDIÃO DA FLORESTA (FASE 4) — 2 FRAMES
+  const BOSS_GUARDIAN_1 = bakeSprite([
+    "......KKKKKKKKKKKK......",
+    "....KKBBBBBBBBBBBBKK....",
+    "...KBBBBhhhhhhhhBBBBK...",
+    "..KBBhhSSSSSSSSSShhBBK..",
+    ".KBBhSSRRSSSSSSRRSShBBK.",
+    ".KBBhSSSSSSSSSSSSSShBBK.",
+    "KBBBhSSKKKKKKKKKKSShBBBK",
+    "KBBBBhSKWWWWWWWWKSBBBBBK",
+    "KBBBBBBKKKKKKKKKKBBBBBBK",
+    "KBBBBBBBBYYYYYYBBBBBBBBK",
+    ".KBBBBBBBBRRRRBBBBBBBBK.",
+    ".KBBBBBBBBBRRBBBBBBBBBK.",
+    "..KKBBBBBBBBBBBBBBBBKK..",
+    "...KbbbbK......KbbbbK...",
+    "..KbbbbbK......KbbbbbK..",
+    "..KKKKKK........KKKKKK.."
+  ], 5);
+
+  const BOSS_GUARDIAN_2 = bakeSprite([
+    "........................",
+    "......KKKKKKKKKKKK......",
+    "....KKBBBBBBBBBBBBKK....",
+    "...KBBBBhhhhhhhhBBBBK...",
+    "..KBBhhSSSSSSSSSShhBBK..",
+    ".KBBhSSYYSSSSSSYYSShBBK.",
+    ".KBBhSSSSSSSSSSSSSShBBK.",
+    "KBBBhSSKKKKKKKKKKSShBBBK",
+    "KBBBBhSKWWWWWWWWKSBBBBBK",
+    "KBBBBBBKKKKKKKKKKBBBBBBK",
+    "KBBBBBBBBYYYYYYBBBBBBBBK",
+    ".KBBBBBBBBRRRRBBBBBBBBK.",
+    ".KBBBBBBBBBRRBBBBBBBBBK.",
+    "..KKBBBBBBBBBBBBBBBBKK..",
+    "...KbbbbK......KbbbbK...",
+    "...KKKKKK......KKKKKK..."
+  ], 5);
+
+  // SPRITE 2º CHEFÃO: LUIZ FELIPE (FASE 8) — 2 FRAMES
+  const BOSS_LUIZ_1 = bakeSprite([
+    "......KKKKKKKKKKKK......",
+    ".....KCCCCCCCCCCCCK.....",
+    "....KCCYYYYYYYYYYCCK....",
+    "...KCCcSSSSSSSSSScCCK...",
+    "...KCcSSRRSSSSRRSScCK...",
+    "...KCcSSSSSSSSSSSScCK...",
+    "....KKSSSSSSSSSSSSKK....",
+    "..KKKKCCCCCCCCCCCCKKKK..",
+    ".KCCCCKCCYYYYYYCCKCCCCK.",
+    ".KCCCCKCCCRRRRCCCKCCCCK.",
+    ".KSSCCKCCCCRCCCCCKCCSSK.",
+    "..KK..KccccKKccccK..KK..",
+    "......KcccK..KcccK......",
+    ".....KMMMMK..KMMMMK.....",
+    ".....KKKKK....KKKKK....."
+  ], 5);
+
+  const BOSS_LUIZ_2 = bakeSprite([
+    "........................",
+    "......KKKKKKKKKKKK......",
+    ".....KCCCCCCCCCCCCK.....",
+    "....KCCYYYYYYYYYYCCK....",
+    "...KCCcSSSSSSSSSScCCK...",
+    "...KCcSSYYSSSSYYSScCK...",
+    "...KCcSSSSSSSSSSSScCK...",
+    "....KKSSSSSSSSSSSSKK....",
+    "..KKKKCCCCCCCCCCCCKKKK..",
+    ".KCCCCKCCYYYYYYCCKCCCCK.",
+    ".KCCCCKCCCRRRRCCCKCCCCK.",
+    ".KSSCCKCCCCRCCCCCKCCSSK.",
+    "..KK..KccccKKccccK..KK..",
+    "......KcccK..KcccK......",
+    "......KKKKK..KKKKK......"
+  ], 5);
+
+  // SPRITE CHEFÃO FINAL: ABRAÃO GESSÉ (FASE 12) — 2 FRAMES (COROA DOURADA + MANTO IMPERIAL)
+  const BOSS_ABRAAO_1 = bakeSprite([
+    ".....KK..KK..KK..KK.....",
+    ".....KYYYYYYYYYYYYK.....",
+    ".....KYRYYYYYYYYRYK.....",
+    "....KVVVVVVVVVVVVVVK....",
+    "...KVvSSSSSSSSSSSSvVK...",
+    "...KVvSSYYSSSSYYSSvVK...",
+    "...KVvSSSSSSSSSSSSvVK...",
+    "..KKVVSSSSSSSSSSSSVVKK..",
+    ".KVVVVVYYYYYYYYYYVVVVVK.",
+    "KVVVVVVVRRRRRRRRVVVVVVVK",
+    "KVVMMVVVVRRRRRRVVVVMMVVK",
+    "KVVMMVVVVVRRRRVVVVVMMVVK",
+    ".KvvvvKvvvVRRVvvvKvvvvK.",
+    "..KKKK.KvvK..KvvK.KKKK..",
+    "......KYYYK..KYYYK......",
+    "......KKKKK..KKKKK......"
+  ], 5);
+
+  const BOSS_ABRAAO_2 = bakeSprite([
+    "........................",
+    ".....KK..KK..KK..KK.....",
+    ".....KYYYYYYYYYYYYK.....",
+    ".....KYRYYYYYYYYRYK.....",
+    "....KVVVVVVVVVVVVVVK....",
+    "...KVvSSSSSSSSSSSSvVK...",
+    "...KVvSSRRSSSSRRSSvVK...",
+    "...KVvSSSSSSSSSSSSvVK...",
+    "..KKVVSSSSSSSSSSSSVVKK..",
+    ".KVVVVVYYYYYYYYYYVVVVVK.",
+    "KVVVVVVVRRRRRRRRVVVVVVVK",
+    "KVVMMVVVVRRRRRRVVVVMMVVK",
+    "KVVMMVVVVVRRRRVVVVVMMVVK",
+    ".KvvvvKvvvVRRVvvvKvvvvK.",
+    "..KKKK.KvvK..KvvK.KKKK..",
+    ".......KKKK..KKKK......."
+  ], 5);
+
   /**
    * 3. CONFIGURAÇÃO DO CANVAS E ESTADO DO JOGO
    */
@@ -1515,16 +1841,53 @@
   const gameWrapper = document.getElementById('game-wrapper');
 
   const stageSelector = document.getElementById('stageSelector');
-  const btnSelectStage1 = document.getElementById('btnSelectStage1');
-  const btnSelectStage2 = document.getElementById('btnSelectStage2');
+  const rankingTabs = document.getElementById('rankingTabs');
+
+  const btnAction = document.getElementById('btnAction');
+  const btnActionIcon = document.getElementById('btnActionIcon');
+  const btnActionText = document.getElementById('btnActionText');
 
   const recordForm = document.getElementById('recordForm');
   const recordFormLabel = document.getElementById('recordFormLabel');
   const playerNameInput = document.getElementById('playerNameInput');
   const btnSaveScore = document.getElementById('btnSaveScore');
   const rankingPanel = document.getElementById('rankingPanel');
-  const tabRankStage1 = document.getElementById('tabRankStage1');
-  const tabRankStage2 = document.getElementById('tabRankStage2');
+
+  // Constrói dinamicamente os botões das 12 fases no Seletor e nas Abas do Ranking
+  function buildStageButtons() {
+    stageSelector.innerHTML = '';
+    rankingTabs.innerHTML = '';
+    for (let s = 1; s <= TOTAL_STAGES; s++) {
+      const meta = STAGE_META[s];
+      const pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'stage-pill' + (meta.boss ? ' boss-pill' : '');
+      pill.dataset.stage = String(s);
+      pill.addEventListener('click', () => {
+        sfx.init();
+        const maxU = getMaxUnlockedStage();
+        if (s > maxU) {
+          modalDesc.innerHTML = `🔒 Conclua a <strong>Fase ${s - 1}</strong> com pelo menos <strong>10 lenços</strong> para desbloquear a <strong>Fase ${s} · ${meta.title}</strong>!`;
+          return;
+        }
+        applyMenuStageInfo(s);
+      });
+      stageSelector.appendChild(pill);
+
+      const tab = document.createElement('button');
+      tab.type = 'button';
+      tab.className = 'rank-tab-btn' + (s === 1 ? ' active' : '');
+      tab.dataset.stage = String(s);
+      tab.textContent = `F${meta.short}`;
+      tab.addEventListener('click', () => {
+        sfx.init();
+        fetchGlobalRanking(s);
+      });
+      rankingTabs.appendChild(tab);
+    }
+  }
+
+  buildStageButtons();
 
   // Estado de Entrada (Teclado + Multi-Touch)
   const keys = {
@@ -1539,7 +1902,7 @@
   let world = null;
 
   /**
-   * 3.1 TELA CHEIA AUTOMÁTICA NO PRIMEIRO TOQUE / CLIQUE
+   * 3.1 TELA CHEIA AUTOMÁTICA + PAUSA AUTOMÁTICA AO GIRAR O CELULAR PARA RETRATO
    */
   let autoFullscreenAttempted = false;
 
@@ -1565,51 +1928,85 @@
   window.addEventListener('pointerdown', handleFirstInteractionFullscreen, { passive: true });
   window.addEventListener('keydown', handleFirstInteractionFullscreen, { passive: true });
 
+  function checkPortraitAutoPause() {
+    if (window.innerWidth <= 900 && window.innerHeight > window.innerWidth) {
+      keys.left = false;
+      keys.right = false;
+      keys.duck = false;
+      keys.jumpHeld = false;
+      if (gameState === 'PLAYING') {
+        togglePause();
+      }
+    }
+  }
+
+  window.addEventListener('resize', checkPortraitAutoPause);
+  window.addEventListener('orientationchange', checkPortraitAutoPause);
+
   /**
    * 3.2 CONTROLE DE SELEÇÃO DE FASE NO MENU
    */
   function updateStageSelectorUI() {
-    const unlocked = isStage2Unlocked();
-    btnSelectStage1.classList.toggle('active', selectedStage === 1);
-    btnSelectStage2.classList.toggle('active', selectedStage === 2);
-    btnSelectStage2.classList.toggle('locked', !unlocked);
-    btnSelectStage2.textContent = unlocked
-      ? 'FASE 2 · TRILHA DO BRAVO'
-      : '🔒 FASE 2 · TRILHA DO BRAVO';
+    const maxUnlocked = getMaxUnlockedStage();
+    stageSelector.querySelectorAll('.stage-pill').forEach(btn => {
+      const s = Number(btn.dataset.stage);
+      const meta = STAGE_META[s];
+      const unlocked = s <= maxUnlocked;
+      btn.classList.toggle('active', selectedStage === s);
+      btn.classList.toggle('locked', !unlocked);
+      btn.textContent = unlocked ? `F${meta.short}` : `🔒${s}`;
+    });
   }
 
   function applyMenuStageInfo(stageNum) {
     selectedStage = stageNum;
     updateStageSelectorUI();
-    if (stageNum === 2) {
-      modalBadge.textContent = 'FASE 2 · DESAFIO AVANÇADO';
-      modalTitle.textContent = 'A TRILHA DO BRAVO';
-      modalDesc.innerHTML = `Encare plataformas móveis que sobem e descem, totens de pedra e inimigos velozes! Procure o <strong>Cano Verde secreto</strong> e agache sobre ele para entrar na <strong>Fase Bônus</strong>!`;
-      btnStart.textContent = '▶ INICIAR FASE 2';
-    } else {
-      modalBadge.textContent = 'CLUBE DE DESBRAVADORES';
-      modalTitle.textContent = 'A JORNADA DOS LENÇOS';
-      modalDesc.innerHTML = `Abraao Gessé o convida a Explorar a trilha da floresta! saltar sobre precipícios, e colete os <strong>20 lenços amarelos</strong> espalhados pelo caminho! MARANATA.<br><br>Consiga pelo menos <strong>10 lenços</strong> até o acampamento final para conquistar o título de <strong>DESBRAVADOR</strong>!`;
+    const meta = STAGE_META[stageNum] || STAGE_META[1];
+    if (stageNum === 1) {
+      modalBadge.textContent = 'CLUBE DE DESBRAVADORES · POR ABRAÃO GESSÉ';
+      modalTitle.textContent = meta.title;
+      modalDesc.innerHTML = meta.desc;
       btnStart.textContent = '▶ INICIAR AVENTURA';
+    } else {
+      const bossNames = {
+        guardiao: 'GUARDIÃO DA FLORESTA',
+        luiz_felipe: 'LUIZ FELIPE',
+        abraao_gesse: 'ABRAÃO GESSÉ'
+      };
+      modalBadge.textContent = meta.boss
+        ? `FASE ${stageNum} · CHEFÃO ${bossNames[meta.boss]}`
+        : `FASE ${stageNum} · JORNADA DOS LENÇOS`;
+      modalTitle.textContent = meta.title;
+      modalDesc.innerHTML = meta.desc;
+      btnStart.textContent = `▶ INICIAR FASE ${stageNum}`;
     }
   }
 
-  btnSelectStage1.addEventListener('click', () => {
-    sfx.init();
-    applyMenuStageInfo(1);
-  });
-
-  btnSelectStage2.addEventListener('click', () => {
-    sfx.init();
-    if (!isStage2Unlocked()) {
-      modalDesc.innerHTML = `🔒 Conclua a <strong>Fase 1</strong> com pelo menos <strong>10 lenços</strong> para desbloquear <strong>A Trilha do Bravo</strong>!`;
+  function updateActionButtonUI() {
+    if (!world || !world.player) {
+      btnAction.classList.add('hidden');
       return;
     }
-    applyMenuStageInfo(2);
-  });
+    const weapon = world.player.weapon;
+    if (weapon === 'fire') {
+      btnAction.classList.remove('hidden');
+      btnActionIcon.textContent = '🔥';
+      btnActionText.textContent = 'FOGO';
+    } else if (weapon === 'sword') {
+      btnAction.classList.remove('hidden');
+      btnActionIcon.textContent = '⚔️';
+      btnActionText.textContent = 'ESPADA';
+    } else {
+      btnAction.classList.add('hidden');
+    }
+  }
 
   /**
-   * 4. CONSTRUÇÃO DAS FASES (FASE 1, FASE 2 "A TRILHA DO BRAVO" + SALA BÔNUS)
+   * 4. CONSTRUÇÃO INDIVIDUAL DAS 12 FASES (ZERO REPETIÇÃO!)
+   * - Fases 1 e 2: Preservaram 100% o design original.
+   * - Fases 3 a 12: Cada uma projetada individualmente à mão com arquitetura,
+   *   relevo, Fire Bars, Spinies, Molas, Pontes que Caem e Reaparecem, Blocos "?"
+   *   e os 3 Chefões (Guardião da Floresta, Luiz Felipe e Abraão Gessé).
    */
   function createStage1Data() {
     const platforms = [
@@ -1668,35 +2065,11 @@
     ];
 
     const scarfCoords = [
-      [440, 375],
-      [560, 325],
-      [865, 315],
-      [1090, 325],
-      [1330, 260],
-      [1710, 255],
-      [1925, 190],
-      [1835, 392],
-      [2380, 340],
-      [2630, 285],
-      [2950, 330],
-      [3220, 280],
-      [3590, 392],
-      [3985, 200],
-      [4565, 325],
-      [4940, 315],
-      [5500, 290],
-      [5980, 255],
-      [6220, 195],
-      [6925, 392]
+      [440, 375], [560, 325], [865, 315], [1090, 325], [1330, 260],
+      [1710, 255], [1925, 190], [1835, 392], [2380, 340], [2630, 285],
+      [2950, 330], [3220, 280], [3590, 392], [3985, 200], [4565, 325],
+      [4940, 315], [5500, 290], [5980, 255], [6220, 195], [6925, 392]
     ];
-
-    const scarves = scarfCoords.map(([x, y], idx) => ({
-      id: idx + 1,
-      x,
-      y,
-      taken: false,
-      phase: idx * 0.55
-    }));
 
     return {
       stage: 1,
@@ -1706,58 +2079,51 @@
       worldWidth: 7600,
       platforms,
       movingPlatforms: [],
+      fallingPlatforms: [],
+      questionBlocks: [],
+      fireBars: [],
+      springs: [],
       crates,
       hazards,
       pipes: [],
-      scarves,
-      checkpoint: { x: 4160, y: 432, activated: false },
+      scarves: scarfCoords.map(([x, y], idx) => ({ id: idx + 1, x, y, taken: false, phase: idx * 0.55 })),
+      checkpoints: [{ x: 4160, y: 432, activated: false }],
+      boss: null,
       goal: { x: 7340, y: 432 }
     };
   }
 
-  /**
-   * FASE 2: "A TRILHA DO BRAVO"
-   * Inclui plataformas elevadoras, obstáculos que sobem e descem, inimigos mais ágeis
-   * e um Cano Verde secreto estilo Super Mario que leva à Sala Bônus Subterrânea!
-   */
   function createStage2Data() {
     const platforms = [
       { x: 0,    y: 432, w: 660,  h: 120, style: 'ground' },
       { x: 760,  y: 380, w: 220,  h: 170, style: 'ground' },
       { x: 1090, y: 432, w: 690,  h: 120, style: 'ground' },
 
-      // Plataformas altas iniciais
       { x: 1240, y: 310, w: 140,  h: 28,  style: 'wood' },
       { x: 1480, y: 240, w: 150,  h: 28,  style: 'wood' },
 
-      // Travessia sobre abismo com plataformas elevadoras (movingPlatforms)
       { x: 2460, y: 432, w: 660,  h: 120, style: 'ground' },
       { x: 2660, y: 310, w: 150,  h: 28,  style: 'wood' },
 
-      // Área central com o CANO SECRETO (x: 3490)
       { x: 3240, y: 432, w: 620,  h: 120, style: 'ground' },
       { x: 3440, y: 330, w: 190,  h: 28,  style: 'wood' },
 
-      // Checkpoint após o cano (x: 3980)
       { x: 3960, y: 432, w: 680,  h: 120, style: 'ground' },
       { x: 4220, y: 295, w: 160,  h: 28,  style: 'wood' },
 
-      // Trecho montanhoso com pilares móveis
       { x: 4770, y: 375, w: 250,  h: 175, style: 'ground' },
       { x: 5130, y: 320, w: 260,  h: 230, style: 'ground' },
       { x: 5520, y: 432, w: 820,  h: 120, style: 'ground' },
       { x: 5750, y: 285, w: 160,  h: 28,  style: 'wood' },
       { x: 6020, y: 225, w: 160,  h: 28,  style: 'wood' },
 
-      // Reta final para o acampamento do Bravo
       { x: 6760, y: 432, w: 1140, h: 120, style: 'ground' }
     ];
 
-    // Plataformas que SOBEM E DESCEM (Elevadores)
     const movingPlatforms = [
-      { x: 1870, baseY: 340, w: 135, h: 26, ampY: 95, speed: 2.2, phase: 0,   y: 340, prevY: 340, style: 'wood' },
-      { x: 2150, baseY: 310, w: 135, h: 26, ampY: 105, speed: 2.5, phase: 2.1, y: 310, prevY: 310, style: 'wood' },
-      { x: 6460, baseY: 330, w: 145, h: 26, ampY: 110, speed: 2.6, phase: 0.8, y: 330, prevY: 330, style: 'wood' }
+      { x: 1870, baseY: 340, w: 135, h: 26, ampY: 95, speed: 2.2, phase: 0,   y: 340, prevY: 340, prevX: 1870, style: 'wood' },
+      { x: 2150, baseY: 310, w: 135, h: 26, ampY: 105, speed: 2.5, phase: 2.1, y: 310, prevY: 310, prevX: 2150, style: 'wood' },
+      { x: 6460, baseY: 330, w: 145, h: 26, ampY: 110, speed: 2.6, phase: 0.8, y: 330, prevY: 330, prevX: 6460, style: 'wood' }
     ];
 
     const crates = [
@@ -1772,73 +2138,33 @@
     ];
 
     const hazards = [
-      // Espinhos e inimigos mais rápidos
       { type: 'patrol', x: 510,  y: 404, w: 38, h: 28, minX: 500,  maxX: 640,  vx: 135 },
       { type: 'spikes', x: 830,  y: 356, w: 88, h: 24 },
-
-      // NOVO OBSTÁCULO QUE SOBE E DESCE (Totem / Pilar de Rocha com Espinhos)
       { type: 'bobber', x: 1360, baseY: 356, w: 44, h: 76, ampY: 95, speed: 3.1, phase: 0.4, y: 356 },
-
       { type: 'log',    x: 1580, y: 342, w: 120, h: 36 },
       { type: 'patrol', x: 2740, y: 404, w: 38, h: 28, minX: 2580, maxX: 3080, vx: 155 },
-
-      // Segundo obstáculo que sobe e desce antes do cano secreto
       { type: 'bobber', x: 2940, baseY: 356, w: 44, h: 76, ampY: 105, speed: 3.4, phase: 2.0, y: 356 },
-
       { type: 'spikes', x: 3300, y: 408, w: 110, h: 24 },
       { type: 'patrol', x: 3680, y: 404, w: 38, h: 28, minX: 3430, maxX: 3830, vx: 150 },
-
-      // Trecho pós-checkpoint
       { type: 'bobber', x: 4420, baseY: 356, w: 44, h: 76, ampY: 100, speed: 3.5, phase: 1.1, y: 356 },
       { type: 'spikes', x: 4850, y: 351, w: 88, h: 24 },
       { type: 'spikes', x: 5215, y: 296, w: 88, h: 24 },
       { type: 'log',    x: 5830, y: 342, w: 130, h: 36 },
       { type: 'patrol', x: 6040, y: 404, w: 38, h: 28, minX: 5700, maxX: 6300, vx: 170 },
-
-      // Último obstáculo que sobe e desce antes da chegada
       { type: 'bobber', x: 7160, baseY: 356, w: 44, h: 76, ampY: 110, speed: 3.8, phase: 0.2, y: 356 },
       { type: 'spikes', x: 7340, y: 408, w: 110, h: 24 }
     ];
 
-    // Cano Verde estilo Super Mario sobre a plataforma elevada (x: 3495, y: 266)
     const pipes = [
-      {
-        x: 3495,
-        y: 266,
-        w: 68,
-        h: 64,
-        action: 'enter_bonus',
-        label: '▼ AGACHE NO CANO'
-      }
+      { x: 3495, y: 266, w: 68, h: 64, action: 'enter_bonus', label: '▼ AGACHE NO CANO' }
     ];
 
-    // 16 lenços na trilha principal + 4 lenços exclusivos dentro da Sala Bônus = 20 lenços!
     const mainScarfCoords = [
-      [350, 375],
-      [474, 325],
-      [875, 290],
-      [1310, 255],
-      [1555, 185],
-      [1640, 392],
-      [1935, 220],
-      [2215, 195],
-      [2735, 255],
-      [3530, 215], // Bem acima do cano secreto para chamar atenção!
-      [4300, 240],
-      [4895, 285],
-      [5260, 230],
-      [5895, 392],
-      [6100, 170],
+      [350, 375], [474, 325], [875, 290], [1310, 255], [1555, 185],
+      [1640, 392], [1935, 220], [2215, 195], [2735, 255], [3530, 215],
+      [4300, 240], [4895, 285], [5260, 230], [5895, 392], [6100, 170],
       [7240, 260]
     ];
-
-    const scarves = mainScarfCoords.map(([x, y], idx) => ({
-      id: idx + 1,
-      x,
-      y,
-      taken: false,
-      phase: idx * 0.55
-    }));
 
     return {
       stage: 2,
@@ -1848,72 +2174,896 @@
       worldWidth: 7900,
       platforms,
       movingPlatforms,
+      fallingPlatforms: [],
+      questionBlocks: [],
+      fireBars: [],
+      springs: [],
       crates,
       hazards,
       pipes,
-      scarves,
-      checkpoint: { x: 4010, y: 432, activated: false },
+      scarves: mainScarfCoords.map(([x, y], idx) => ({ id: idx + 1, x, y, taken: false, phase: idx * 0.55 })),
+      checkpoints: [{ x: 4010, y: 432, activated: false }],
+      boss: null,
       goal: { x: 7640, y: 432 },
-      bonusRoom: createBonusRoomData()
+      bonusRoom: createBonusRoomData(3710, 340, 17, 1)
     };
   }
 
-  /**
-   * SALA BÔNUS SUBTERRÂNEA (ESTILO SUPER MARIO)
-   * Acessada ao agachar em cima do Cano Verde na Fase 2!
-   */
-  function createBonusRoomData() {
+  function createBonusRoomData(returnX = 3710, returnY = 340, startScarfId = 17, variant = 1) {
     const platforms = [
-      { x: 0,   y: 448, w: 1280, h: 100, style: 'brick_ground' },
-      { x: 0,   y: 0,   w: 44,   h: 460, style: 'brick_wall' },
-      { x: 1236,y: 0,   w: 44,   h: 460, style: 'brick_wall' },
-      { x: 240, y: 330, w: 170,  h: 28,  style: 'brick_plat' },
-      { x: 490, y: 250, w: 260,  h: 28,  style: 'brick_plat' },
-      { x: 830, y: 330, w: 170,  h: 28,  style: 'brick_plat' }
+      { x: 0,    y: 448, w: 1280, h: 100, style: 'brick_ground' },
+      { x: 0,    y: 0,   w: 44,   h: 460, style: 'brick_wall' },
+      { x: 1236, y: 0,   w: 44,   h: 460, style: 'brick_wall' },
+      { x: 220,  y: 340, w: 170,  h: 28,  style: 'brick_plat' },
+      { x: 490,  y: variant % 2 === 0 ? 220 : 255, w: 260,  h: 28,  style: 'brick_plat' },
+      { x: 850,  y: 330, w: 170,  h: 28,  style: 'brick_plat' }
     ];
 
-    // 4 lenços secretos dentro da sala bônus (completando os 20 da Fase 2!)
-    const bonusScarfCoords = [
-      [325, 275],
-      [555, 195],
-      [685, 195],
-      [915, 275]
-    ];
-
-    const scarves = bonusScarfCoords.map(([x, y], idx) => ({
-      id: 17 + idx,
-      x,
-      y,
-      taken: false,
-      phase: idx * 0.6
-    }));
-
-    // Cano de saída no final da sala bônus (x: 1085)
-    const pipes = [
-      {
-        x: 1085,
-        y: 376,
-        w: 72,
-        h: 72,
-        action: 'exit_bonus',
-        label: '▼ AGACHE P/ SAIR'
-      }
-    ];
+    const bonusScarfCoords = variant % 2 === 0
+      ? [[305, 285], [540, 165], [700, 165], [935, 275]]
+      : [[305, 285], [555, 195], [685, 195], [935, 275]];
 
     return {
       worldWidth: 1280,
       platforms,
-      scarves,
-      pipes,
-      returnX: 3710,
-      returnY: 340
+      scarves: bonusScarfCoords.map(([x, y], idx) => ({
+        id: startScarfId + idx,
+        x, y, taken: false, phase: idx * 0.6
+      })),
+      pipes: [
+        { x: 1085, y: 376, w: 72, h: 72, action: 'exit_bonus', label: '▼ AGACHE P/ SAIR' }
+      ],
+      returnX,
+      returnY
     };
+  }
+
+  /**
+   * 4.1 CONSTRUTOR INDIVIDUAL PARA AS FASES 3 A 12
+   * Cada fase tem seu próprio layout arquitetônico artesanal (plataformas, ilhas,
+   * torres, desfiladeiros, barras de fogo giratórias, espinhosos, molas, pontes
+   * que caem e reaparecem, canos bônus e os 3 chefões).
+   */
+  function makeScarves(coords) {
+    return coords.map(([x, y], idx) => ({
+      id: idx + 1,
+      x,
+      y,
+      taken: false,
+      phase: idx * 0.52
+    }));
+  }
+
+  function createHandcraftedStage(stageNum) {
+    switch (stageNum) {
+      // =========================================================================
+      // FASE 3: A PONTE DAS ÁGUAS (Mundo 1 Clássico + Blocos "?" + Molas + Cano Secreto)
+      // =========================================================================
+      case 3:
+        return {
+          stage: 3,
+          stageLabel: 'FASE 3',
+          stageTitle: 'A PONTE DAS ÁGUAS',
+          theme: 'forest',
+          worldWidth: 8500,
+          platforms: [
+            { x: 0,    y: 432, w: 820,  h: 120, style: 'ground' },
+            { x: 420,  y: 315, w: 160,  h: 28,  style: 'wood' },
+            { x: 940,  y: 432, w: 620,  h: 120, style: 'ground' },
+            { x: 1120, y: 295, w: 180,  h: 28,  style: 'wood' },
+            { x: 1380, y: 215, w: 180,  h: 28,  style: 'wood' },
+            { x: 1680, y: 375, w: 280,  h: 175, style: 'ground' },
+            { x: 2080, y: 432, w: 760,  h: 120, style: 'ground' },
+            { x: 2330, y: 325, w: 210,  h: 28,  style: 'wood' },
+            { x: 3320, y: 432, w: 940,  h: 120, style: 'ground' },
+            { x: 3650, y: 330, w: 200,  h: 28,  style: 'wood' },
+            { x: 4380, y: 432, w: 780,  h: 120, style: 'ground' },
+            { x: 4620, y: 290, w: 170,  h: 28,  style: 'wood' },
+            { x: 4880, y: 215, w: 170,  h: 28,  style: 'wood' },
+            { x: 5280, y: 360, w: 260,  h: 190, style: 'ground' },
+            { x: 5660, y: 300, w: 260,  h: 250, style: 'ground' },
+            { x: 6040, y: 432, w: 860,  h: 120, style: 'ground' },
+            { x: 6320, y: 310, w: 190,  h: 28,  style: 'wood' },
+            { x: 7340, y: 432, w: 1160, h: 120, style: 'ground' }
+          ],
+          movingPlatforms: [
+            { x: 2940, baseX: 2940, baseY: 360, w: 150, h: 26, ampX: 85, ampY: 0, speed: 2.1, phase: 0, y: 360, prevX: 2940, prevY: 360, style: 'wood' },
+            { x: 7020, baseX: 7020, baseY: 345, w: 155, h: 26, ampX: 0, ampY: 95, speed: 2.3, phase: 1.2, y: 345, prevX: 7020, prevY: 345, style: 'wood' }
+          ],
+          fallingPlatforms: [],
+          questionBlocks: [
+            { x: 340,  y: 295, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 2410, y: 195, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 4460, y: 295, w: 42, h: 42, reward: 'sword', used: false, bounceY: 0 },
+            { x: 6390, y: 185, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 }
+          ],
+          fireBars: [],
+          springs: [
+            { x: 1020, y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 4540, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 640,  y: 384, w: 48, h: 48 },
+            { x: 2160, y: 384, w: 48, h: 48 },
+            { x: 6150, y: 384, w: 48, h: 48 },
+            { x: 6198, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'patrol', x: 1250, y: 404, w: 38, h: 28, minX: 1100, maxX: 1520, vx: 130 },
+            { type: 'spikes', x: 1770, y: 351, w: 96, h: 24 },
+            { type: 'log',    x: 2580, y: 342, w: 120, h: 36 },
+            { type: 'bird',   x: 3920, baseY: 340, y: 340, w: 44, h: 26, minX: 3450, maxX: 4210, vx: -155, phase: 0.4 },
+            { type: 'patrol', x: 4850, y: 404, w: 38, h: 28, minX: 4650, maxX: 5110, vx: 150 },
+            { type: 'spikes', x: 5360, y: 336, w: 96, h: 24 },
+            { type: 'log',    x: 6580, y: 342, w: 125, h: 36 },
+            { type: 'patrol', x: 7650, y: 404, w: 38, h: 28, minX: 7450, maxX: 7950, vx: 165 }
+          ],
+          pipes: [
+            { x: 3715, y: 266, w: 68, h: 64, action: 'enter_bonus', label: '▼ AGACHE NO CANO' }
+          ],
+          scarves: makeScarves([
+            [500, 260], [664, 325], [1040, 210], [1210, 240], [1470, 160],
+            [1820, 290], [2435, 270], [2640, 392], [3015, 285], [3480, 375],
+            [4705, 235], [4965, 160], [5410, 275], [5790, 240], [6200, 325],
+            [7095, 235]
+          ]),
+          checkpoints: [{ x: 4120, y: 432, activated: false }],
+          boss: null,
+          goal: { x: 8240, y: 432 },
+          bonusRoom: createBonusRoomData(3940, 340, 17, 2)
+        };
+
+      // =========================================================================
+      // FASE 4: ARENA DO GUARDIÃO (Pontes Pênseis + 1º CHEFÃO: GUARDIÃO DA FLORESTA)
+      // =========================================================================
+      case 4:
+        return {
+          stage: 4,
+          stageLabel: 'FASE 4',
+          stageTitle: 'ARENA DO GUARDIÃO',
+          theme: 'sunset',
+          worldWidth: 8600,
+          platforms: [
+            { x: 0,    y: 432, w: 720,  h: 120, style: 'ground' },
+            { x: 1320, y: 432, w: 760,  h: 120, style: 'ground' },
+            { x: 1540, y: 300, w: 180,  h: 28,  style: 'wood' },
+            { x: 2200, y: 365, w: 280,  h: 185, style: 'ground' },
+            { x: 2600, y: 305, w: 280,  h: 245, style: 'ground' },
+            { x: 3020, y: 432, w: 880,  h: 120, style: 'ground' },
+            { x: 3340, y: 310, w: 180,  h: 28,  style: 'wood' },
+            { x: 3600, y: 235, w: 180,  h: 28,  style: 'wood' },
+            { x: 4460, y: 432, w: 860,  h: 120, style: 'ground' },
+            { x: 4760, y: 315, w: 210,  h: 28,  style: 'wood' },
+            { x: 5460, y: 432, w: 780,  h: 120, style: 'ground' },
+            { x: 5720, y: 295, w: 190,  h: 28,  style: 'wood' },
+            { x: 6380, y: 375, w: 320,  h: 175, style: 'ground' },
+            // Arena do 1º Chefão (Guardião da Floresta)
+            { x: 6820, y: 432, w: 1780, h: 120, style: 'ground' },
+            { x: 6980, y: 315, w: 160,  h: 26,  style: 'wood' },
+            { x: 7520, y: 315, w: 160,  h: 26,  style: 'wood' }
+          ],
+          movingPlatforms: [],
+          fallingPlatforms: [
+            { x: 810,  y: 390, origY: 390, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 1050, y: 350, origY: 350, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 4000, y: 380, origY: 380, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 4220, y: 340, origY: 340, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false }
+          ],
+          questionBlocks: [
+            { x: 380,  y: 295, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 3410, y: 190, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 5790, y: 175, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 },
+            { x: 7260, y: 270, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 }
+          ],
+          fireBars: [],
+          springs: [
+            { x: 2010, y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 6160, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 540,  y: 384, w: 48, h: 48 },
+            { x: 3120, y: 384, w: 48, h: 48 },
+            { x: 4560, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'patrol', x: 1650, y: 404, w: 38, h: 28, minX: 1420, maxX: 1960, vx: 150 },
+            { type: 'spikes', x: 2300, y: 341, w: 96, h: 24 },
+            { type: 'bobber', x: 2740, baseY: 229, w: 44, h: 76, ampY: 95, speed: 3.2, phase: 0.5, y: 229 },
+            { type: 'log',    x: 4820, y: 342, w: 120, h: 36 },
+            { type: 'hopper', x: 5950, y: 396, groundY: 432, w: 38, h: 36, vy: 0, jumpTimer: 0.9, dir: -1 },
+            { type: 'spikes', x: 6490, y: 351, w: 96, h: 24 }
+          ],
+          pipes: [],
+          scarves: makeScarves([
+            [564, 325], [882, 330], [1122, 290], [1630, 240], [2030, 210],
+            [2740, 175], [3430, 250], [3690, 175], [4072, 320], [4292, 280],
+            [4865, 255], [4880, 392], [5815, 235], [6180, 210], [6540, 285],
+            [7060, 255], [7600, 255], [7280, 375], [7420, 375], [7760, 375]
+          ]),
+          checkpoints: [
+            { x: 3180, y: 432, activated: false },
+            { x: 6620, y: 375, activated: false }
+          ],
+          boss: {
+            type: 'guardiao',
+            name: 'GUARDIÃO DA FLORESTA',
+            title: 'GUARDIÃO ANCESTRAL',
+            colorMain: '#7d4620',
+            colorLight: '#ffae34',
+            colorDark: '#381c0c',
+            x: 7520,
+            y: 332,
+            w: 80,
+            h: 80,
+            vx: -195,
+            vy: 0,
+            hp: 5,
+            maxHp: 5,
+            speed: 195,
+            jumpForce: -610,
+            onGround: true,
+            hurtTimer: 0,
+            actionTimer: 1.9,
+            defeated: false,
+            arenaMinX: 6880,
+            arenaMaxX: 7780
+          },
+          goal: { x: 8160, y: 432 }
+        };
+
+      // =========================================================================
+      // FASE 5: TORRES DE FOGO (Fire Bars 360° + Spinies Espinhosos + Cano Secreto)
+      // =========================================================================
+      case 5:
+        return {
+          stage: 5,
+          stageLabel: 'FASE 5',
+          stageTitle: 'TORRES DE FOGO',
+          theme: 'canyon',
+          worldWidth: 8800,
+          platforms: [
+            { x: 0,    y: 432, w: 860,  h: 120, style: 'ground' },
+            { x: 980,  y: 370, w: 260,  h: 180, style: 'ground' },
+            { x: 1360, y: 310, w: 260,  h: 240, style: 'ground' },
+            { x: 1740, y: 432, w: 940,  h: 120, style: 'ground' },
+            { x: 2080, y: 310, w: 200,  h: 28,  style: 'wood' },
+            { x: 2800, y: 432, w: 820,  h: 120, style: 'ground' },
+            { x: 3120, y: 330, w: 200,  h: 28,  style: 'wood' },
+            { x: 3760, y: 360, w: 320,  h: 190, style: 'ground' },
+            { x: 4220, y: 432, w: 980,  h: 120, style: 'ground' },
+            { x: 4540, y: 295, w: 190,  h: 28,  style: 'wood' },
+            { x: 4840, y: 220, w: 190,  h: 28,  style: 'wood' },
+            { x: 5680, y: 432, w: 960,  h: 120, style: 'ground' },
+            { x: 6040, y: 310, w: 210,  h: 28,  style: 'wood' },
+            { x: 6780, y: 365, w: 340,  h: 185, style: 'ground' },
+            { x: 7260, y: 432, w: 1540, h: 120, style: 'ground' }
+          ],
+          movingPlatforms: [
+            { x: 5300, baseX: 5300, baseY: 350, w: 150, h: 26, ampX: 110, ampY: 0, speed: 2.2, phase: 0.4, y: 350, prevX: 5300, prevY: 350, style: 'wood' }
+          ],
+          fallingPlatforms: [],
+          questionBlocks: [
+            { x: 360,  y: 295, w: 42, h: 42, reward: 'sword', used: false, bounceY: 0 },
+            { x: 2150, y: 190, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 4610, y: 175, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 6120, y: 190, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 }
+          ],
+          fireBars: [
+            { cx: 1490, cy: 230, count: 5, spacing: 18, speed: 2.2, angle: 0 },
+            { cx: 3920, cy: 270, count: 6, spacing: 18, speed: -2.4, angle: 1.5 },
+            { cx: 6950, cy: 275, count: 6, spacing: 18, speed: 2.6, angle: 0.8 }
+          ],
+          springs: [
+            { x: 890,  y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 4320, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 640,  y: 384, w: 48, h: 48 },
+            { x: 5820, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'spiny',  x: 1980, y: 404, w: 40, h: 28, minX: 1820, maxX: 2520, vx: 135 },
+            { type: 'log',    x: 2880, y: 342, w: 120, h: 36 },
+            { type: 'spiny',  x: 4720, y: 404, w: 40, h: 28, minX: 4460, maxX: 5080, vx: 150 },
+            { type: 'bird',   x: 6480, baseY: 330, y: 330, w: 44, h: 26, minX: 5900, maxX: 6580, vx: -170, phase: 0.9 },
+            { type: 'spiny',  x: 7650, y: 404, w: 40, h: 28, minX: 7420, maxX: 8100, vx: 165 }
+          ],
+          pipes: [
+            { x: 3185, y: 266, w: 68, h: 64, action: 'enter_bonus', label: '▼ AGACHE NO CANO' }
+          ],
+          scarves: makeScarves([
+            [664, 325], [910, 210], [1110, 310], [1880, 375], [2180, 250],
+            [2940, 392], [3520, 375], [4340, 200], [4635, 235], [4935, 160],
+            [5410, 275], [5844, 325], [6145, 250], [6480, 375], [7520, 375],
+            [7920, 375]
+          ]),
+          checkpoints: [{ x: 4260, y: 432, activated: false }],
+          boss: null,
+          goal: { x: 8520, y: 432 },
+          bonusRoom: createBonusRoomData(3420, 340, 17, 3)
+        };
+
+      // =========================================================================
+      // FASE 6: VENTOS DA MONTANHA (Elevadores Verticais + Molas Alpinas + Pontes Pênseis)
+      // =========================================================================
+      case 6:
+        return {
+          stage: 6,
+          stageLabel: 'FASE 6',
+          stageTitle: 'VENTOS DA MONTANHA',
+          theme: 'alpine',
+          worldWidth: 9100,
+          platforms: [
+            { x: 0,    y: 432, w: 740,  h: 120, style: 'ground' },
+            { x: 1180, y: 340, w: 280,  h: 210, style: 'ground' },
+            { x: 1580, y: 260, w: 280,  h: 290, style: 'ground' },
+            { x: 2020, y: 432, w: 860,  h: 120, style: 'ground' },
+            { x: 2320, y: 300, w: 190,  h: 28,  style: 'wood' },
+            { x: 3560, y: 432, w: 840,  h: 120, style: 'ground' },
+            { x: 3860, y: 310, w: 190,  h: 28,  style: 'wood' },
+            { x: 4540, y: 375, w: 300,  h: 175, style: 'ground' },
+            { x: 5480, y: 432, w: 940,  h: 120, style: 'ground' },
+            { x: 5820, y: 295, w: 200,  h: 28,  style: 'wood' },
+            { x: 6120, y: 215, w: 200,  h: 28,  style: 'wood' },
+            { x: 6580, y: 350, w: 320,  h: 200, style: 'ground' },
+            { x: 7520, y: 432, w: 1580, h: 120, style: 'ground' }
+          ],
+          movingPlatforms: [
+            { x: 860,  baseX: 860,  baseY: 350, w: 145, h: 26, ampX: 0, ampY: 110, speed: 2.3, phase: 0,   y: 350, prevX: 860,  prevY: 350, style: 'wood' },
+            { x: 3000, baseX: 3000, baseY: 340, w: 145, h: 26, ampX: 0, ampY: 115, speed: 2.4, phase: 1.8, y: 340, prevX: 3000, prevY: 340, style: 'wood' },
+            { x: 3280, baseX: 3280, baseY: 310, w: 145, h: 26, ampX: 0, ampY: 115, speed: 2.4, phase: 3.4, y: 310, prevX: 3280, prevY: 310, style: 'wood' },
+            { x: 7040, baseX: 7040, baseY: 330, w: 155, h: 26, ampX: 110, ampY: 0, speed: 2.5, phase: 0.5, y: 330, prevX: 7040, prevY: 330, style: 'wood' }
+          ],
+          fallingPlatforms: [
+            { x: 4960, y: 365, origY: 365, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 5200, y: 325, origY: 325, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false }
+          ],
+          questionBlocks: [
+            { x: 380,  y: 295, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 2390, y: 180, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 5900, y: 175, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 },
+            { x: 7780, y: 295, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 }
+          ],
+          fireBars: [
+            { cx: 1720, cy: 185, count: 5, spacing: 18, speed: 2.3, angle: 0.4 },
+            { cx: 6740, cy: 265, count: 6, spacing: 18, speed: -2.5, angle: 1.2 }
+          ],
+          springs: [
+            { x: 640,  y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 2740, y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 5580, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 2120, y: 384, w: 48, h: 48 },
+            { x: 3660, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'hopper', x: 1340, y: 304, groundY: 340, w: 38, h: 36, vy: 0, jumpTimer: 0.7, dir: -1 },
+            { type: 'spiny',  x: 2450, y: 404, w: 40, h: 28, minX: 2220, maxX: 2680, vx: 150 },
+            { type: 'bird',   x: 4180, baseY: 330, y: 330, w: 44, h: 26, minX: 3720, maxX: 4340, vx: -175, phase: 0.3 },
+            { type: 'hopper', x: 5720, y: 396, groundY: 432, w: 38, h: 36, vy: 0, jumpTimer: 1.1, dir: -1 },
+            { type: 'spiny',  x: 8050, y: 404, w: 40, h: 28, minX: 7850, maxX: 8450, vx: 170 }
+          ],
+          pipes: [],
+          scarves: makeScarves([
+            [660, 205], [930, 225], [1320, 280], [2144, 325], [2415, 240],
+            [2760, 200], [3070, 210], [3350, 185], [3955, 250], [4690, 315],
+            [5032, 305], [5272, 265], [5600, 200], [5920, 235], [6220, 155],
+            [7140, 245], [7680, 375], [7800, 235], [8250, 375], [8480, 375]
+          ]),
+          checkpoints: [{ x: 3740, y: 432, activated: false }],
+          boss: null,
+          goal: { x: 8820, y: 432 }
+        };
+
+      // =========================================================================
+      // FASE 7: VALE NOTURNO (Céu Estrelado + Barras de Fogo Duplas + Cano Secreto)
+      // =========================================================================
+      case 7:
+        return {
+          stage: 7,
+          stageLabel: 'FASE 7',
+          stageTitle: 'VALE NOTURNO',
+          theme: 'night',
+          worldWidth: 9300,
+          platforms: [
+            { x: 0,    y: 432, w: 860,  h: 120, style: 'ground' },
+            { x: 460,  y: 305, w: 180,  h: 28,  style: 'wood' },
+            { x: 1000, y: 375, w: 300,  h: 175, style: 'ground' },
+            { x: 1440, y: 315, w: 300,  h: 235, style: 'ground' },
+            { x: 1880, y: 432, w: 980,  h: 120, style: 'ground' },
+            { x: 2220, y: 300, w: 200,  h: 28,  style: 'wood' },
+            { x: 3000, y: 432, w: 880,  h: 120, style: 'ground' },
+            { x: 3320, y: 330, w: 210,  h: 28,  style: 'wood' },
+            { x: 4040, y: 365, w: 340,  h: 185, style: 'ground' },
+            { x: 4520, y: 432, w: 1040, h: 120, style: 'ground' },
+            { x: 4840, y: 295, w: 190,  h: 28,  style: 'wood' },
+            { x: 5140, y: 215, w: 190,  h: 28,  style: 'wood' },
+            { x: 6140, y: 432, w: 960,  h: 120, style: 'ground' },
+            { x: 6480, y: 305, w: 210,  h: 28,  style: 'wood' },
+            { x: 7240, y: 360, w: 340,  h: 190, style: 'ground' },
+            { x: 7720, y: 432, w: 1580, h: 120, style: 'ground' }
+          ],
+          movingPlatforms: [
+            { x: 5740, baseX: 5740, baseY: 345, w: 155, h: 26, ampX: 115, ampY: 0, speed: 2.5, phase: 0.7, y: 345, prevX: 5740, prevY: 345, style: 'wood' }
+          ],
+          fallingPlatforms: [],
+          questionBlocks: [
+            { x: 360,  y: 295, w: 42, h: 42, reward: 'sword', used: false, bounceY: 0 },
+            { x: 2300, y: 180, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 4910, y: 175, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 6560, y: 185, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 }
+          ],
+          fireBars: [
+            { cx: 1150, cy: 290, count: 6, spacing: 18, speed: 2.4, angle: 0 },
+            { cx: 1590, cy: 230, count: 6, spacing: 18, speed: -2.4, angle: 1.6 },
+            { cx: 4210, cy: 275, count: 7, spacing: 18, speed: 2.6, angle: 0.5 },
+            { cx: 7410, cy: 270, count: 7, spacing: 18, speed: -2.7, angle: 1.1 }
+          ],
+          springs: [
+            { x: 910,  y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 4620, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 680,  y: 384, w: 48, h: 48 },
+            { x: 6260, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'patrol', x: 2150, y: 404, w: 38, h: 28, minX: 1960, maxX: 2740, vx: 165 },
+            { type: 'log',    x: 3080, y: 342, w: 120, h: 36 },
+            { type: 'spiny',  x: 4980, y: 404, w: 40, h: 28, minX: 4720, maxX: 5440, vx: 160 },
+            { type: 'bird',   x: 6850, baseY: 325, y: 325, w: 44, h: 26, minX: 6320, maxX: 7020, vx: -185, phase: 0.6 },
+            { type: 'spiny',  x: 8150, y: 404, w: 40, h: 28, minX: 7900, maxX: 8650, vx: 175 }
+          ],
+          pipes: [
+            { x: 3390, y: 266, w: 68, h: 64, action: 'enter_bonus', label: '▼ AGACHE NO CANO' }
+          ],
+          scarves: makeScarves([
+            [550, 245], [704, 325], [930, 200], [2020, 375], [2320, 240],
+            [3140, 392], [3680, 375], [4640, 200], [4935, 235], [5235, 155],
+            [5855, 265], [6284, 325], [6585, 245], [6920, 375], [7980, 375],
+            [8420, 375]
+          ]),
+          checkpoints: [{ x: 4560, y: 432, activated: false }],
+          boss: null,
+          goal: { x: 9020, y: 432 },
+          bonusRoom: createBonusRoomData(3640, 340, 17, 4)
+        };
+
+      // =========================================================================
+      // FASE 8: DESAFIO LUIZ FELIPE (2º CHEFÃO: LUIZ FELIPE!)
+      // =========================================================================
+      case 8:
+        return {
+          stage: 8,
+          stageLabel: 'FASE 8',
+          stageTitle: 'DESAFIO LUIZ FELIPE',
+          theme: 'canyon',
+          worldWidth: 9500,
+          platforms: [
+            { x: 0,    y: 432, w: 780,  h: 120, style: 'ground' },
+            { x: 1420, y: 432, w: 840,  h: 120, style: 'ground' },
+            { x: 1700, y: 300, w: 190,  h: 28,  style: 'wood' },
+            { x: 2400, y: 365, w: 300,  h: 185, style: 'ground' },
+            { x: 2840, y: 300, w: 300,  h: 250, style: 'ground' },
+            { x: 3300, y: 432, w: 940,  h: 120, style: 'ground' },
+            { x: 3640, y: 310, w: 190,  h: 28,  style: 'wood' },
+            { x: 3920, y: 230, w: 190,  h: 28,  style: 'wood' },
+            { x: 4840, y: 432, w: 920,  h: 120, style: 'ground' },
+            { x: 5160, y: 305, w: 210,  h: 28,  style: 'wood' },
+            { x: 5900, y: 432, w: 860,  h: 120, style: 'ground' },
+            { x: 6200, y: 295, w: 200,  h: 28,  style: 'wood' },
+            { x: 6900, y: 365, w: 340,  h: 185, style: 'ground' },
+            // Arena do 2º Chefão: LUIZ FELIPE
+            { x: 7380, y: 432, w: 2120, h: 120, style: 'ground' },
+            { x: 7540, y: 315, w: 165,  h: 26,  style: 'wood' },
+            { x: 8140, y: 315, w: 165,  h: 26,  style: 'wood' }
+          ],
+          movingPlatforms: [
+            { x: 880,  baseX: 880,  baseY: 350, w: 145, h: 26, ampX: 0, ampY: 110, speed: 2.5, phase: 0,   y: 350, prevX: 880,  prevY: 350, style: 'wood' },
+            { x: 1140, baseX: 1140, baseY: 320, w: 145, h: 26, ampX: 0, ampY: 110, speed: 2.5, phase: 2.1, y: 320, prevX: 1140, prevY: 320, style: 'wood' }
+          ],
+          fallingPlatforms: [
+            { x: 4360, y: 375, origY: 375, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 4580, y: 335, origY: 335, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false }
+          ],
+          questionBlocks: [
+            { x: 380,  y: 295, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 3710, y: 185, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 6280, y: 175, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 },
+            { x: 7860, y: 270, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 }
+          ],
+          fireBars: [
+            { cx: 2550, cy: 280, count: 6, spacing: 18, speed: 2.5, angle: 0.2 },
+            { cx: 5540, cy: 335, count: 6, spacing: 18, speed: -2.6, angle: 1.4 }
+          ],
+          springs: [
+            { x: 2280, y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 6660, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 580,  y: 384, w: 48, h: 48 },
+            { x: 3420, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'spiny',  x: 1820, y: 404, w: 40, h: 28, minX: 1520, maxX: 2140, vx: 165 },
+            { type: 'hopper', x: 2980, y: 264, groundY: 300, w: 38, h: 36, vy: 0, jumpTimer: 0.8, dir: -1 },
+            { type: 'log',    x: 5220, y: 342, w: 120, h: 36 },
+            { type: 'bird',   x: 6420, baseY: 330, y: 330, w: 44, h: 26, minX: 5980, maxX: 6600, vx: -185, phase: 0.5 }
+          ],
+          pipes: [],
+          scarves: makeScarves([
+            [604, 325], [950, 220], [1210, 195], [1795, 240], [2300, 200],
+            [2990, 210], [3735, 250], [4015, 170], [4432, 315], [4652, 275],
+            [5265, 245], [5280, 392], [6300, 235], [6680, 200], [7070, 295],
+            [7620, 255], [8220, 255], [7820, 375], [7980, 375], [8380, 375]
+          ]),
+          checkpoints: [
+            { x: 3500, y: 432, activated: false },
+            { x: 7160, y: 365, activated: false }
+          ],
+          boss: {
+            type: 'luiz_felipe',
+            name: 'LUIZ FELIPE',
+            title: 'COMANDANTE LUIZ FELIPE',
+            colorMain: '#1e78ff',
+            colorLight: '#73b3ff',
+            colorDark: '#0d3b8c',
+            x: 8140,
+            y: 352,
+            w: 75,
+            h: 75,
+            vx: -245,
+            vy: 0,
+            hp: 6,
+            maxHp: 6,
+            speed: 245,
+            jumpForce: -640,
+            onGround: true,
+            hurtTimer: 0,
+            actionTimer: 1.65,
+            defeated: false,
+            arenaMinX: 7440,
+            arenaMaxX: 8420
+          },
+          goal: { x: 8820, y: 432 }
+        };
+
+      // =========================================================================
+      // FASE 9: SERRA DOS VENTOS (Escadaria de Gelo + Pontes Pênseis + Cano Secreto)
+      // =========================================================================
+      case 9:
+        return {
+          stage: 9,
+          stageLabel: 'FASE 9',
+          stageTitle: 'SERRA DOS VENTOS',
+          theme: 'alpine',
+          worldWidth: 9600,
+          platforms: [
+            { x: 0,    y: 432, w: 800,  h: 120, style: 'ground' },
+            { x: 940,  y: 360, w: 260,  h: 190, style: 'ground' },
+            { x: 1340, y: 290, w: 260,  h: 260, style: 'ground' },
+            { x: 1740, y: 220, w: 260,  h: 330, style: 'ground' },
+            { x: 2160, y: 432, w: 940,  h: 120, style: 'ground' },
+            { x: 2480, y: 300, w: 200,  h: 28,  style: 'wood' },
+            { x: 3780, y: 432, w: 960,  h: 120, style: 'ground' },
+            { x: 4140, y: 330, w: 210,  h: 28,  style: 'wood' },
+            { x: 4880, y: 432, w: 980,  h: 120, style: 'ground' },
+            { x: 5220, y: 295, w: 190,  h: 28,  style: 'wood' },
+            { x: 5520, y: 215, w: 190,  h: 28,  style: 'wood' },
+            { x: 6480, y: 432, w: 940,  h: 120, style: 'ground' },
+            { x: 6820, y: 305, w: 200,  h: 28,  style: 'wood' },
+            { x: 7580, y: 360, w: 340,  h: 190, style: 'ground' },
+            { x: 8060, y: 432, w: 1540, h: 120, style: 'ground' }
+          ],
+          movingPlatforms: [
+            { x: 6040, baseX: 6040, baseY: 340, w: 150, h: 26, ampX: 0, ampY: 115, speed: 2.6, phase: 0.4, y: 340, prevX: 6040, prevY: 340, style: 'wood' }
+          ],
+          fallingPlatforms: [
+            { x: 3240, y: 375, origY: 375, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 3480, y: 335, origY: 335, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false }
+          ],
+          questionBlocks: [
+            { x: 380,  y: 295, w: 42, h: 42, reward: 'sword', used: false, bounceY: 0 },
+            { x: 2560, y: 180, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 5290, y: 175, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 6900, y: 185, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 }
+          ],
+          fireBars: [
+            { cx: 1870, cy: 145, count: 6, spacing: 18, speed: 2.6, angle: 0.2 },
+            { cx: 7750, cy: 270, count: 7, spacing: 18, speed: -2.7, angle: 1.0 }
+          ],
+          springs: [
+            { x: 860,  y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 4980, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 620,  y: 384, w: 48, h: 48 },
+            { x: 6600, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'spiny',  x: 2450, y: 404, w: 40, h: 28, minX: 2240, maxX: 2980, vx: 170 },
+            { type: 'hopper', x: 5360, y: 396, groundY: 432, w: 38, h: 36, vy: 0, jumpTimer: 0.9, dir: -1 },
+            { type: 'bird',   x: 7160, baseY: 325, y: 325, w: 44, h: 26, minX: 6620, maxX: 7340, vx: -190, phase: 0.7 },
+            { type: 'spiny',  x: 8480, y: 404, w: 40, h: 28, minX: 8220, maxX: 8960, vx: 180 }
+          ],
+          pipes: [
+            { x: 4210, y: 266, w: 68, h: 64, action: 'enter_bonus', label: '▼ AGACHE NO CANO' }
+          ],
+          scarves: makeScarves([
+            [644, 325], [880, 195], [1470, 230], [2320, 375], [2580, 240],
+            [3312, 315], [3552, 275], [5000, 195], [5315, 235], [5615, 155],
+            [6115, 225], [6624, 325], [6920, 245], [7240, 375], [8340, 375],
+            [8760, 375]
+          ]),
+          checkpoints: [{ x: 4920, y: 432, activated: false }],
+          boss: null,
+          goal: { x: 9320, y: 432 },
+          bonusRoom: createBonusRoomData(4460, 340, 17, 5)
+        };
+
+      // =========================================================================
+      // FASE 10: RUÍNAS SOLARES (Templo das Barras de Fogo + Molas Combinadas)
+      // =========================================================================
+      case 10:
+        return {
+          stage: 10,
+          stageLabel: 'FASE 10',
+          stageTitle: 'RUÍNAS SOLARES',
+          theme: 'sunset',
+          worldWidth: 9800,
+          platforms: [
+            { x: 0,    y: 432, w: 840,  h: 120, style: 'ground' },
+            { x: 980,  y: 365, w: 300,  h: 185, style: 'ground' },
+            { x: 1440, y: 300, w: 300,  h: 250, style: 'ground' },
+            { x: 1900, y: 432, w: 960,  h: 120, style: 'ground' },
+            { x: 2240, y: 300, w: 210,  h: 28,  style: 'wood' },
+            { x: 3580, y: 432, w: 940,  h: 120, style: 'ground' },
+            { x: 3920, y: 305, w: 200,  h: 28,  style: 'wood' },
+            { x: 4680, y: 360, w: 340,  h: 190, style: 'ground' },
+            { x: 5180, y: 432, w: 1020, h: 120, style: 'ground' },
+            { x: 5520, y: 295, w: 200,  h: 28,  style: 'wood' },
+            { x: 5820, y: 215, w: 200,  h: 28,  style: 'wood' },
+            { x: 6840, y: 432, w: 960,  h: 120, style: 'ground' },
+            { x: 7180, y: 305, w: 210,  h: 28,  style: 'wood' },
+            { x: 7960, y: 355, w: 340,  h: 195, style: 'ground' },
+            { x: 8440, y: 432, w: 1360, h: 120, style: 'ground' }
+          ],
+          movingPlatforms: [
+            { x: 3020, baseX: 3020, baseY: 345, w: 150, h: 26, ampX: 115, ampY: 0, speed: 2.6, phase: 0,   y: 345, prevX: 3020, prevY: 345, style: 'wood' },
+            { x: 3300, baseX: 3300, baseY: 310, w: 150, h: 26, ampX: 0, ampY: 110, speed: 2.6, phase: 1.5, y: 310, prevX: 3300, prevY: 310, style: 'wood' }
+          ],
+          fallingPlatforms: [
+            { x: 6360, y: 370, origY: 370, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 6580, y: 330, origY: 330, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false }
+          ],
+          questionBlocks: [
+            { x: 380,  y: 295, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 2320, y: 180, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 5600, y: 175, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 },
+            { x: 7260, y: 185, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 }
+          ],
+          fireBars: [
+            { cx: 1130, cy: 280, count: 6, spacing: 18, speed: 2.6, angle: 0.1 },
+            { cx: 1590, cy: 215, count: 6, spacing: 18, speed: -2.6, angle: 1.7 },
+            { cx: 4850, cy: 270, count: 7, spacing: 18, speed: 2.8, angle: 0.4 },
+            { cx: 8130, cy: 265, count: 7, spacing: 18, speed: -2.8, angle: 1.2 }
+          ],
+          springs: [
+            { x: 900,  y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 5280, y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 7720, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 640,  y: 384, w: 48, h: 48 },
+            { x: 6960, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'spiny',  x: 2220, y: 404, w: 40, h: 28, minX: 1980, maxX: 2780, vx: 175 },
+            { type: 'log',    x: 4180, y: 342, w: 125, h: 36 },
+            { type: 'hopper', x: 5680, y: 396, groundY: 432, w: 38, h: 36, vy: 0, jumpTimer: 0.85, dir: -1 },
+            { type: 'bird',   x: 7520, baseY: 325, y: 325, w: 44, h: 26, minX: 7020, maxX: 7680, vx: -195, phase: 0.8 },
+            { type: 'spiny',  x: 8820, y: 404, w: 40, h: 28, minX: 8560, maxX: 9240, vx: 185 }
+          ],
+          pipes: [],
+          scarves: makeScarves([
+            [664, 325], [920, 195], [1590, 150], [2040, 375], [2345, 240],
+            [3095, 270], [3375, 200], [4020, 245], [4240, 392], [5300, 195],
+            [5620, 235], [5920, 155], [6432, 310], [6652, 270], [6984, 325],
+            [7285, 245], [7740, 195], [8680, 375], [8980, 375], [9220, 375]
+          ]),
+          checkpoints: [{ x: 5220, y: 432, activated: false }],
+          boss: null,
+          goal: { x: 9520, y: 432 }
+        };
+
+      // =========================================================================
+      // FASE 11: CIDADELA ESTELAR (Prova Suprema Noturna + Espada + Cano Secreto)
+      // =========================================================================
+      case 11:
+        return {
+          stage: 11,
+          stageLabel: 'FASE 11',
+          stageTitle: 'CIDADELA ESTELAR',
+          theme: 'night',
+          worldWidth: 10000,
+          platforms: [
+            { x: 0,    y: 432, w: 840,  h: 120, style: 'ground' },
+            { x: 460,  y: 300, w: 190,  h: 28,  style: 'wood' },
+            { x: 1000, y: 365, w: 300,  h: 185, style: 'ground' },
+            { x: 1460, y: 300, w: 300,  h: 250, style: 'ground' },
+            { x: 1920, y: 432, w: 980,  h: 120, style: 'ground' },
+            { x: 2260, y: 300, w: 210,  h: 28,  style: 'wood' },
+            { x: 3560, y: 432, w: 960,  h: 120, style: 'ground' },
+            { x: 3920, y: 330, w: 210,  h: 28,  style: 'wood' },
+            { x: 4680, y: 432, w: 1040, h: 120, style: 'ground' },
+            { x: 5020, y: 295, w: 200,  h: 28,  style: 'wood' },
+            { x: 5320, y: 215, w: 200,  h: 28,  style: 'wood' },
+            { x: 6320, y: 360, w: 340,  h: 190, style: 'ground' },
+            { x: 6820, y: 432, w: 980,  h: 120, style: 'ground' },
+            { x: 7180, y: 300, w: 210,  h: 28,  style: 'wood' },
+            { x: 7960, y: 350, w: 340,  h: 200, style: 'ground' },
+            { x: 8460, y: 432, w: 1540, h: 120, style: 'ground' }
+          ],
+          movingPlatforms: [
+            { x: 5880, baseX: 5880, baseY: 340, w: 155, h: 26, ampX: 120, ampY: 0, speed: 2.7, phase: 0.4, y: 340, prevX: 5880, prevY: 340, style: 'wood' }
+          ],
+          fallingPlatforms: [
+            { x: 3040, y: 375, origY: 375, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 3280, y: 335, origY: 335, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false }
+          ],
+          questionBlocks: [
+            { x: 360,  y: 295, w: 42, h: 42, reward: 'sword', used: false, bounceY: 0 },
+            { x: 2340, y: 180, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 5100, y: 175, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 },
+            { x: 7260, y: 180, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 }
+          ],
+          fireBars: [
+            { cx: 1150, cy: 280, count: 6, spacing: 18, speed: 2.7, angle: 0 },
+            { cx: 1610, cy: 215, count: 7, spacing: 18, speed: -2.7, angle: 1.5 },
+            { cx: 6490, cy: 270, count: 7, spacing: 18, speed: 2.8, angle: 0.6 },
+            { cx: 8130, cy: 260, count: 7, spacing: 18, speed: -2.9, angle: 1.3 }
+          ],
+          springs: [
+            { x: 910,  y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 4780, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 680,  y: 384, w: 48, h: 48 },
+            { x: 6940, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'spiny',  x: 2240, y: 404, w: 40, h: 28, minX: 1980, maxX: 2820, vx: 180 },
+            { type: 'hopper', x: 5180, y: 396, groundY: 432, w: 38, h: 36, vy: 0, jumpTimer: 0.8, dir: -1 },
+            { type: 'bird',   x: 7520, baseY: 325, y: 325, w: 44, h: 26, minX: 7020, maxX: 7720, vx: -200, phase: 0.5 },
+            { type: 'spiny',  x: 8880, y: 404, w: 40, h: 28, minX: 8600, maxX: 9360, vx: 190 }
+          ],
+          pipes: [
+            { x: 3990, y: 266, w: 68, h: 64, action: 'enter_bonus', label: '▼ AGACHE NO CANO' }
+          ],
+          scarves: makeScarves([
+            [555, 240], [704, 325], [930, 195], [2060, 375], [2365, 240],
+            [3112, 315], [3352, 275], [4800, 195], [5120, 235], [5420, 155],
+            [5995, 260], [6964, 325], [7285, 240], [7640, 375], [8720, 375],
+            [9180, 375]
+          ]),
+          checkpoints: [{ x: 4720, y: 432, activated: false }],
+          boss: null,
+          goal: { x: 9720, y: 432 },
+          bonusRoom: createBonusRoomData(4240, 340, 17, 6)
+        };
+
+      // =========================================================================
+      // FASE 12: TRONO DE ABRAÃO GESSÉ (CHEFÃO FINAL: ABRAÃO GESSÉ!)
+      // =========================================================================
+      case 12:
+      default:
+        return {
+          stage: 12,
+          stageLabel: 'FASE 12',
+          stageTitle: 'TRONO DE ABRAÃO GESSÉ',
+          theme: 'storm',
+          worldWidth: 10400,
+          platforms: [
+            { x: 0,    y: 432, w: 820,  h: 120, style: 'ground' },
+            { x: 1460, y: 432, w: 880,  h: 120, style: 'ground' },
+            { x: 1760, y: 300, w: 200,  h: 28,  style: 'wood' },
+            { x: 2480, y: 365, w: 320,  h: 185, style: 'ground' },
+            { x: 2940, y: 300, w: 320,  h: 250, style: 'ground' },
+            { x: 3420, y: 432, w: 960,  h: 120, style: 'ground' },
+            { x: 3760, y: 305, w: 200,  h: 28,  style: 'wood' },
+            { x: 4060, y: 225, w: 200,  h: 28,  style: 'wood' },
+            { x: 5000, y: 432, w: 960,  h: 120, style: 'ground' },
+            { x: 5340, y: 300, w: 210,  h: 28,  style: 'wood' },
+            { x: 6120, y: 432, w: 940,  h: 120, style: 'ground' },
+            { x: 6460, y: 295, w: 210,  h: 28,  style: 'wood' },
+            { x: 7220, y: 360, w: 360,  h: 190, style: 'ground' },
+            // Grande Arena Real do Chefão Final: ABRAÃO GESSÉ
+            { x: 7740, y: 432, w: 2660, h: 120, style: 'ground' },
+            { x: 7920, y: 315, w: 170,  h: 26,  style: 'wood' },
+            { x: 8620, y: 315, w: 170,  h: 26,  style: 'wood' }
+          ],
+          movingPlatforms: [
+            { x: 920,  baseX: 920,  baseY: 350, w: 145, h: 26, ampX: 0, ampY: 115, speed: 2.7, phase: 0,   y: 350, prevX: 920,  prevY: 350, style: 'wood' },
+            { x: 1180, baseX: 1180, baseY: 320, w: 145, h: 26, ampX: 0, ampY: 115, speed: 2.7, phase: 2.1, y: 320, prevX: 1180, prevY: 320, style: 'wood' }
+          ],
+          fallingPlatforms: [
+            { x: 4520, y: 375, origY: 375, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false },
+            { x: 4740, y: 335, origY: 335, w: 145, h: 24, triggered: false, timer: 0, respawnTimer: 0, vy: 0, fallen: false }
+          ],
+          questionBlocks: [
+            { x: 380,  y: 295, w: 42, h: 42, reward: 'sword', used: false, bounceY: 0 },
+            { x: 3830, y: 180, w: 42, h: 42, reward: 'shield', used: false, bounceY: 0 },
+            { x: 6540, y: 175, w: 42, h: 42, reward: 'heart', used: false, bounceY: 0 },
+            { x: 8280, y: 265, w: 42, h: 42, reward: 'fire', used: false, bounceY: 0 }
+          ],
+          fireBars: [
+            { cx: 2640, cy: 280, count: 7, spacing: 18, speed: 2.7, angle: 0.2 },
+            { cx: 5760, cy: 335, count: 7, spacing: 18, speed: -2.8, angle: 1.5 },
+            { cx: 7400, cy: 270, count: 7, spacing: 18, speed: 2.9, angle: 0.8 }
+          ],
+          springs: [
+            { x: 2360, y: 408, w: 42, h: 24, bounceAnim: 0 },
+            { x: 6960, y: 408, w: 42, h: 24, bounceAnim: 0 }
+          ],
+          crates: [
+            { x: 620,  y: 384, w: 48, h: 48 },
+            { x: 3540, y: 384, w: 48, h: 48 }
+          ],
+          hazards: [
+            { type: 'spiny',  x: 1880, y: 404, w: 40, h: 28, minX: 1560, maxX: 2220, vx: 185 },
+            { type: 'hopper', x: 3100, y: 264, groundY: 300, w: 38, h: 36, vy: 0, jumpTimer: 0.75, dir: -1 },
+            { type: 'log',    x: 5400, y: 342, w: 125, h: 36 },
+            { type: 'bird',   x: 6720, baseY: 325, y: 325, w: 44, h: 26, minX: 6220, maxX: 6880, vx: -200, phase: 0.5 }
+          ],
+          pipes: [],
+          scarves: makeScarves([
+            [644, 325], [990, 215], [1250, 190], [1860, 240], [2380, 195],
+            [3100, 205], [3860, 245], [4160, 165], [4592, 315], [4812, 275],
+            [5445, 240], [5460, 392], [6565, 235], [6980, 195], [7400, 295],
+            [8005, 255], [8705, 255], [8220, 375], [8400, 375], [8860, 375]
+          ]),
+          checkpoints: [
+            { x: 3620, y: 432, activated: false },
+            { x: 7500, y: 360, activated: false }
+          ],
+          boss: {
+            type: 'abraao_gesse',
+            name: 'ABRAÃO GESSÉ',
+            title: 'CRIADOR SUPREMO · ABRAÃO GESSÉ',
+            colorMain: '#7d2ae8',
+            colorLight: '#ffd426',
+            colorDark: '#45118a',
+            x: 8620,
+            y: 352,
+            w: 80,
+            h: 80,
+            vx: -280,
+            vy: 0,
+            hp: 8,
+            maxHp: 8,
+            speed: 280,
+            jumpForce: -685,
+            onGround: true,
+            hurtTimer: 0,
+            actionTimer: 1.5,
+            defeated: false,
+            arenaMinX: 7800,
+            arenaMaxX: 8920
+          },
+          goal: { x: 9360, y: 432 }
+        };
+    }
   }
 
   function resetGame(stageToLoad = selectedStage) {
     selectedStage = stageToLoad;
     scoreAlreadySavedThisRun = false;
-    const level = stageToLoad === 2 ? createStage2Data() : createStage1Data();
+    let level;
+    if (stageToLoad === 1) level = createStage1Data();
+    else if (stageToLoad === 2) level = createStage2Data();
+    else level = createHandcraftedStage(stageToLoad);
+
     world = {
       ...level,
       inBonus: false,
@@ -1923,6 +3073,10 @@
       pipeCooldown: 0,
       particles: [],
       floatingTexts: [],
+      powerItems: [],
+      projectiles: [],
+      bossProjectiles: [],
+      shockwaves: [],
       player: {
         x: 110,
         y: 348,
@@ -1938,16 +3092,21 @@
         animTimer: 0,
         stepSoundTimer: 0,
         invulnTimer: 0,
+        shieldTimer: 0,
+        weapon: null, // null | 'fire' | 'sword'
+        attackCooldown: 0,
+        swordSwingTimer: 0,
         lives: 3,
         scarves: 0,
         spawnX: 110,
         spawnY: 348
       }
     };
+    updateActionButtonUI();
   }
 
   /**
-   * 5. CONTROLES DE TECLADO E TOUCH (MULTI-TOUCH RESPONSIVO)
+   * 5. CONTROLES DE TECLADO, PODERES E TOUCH
    */
   function triggerJumpPress() {
     sfx.init();
@@ -1964,6 +3123,56 @@
     }
   }
 
+  function triggerSpecialAttack() {
+    sfx.init();
+    if (gameState !== 'PLAYING' || !world) return;
+    const p = world.player;
+    if (p.attackCooldown > 0 || !p.weapon) return;
+
+    if (p.weapon === 'fire') {
+      p.attackCooldown = 0.34;
+      sfx.fireball();
+      world.projectiles.push({
+        x: p.face > 0 ? p.x + p.w + 4 : p.x - 16,
+        y: p.y + p.h * 0.45,
+        vx: p.face * 540,
+        vy: 140,
+        r: 9,
+        life: 1.8
+      });
+    } else if (p.weapon === 'sword') {
+      p.attackCooldown = 0.32;
+      p.swordSwingTimer = 0.22;
+      sfx.swordSlash();
+      const slashX = p.face > 0 ? p.x + p.w - 4 : p.x - 66;
+      const slashY = p.y + 8;
+      const slashW = 70;
+      const slashH = p.h - 10;
+
+      spawnParticles(slashX + slashW / 2, slashY + slashH / 2, '#73d7ff', 10, 160);
+
+      // Corta inimigos no alcance da espada (exceto Spinies espinhosos)
+      if (!world.inBonus) {
+        for (let i = world.hazards.length - 1; i >= 0; i--) {
+          const h = world.hazards[i];
+          if (['patrol', 'bird', 'hopper'].includes(h.type)) {
+            if (aabb(slashX, slashY, slashW, slashH, h.x, h.y, h.w, h.h)) {
+              spawnParticles(h.x + h.w / 2, h.y + h.h / 2, '#ffd426', 16, 210);
+              spawnFloatingText(h.x, h.y - 10, '⚔️ DERROTADO!', '#73d7ff');
+              world.hazards.splice(i, 1);
+            }
+          }
+        }
+        if (world.boss && !world.boss.defeated) {
+          const b = world.boss;
+          if (aabb(slashX, slashY, slashW, slashH, b.x, b.y, b.w, b.h)) {
+            damageBoss(1, '⚔️ GOLPE DE ESPADA!');
+          }
+        }
+      }
+    }
+  }
+
   window.addEventListener('keydown', (e) => {
     if (document.activeElement === playerNameInput) return;
 
@@ -1975,6 +3184,9 @@
     if (e.key === 'ArrowDown' || e.key.toLowerCase() === 's') keys.duck = true;
     if ((e.key === ' ' || e.key === 'ArrowUp' || e.key.toLowerCase() === 'w') && !e.repeat) {
       triggerJumpPress();
+    }
+    if ((e.key.toLowerCase() === 'x' || e.key === 'Control' || e.key.toLowerCase() === 'k') && !e.repeat) {
+      triggerSpecialAttack();
     }
     if (e.key.toLowerCase() === 'p' && !e.repeat) {
       togglePause();
@@ -2038,6 +3250,11 @@
     () => { triggerJumpPress(); },
     () => { triggerJumpRelease(); }
   );
+  bindTouchButton(
+    btnAction,
+    () => { triggerSpecialAttack(); },
+    () => {}
+  );
 
   btnMute.addEventListener('click', () => {
     sfx.init();
@@ -2071,12 +3288,13 @@
   function togglePause() {
     if (gameState === 'PLAYING') {
       gameState = 'PAUSED';
+      sfx.stopMusic();
       btnPause.textContent = '▶';
       stageSelector.classList.remove('hidden');
       updateStageSelectorUI();
       modalBadge.textContent = `${world.stageLabel} · JOGO PAUSADO`;
       modalTitle.textContent = 'DESCANSO NA TRILHA';
-      modalDesc.innerHTML = 'Respire fundo, Desbravador! Clique abaixo para continuar sua missão ou trocar de fase.';
+      modalDesc.innerHTML = 'Respire fundo, Desbravador! Clique abaixo para continuar sua missão ou escolher outra fase.';
       modalStats.classList.add('hidden');
       recordForm.classList.add('hidden');
       rankingPanel.classList.add('hidden');
@@ -2091,6 +3309,7 @@
         resetGame(selectedStage);
       }
       gameState = 'PLAYING';
+      sfx.startMusic(sfx.bgmMode);
       btnPause.textContent = '❚❚';
       modalLayer.classList.add('hidden');
     }
@@ -2107,6 +3326,7 @@
     }
     resetGame(selectedStage);
     gameState = 'PLAYING';
+    sfx.startMusic('adventure');
     btnPause.textContent = '❚❚';
     modalLayer.classList.add('hidden');
   });
@@ -2114,8 +3334,10 @@
   btnNextStage.addEventListener('click', () => {
     sfx.init();
     enterFullscreenNow();
-    resetGame(2);
+    const nextNum = Math.min(TOTAL_STAGES, (world ? world.stage : 1) + 1);
+    resetGame(nextNum);
     gameState = 'PLAYING';
+    sfx.startMusic('adventure');
     btnPause.textContent = '❚❚';
     modalLayer.classList.add('hidden');
   });
@@ -2131,16 +3353,6 @@
       rankingPanel.classList.add('hidden');
       btnToggleRanking.textContent = '🏆 VER RANKING TOP 50';
     }
-  });
-
-  tabRankStage1.addEventListener('click', () => {
-    sfx.init();
-    fetchGlobalRanking(1);
-  });
-
-  tabRankStage2.addEventListener('click', () => {
-    sfx.init();
-    fetchGlobalRanking(2);
   });
 
   btnSaveScore.addEventListener('click', async () => {
@@ -2177,10 +3389,18 @@
   });
 
   /**
-   * 6. FÍSICA, COLISÕES, CANO SECRETO E LÓGICA DE JOGO
+   * 6. FÍSICA, COLISÕES, BLOCOS ?, FIRE BARS, MOLAS, CHEFÕES E LÓGICA DE JOGO
    */
   function aabb(ax, ay, aw, ah, bx, by, bw, bh) {
     return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+  }
+
+  function circleRectCollide(cx, cy, cr, rx, ry, rw, rh) {
+    const testX = Math.max(rx, Math.min(cx, rx + rw));
+    const testY = Math.max(ry, Math.min(cy, ry + rh));
+    const dx = cx - testX;
+    const dy = cy - testY;
+    return (dx * dx + dy * dy) <= cr * cr;
   }
 
   function spawnParticles(x, y, color, count = 10, speed = 170) {
@@ -2212,7 +3432,7 @@
 
   function damagePlayer() {
     const p = world.player;
-    if (p.invulnTimer > 0) return;
+    if (p.invulnTimer > 0 || p.shieldTimer > 0) return;
     p.lives--;
     p.invulnTimer = 1.4;
     world.shakeTimer = 0.25;
@@ -2225,6 +3445,43 @@
     }
   }
 
+  function damageBoss(amount = 1, label = '-1 HP') {
+    const b = world.boss;
+    if (!b || b.defeated || b.hurtTimer > 0) return;
+    b.hp = Math.max(0, b.hp - amount);
+    b.hurtTimer = 0.45;
+    world.shakeTimer = 0.22;
+    sfx.bossHit();
+    spawnParticles(b.x + b.w / 2, b.y + b.h / 2, b.colorLight, 20, 230);
+    spawnFloatingText(b.x, b.y - 16, label, b.colorLight);
+
+    if (b.hp <= 0) {
+      b.defeated = true;
+      sfx.setMusicMode('adventure');
+      sfx.playTone(523.25, 1046.5, 0.35, 'square', 0.16);
+      spawnParticles(b.x + b.w / 2, b.y + b.h / 2, '#ffd426', 36, 260);
+      spawnFloatingText(b.x - 20, b.y - 30, `🏆 ${b.name} VENCIDO!`, '#ffd426');
+    }
+  }
+
+  function hitQuestionBlock(qb) {
+    if (qb.used) return;
+    qb.used = true;
+    qb.bounceY = -12;
+    sfx.blockHit();
+    spawnParticles(qb.x + qb.w / 2, qb.y, '#ffd426', 12, 150);
+
+    world.powerItems.push({
+      type: qb.reward, // 'fire' | 'shield' | 'sword' | 'heart' | 'scarf'
+      x: qb.x + 6,
+      y: qb.y - 32,
+      w: 30,
+      h: 30,
+      vy: -180,
+      phase: 0
+    });
+  }
+
   function endGame(won, customReason = '') {
     gameState = 'ENDED';
     const p = world.player;
@@ -2232,9 +3489,14 @@
     const secs = String(Math.floor(world.elapsed % 60)).padStart(2, '0');
 
     let rank = 'ASPIRANTE';
-    if (won && p.scarves === 20) rank = world.stage === 2 ? 'BRAVO LENDA' : 'LENDA 100%';
+    if (won && p.scarves === 20) rank = 'LENDA 100%';
     else if (won && p.scarves >= 15) rank = 'EXPLORADOR';
-    else if (won) rank = world.stage === 2 ? 'BRAVO DBV' : 'DESBRAVADOR';
+    else if (won) {
+      if (world.stage >= 12) rank = 'PESQUISADOR';
+      else if (world.stage >= 8) rank = 'COMPANHEIRO';
+      else if (world.stage >= 4) rank = 'AMIGO';
+      else rank = 'DESBRAVADOR';
+    }
 
     stageSelector.classList.remove('hidden');
     modalStats.classList.remove('hidden');
@@ -2244,20 +3506,23 @@
 
     if (won && p.scarves >= 10) {
       unlockPermanentDbvBadge();
-      if (world.stage === 1) {
-        unlockStage2();
+      const nextStageNum = world.stage + 1;
+      if (nextStageNum <= TOTAL_STAGES) {
+        unlockUpToStage(nextStageNum);
       }
       sfx.win();
 
-      if (world.stage === 1) {
-        modalBadge.textContent = '🏅 FASE 2 DESBLOQUEADA: A TRILHA DO BRAVO!';
-        modalTitle.textContent = p.scarves === 20 ? 'DESBRAVADOR MESTRE!' : 'TÍTULO CONQUISTADO!';
-        modalDesc.innerHTML = `Parabéns! Você concluiu a <strong>Fase 1</strong> com <strong>${p.scarves} de 20 lenços</strong> em <strong>${formatTimeMMSS(world.elapsed)}</strong> e liberou <strong>A Trilha do Bravo (Fase 2)</strong>!`;
+      if (nextStageNum <= TOTAL_STAGES) {
+        const nextMeta = STAGE_META[nextStageNum];
+        modalBadge.textContent = `🏅 FASE ${nextStageNum} DESBLOQUEADA: ${nextMeta.title}!`;
+        modalTitle.textContent = p.scarves === 20 ? 'DESBRAVADOR MESTRE!' : `${world.stageLabel} CONCLUÍDA!`;
+        modalDesc.innerHTML = `Parabéns! Você concluiu a <strong>${world.stageLabel}</strong> com <strong>${p.scarves} de 20 lenços</strong> em <strong>${formatTimeMMSS(world.elapsed)}</strong> e liberou a <strong>Fase ${nextStageNum}: ${nextMeta.title}</strong>!`;
+        btnNextStage.textContent = `▶ IR PARA FASE ${nextStageNum}: ${nextMeta.title}`;
         btnNextStage.classList.remove('hidden');
       } else {
-        modalBadge.textContent = '🔥 CAMPEÃO DA TRILHA DO BRAVO!';
-        modalTitle.textContent = p.scarves === 20 ? 'BRAVO SUPREMO 100%!' : 'TRILHA CONCLUÍDA!';
-        modalDesc.innerHTML = `Incrível! Você superou <strong>A Trilha do Bravo</strong> com <strong>${p.scarves} de 20 lenços</strong> em <strong>${formatTimeMMSS(world.elapsed)}</strong>!`;
+        modalBadge.textContent = '👑 CAMPEÃO SUPREMO · CRIADO POR ABRAÃO GESSÉ';
+        modalTitle.textContent = 'LENDA DOS DESBRAVADORES!';
+        modalDesc.innerHTML = `Épico! Você derrotou o Mestre <strong>ABRAÃO GESSÉ</strong> e concluiu todas as <strong>12 fases</strong> com <strong>${p.scarves} de 20 lenços</strong> em <strong>${formatTimeMMSS(world.elapsed)}</strong>! <strong>MARANATA!</strong>`;
         btnNextStage.classList.add('hidden');
       }
 
@@ -2280,7 +3545,7 @@
 
       modalBadge.textContent = `${world.stageLabel} · FIM DA EXPEDIÇÃO`;
       modalTitle.textContent = 'QUASE LÁ!';
-      modalDesc.innerHTML = customReason || `Você chegou ao fim com <strong>${p.scarves}/10 lenços</strong> necessários para entrar no ranking. Explore as plataformas altas e tente novamente!`;
+      modalDesc.innerHTML = customReason || `Você chegou ao fim com <strong>${p.scarves}/10 lenços</strong> necessários para entrar no ranking. Explore as plataformas, molas e Blocos "?" e tente novamente!`;
     }
 
     updateStageSelectorUI();
@@ -2327,25 +3592,103 @@
 
     const p = world.player;
     if (p.invulnTimer > 0) p.invulnTimer -= dt;
+    if (p.shieldTimer > 0) p.shieldTimer = Math.max(0, p.shieldTimer - dt);
+    if (p.attackCooldown > 0) p.attackCooldown = Math.max(0, p.attackCooldown - dt);
+    if (p.swordSwingTimer > 0) p.swordSwingTimer = Math.max(0, p.swordSwingTimer - dt);
     if (world.shakeTimer > 0) world.shakeTimer -= dt;
     if (world.pipeCooldown > 0) world.pipeCooldown -= dt;
 
-    // Atualiza plataformas móveis e obstáculos que sobem/descem na fase principal
+    // Atualiza plataformas móveis, pontes que caem e reaparecem, Fire Bars, Molas e inimigos
     if (!world.inBonus) {
       for (const mp of world.movingPlatforms) {
+        mp.prevX = mp.x;
         mp.prevY = mp.y;
-        mp.y = mp.baseY + Math.sin(world.elapsed * mp.speed + mp.phase) * mp.ampY;
+        const baseX = typeof mp.baseX === 'number' ? mp.baseX : mp.x;
+        const ampX = mp.ampX || 0;
+        const ampY = mp.ampY || 0;
+        mp.x = baseX + Math.sin(world.elapsed * mp.speed + mp.phase) * ampX;
+        mp.y = mp.baseY + Math.sin(world.elapsed * mp.speed + mp.phase) * ampY;
 
-        // Se o jogador estava apoiado nesta plataforma no frame anterior, acompanha o movimento dela antes da colisão
         const footY = p.y + p.h;
-        const onThisPlatHoriz = (p.x + p.w - 4 > mp.x) && (p.x + 4 < mp.x + mp.w);
+        const onThisPlatHoriz = (p.x + p.w - 4 > mp.prevX) && (p.x + 4 < mp.prevX + mp.w);
         if (p.onGround && p.vy >= 0 && onThisPlatHoriz && Math.abs(footY - mp.prevY) <= 10) {
+          p.x += (mp.x - mp.prevX);
           p.y = mp.y - p.h;
         }
       }
+
+      // Pontes que caem após 0.55s e reaparecem após 3.5s
+      for (const fp of world.fallingPlatforms) {
+        if (fp.triggered && !fp.fallen) {
+          fp.timer += dt;
+          if (fp.timer >= 0.55) {
+            fp.vy += 980 * dt;
+            fp.y += fp.vy * dt;
+            if (fp.y > H + 120) {
+              fp.fallen = true;
+              fp.respawnTimer = 3.5;
+            }
+          }
+        } else if (fp.fallen) {
+          fp.respawnTimer -= dt;
+          if (fp.respawnTimer <= 0) {
+            fp.y = fp.origY;
+            fp.triggered = false;
+            fp.timer = 0;
+            fp.vy = 0;
+            fp.fallen = false;
+            spawnParticles(fp.x + fp.w / 2, fp.y + 10, '#ffd426', 8, 90);
+          }
+        }
+      }
+
+      for (const qb of world.questionBlocks) {
+        if (qb.bounceY < 0) {
+          qb.bounceY = Math.min(0, qb.bounceY + 75 * dt);
+        }
+      }
+
+      for (const sp of world.springs) {
+        if (sp.bounceAnim > 0) {
+          sp.bounceAnim = Math.max(0, sp.bounceAnim - dt * 4);
+        }
+      }
+
+      // Atualiza Barras de Fogo Giratórias (Fire Bars) e verifica colisão contínua
+      for (const fb of world.fireBars) {
+        fb.angle += fb.speed * dt;
+        for (let idx = 1; idx <= fb.count; idx++) {
+          const dist = idx * fb.spacing;
+          const fx = fb.cx + Math.cos(fb.angle) * dist;
+          const fy = fb.cy + Math.sin(fb.angle) * dist;
+          if (circleRectCollide(fx, fy, 8, p.x + 5, p.y + 4, p.w - 10, p.h - 6)) {
+            damagePlayer();
+            if (gameState === 'ENDED') return;
+            break;
+          }
+        }
+      }
+
       for (const h of world.hazards) {
         if (h.type === 'bobber') {
           h.y = h.baseY + Math.sin(world.elapsed * h.speed + h.phase) * h.ampY;
+        } else if (h.type === 'bird') {
+          h.x += h.vx * dt;
+          h.y = h.baseY + Math.sin(world.elapsed * 5 + h.phase) * 18;
+          if (h.x <= h.minX) { h.x = h.minX; h.vx = Math.abs(h.vx); }
+          else if (h.x + h.w >= h.maxX) { h.x = h.maxX - h.w; h.vx = -Math.abs(h.vx); }
+        } else if (h.type === 'hopper') {
+          h.jumpTimer -= dt;
+          if (h.jumpTimer <= 0 && h.y + h.h >= h.groundY - 1) {
+            h.vy = -440;
+            h.jumpTimer = 1.45;
+          }
+          h.vy += 1200 * dt;
+          h.y += h.vy * dt;
+          if (h.y + h.h >= h.groundY) {
+            h.y = h.groundY - h.h;
+            h.vy = 0;
+          }
         }
       }
     }
@@ -2353,6 +3696,8 @@
     const activeWorldWidth = world.inBonus ? world.bonusRoom.worldWidth : world.worldWidth;
     const activePlatforms = world.inBonus ? world.bonusRoom.platforms : world.platforms;
     const activeMovingPlats = world.inBonus ? [] : world.movingPlatforms;
+    const activeFallingPlats = world.inBonus ? [] : world.fallingPlatforms.filter(fp => !fp.fallen && fp.timer < 0.55);
+    const activeQBlocks = world.inBonus ? [] : world.questionBlocks;
     const activeCrates = world.inBonus ? [] : world.crates;
     const activePipes = world.inBonus ? world.bonusRoom.pipes : world.pipes;
     const activeScarves = world.inBonus ? world.bonusRoom.scarves : world.scarves;
@@ -2376,15 +3721,21 @@
     p.h = p.ducking ? 54 : 84;
     p.y = prevBottom - p.h;
 
-    const solids = [...activePlatforms, ...activeMovingPlats, ...activeCrates, ...activePipes];
+    const solids = [...activePlatforms, ...activeMovingPlats, ...activeFallingPlats, ...activeQBlocks, ...activeCrates, ...activePipes];
     const logs = world.inBonus ? [] : world.hazards.filter(h => h.type === 'log');
 
     p.x += p.vx * dt;
     p.x = Math.max(16, Math.min(activeWorldWidth - p.w - 16, p.x));
 
+    // Se o chefão estiver vivo e o jogador chegou na arena, trava a saída à direita até derrotá-lo!
+    if (!world.inBonus && world.boss && !world.boss.defeated) {
+      if (p.x + p.w > world.boss.arenaMaxX + 40) {
+        p.x = world.boss.arenaMaxX + 40 - p.w;
+      }
+    }
+
     for (const s of solids) {
       if (aabb(p.x, p.y, p.w, p.h, s.x, s.y, s.w, s.h)) {
-        // Ignora empurrão lateral se os pés do personagem já estiverem no topo de uma plataforma móvel
         if (typeof s.prevY === 'number' && (p.y + p.h) <= s.y + 12) {
           continue;
         }
@@ -2415,7 +3766,7 @@
     }
 
     if (p.jumpBufferTimer > 0 && p.coyoteTimer > 0 && !p.ducking) {
-      p.vy = -660;
+      p.vy = -735;
       p.onGround = false;
       p.coyoteTimer = 0;
       p.jumpBufferTimer = 0;
@@ -2436,14 +3787,36 @@
           p.vy = 0;
           p.onGround = true;
           standingPlatform = s;
+          if (typeof s.triggered === 'boolean' && !s.triggered) {
+            s.triggered = true;
+          }
         } else if (p.vy < 0) {
           p.y = s.y + s.h;
           p.vy = 0;
+          if (typeof s.reward === 'string' && !s.used) {
+            hitQuestionBlock(s);
+          }
         }
       }
     }
 
-    // Verifica se o jogador agachou em cima de um Cano Verde estilo Super Mario!
+    // Colisão com Molas / Trampolins (lança o jogador para o alto: vy = -960)
+    if (!world.inBonus) {
+      for (const sp of world.springs) {
+        if (aabb(p.x + 4, p.y, p.w - 8, p.h, sp.x, sp.y, sp.w, sp.h)) {
+          if (p.vy >= 0) {
+            p.y = sp.y - p.h;
+            p.vy = -960;
+            p.onGround = false;
+            sp.bounceAnim = 1.0;
+            sfx.spring();
+            spawnParticles(sp.x + sp.w / 2, sp.y, '#ffd426', 12, 160);
+          }
+        }
+      }
+    }
+
+    // Verifica se o jogador agachou em cima de um Cano Verde
     if (standingPlatform && standingPlatform.action && p.ducking && world.pipeCooldown <= 0) {
       const playerCenterX = p.x + p.w / 2;
       if (playerCenterX >= standingPlatform.x + 8 && playerCenterX <= standingPlatform.x + standingPlatform.w - 8) {
@@ -2485,6 +3858,14 @@
       if (world.inBonus) {
         world.inBonus = false;
       }
+      for (const fp of world.fallingPlatforms) {
+        fp.y = fp.origY;
+        fp.triggered = false;
+        fp.timer = 0;
+        fp.respawnTimer = 0;
+        fp.vy = 0;
+        fp.fallen = false;
+      }
       p.x = p.spawnX;
       p.y = p.spawnY - 40;
       p.vx = 0;
@@ -2505,11 +3886,13 @@
       p.animTimer += dt * 2.5;
     }
 
+    // Colisão com inimigos e obstáculos (patrol, spiny, bobber, bird, hopper)
     if (!world.inBonus) {
-      for (const h of world.hazards) {
+      for (let i = world.hazards.length - 1; i >= 0; i--) {
+        const h = world.hazards[i];
         if (h.type === 'log') continue;
 
-        if (h.type === 'patrol') {
+        if (h.type === 'patrol' || h.type === 'spiny') {
           h.x += h.vx * dt;
           if (h.x <= h.minX) {
             h.x = h.minX;
@@ -2521,9 +3904,234 @@
         }
 
         if (aabb(p.x + 5, p.y + 4, p.w - 10, p.h - 6, h.x + 4, h.y + 4, h.w - 8, h.h - 6)) {
+          const isStompable = ['patrol', 'bird', 'hopper'].includes(h.type);
+          // Escudo (4s) ativo destrói monstros comuns ao encostar
+          if (p.shieldTimer > 0 && (isStompable || h.type === 'spiny')) {
+            spawnParticles(h.x + h.w / 2, h.y + h.h / 2, '#54e8ff', 14, 190);
+            spawnFloatingText(h.x, h.y - 10, '🛡️ ESCUDO!', '#54e8ff');
+            world.hazards.splice(i, 1);
+          } else if (isStompable && p.vy > 0 && (prevBottom <= h.y + 18)) {
+            p.vy = -440;
+            sfx.bossHit();
+            spawnParticles(h.x + h.w / 2, h.y + h.h / 2, '#ffd426', 14, 190);
+            world.hazards.splice(i, 1);
+          } else {
+            // Inimigos 'spiny' têm espinhos no casco — pular em cima causa dano!
+            damagePlayer();
+            if (gameState === 'ENDED') return;
+          }
+        }
+      }
+    }
+
+    // Atualiza itens que saíram dos Blocos "?"
+    for (let i = world.powerItems.length - 1; i >= 0; i--) {
+      const it = world.powerItems[i];
+      it.phase += dt * 5;
+      if (it.vy < 0) {
+        it.y += it.vy * dt;
+        it.vy += 520 * dt;
+      }
+      const floatY = it.y + Math.sin(it.phase) * 4;
+      if (aabb(p.x, p.y, p.w, p.h, it.x, floatY, it.w, it.h)) {
+        sfx.powerup();
+        if (it.type === 'fire') {
+          p.weapon = 'fire';
+          updateActionButtonUI();
+          spawnFloatingText(it.x - 15, floatY - 12, '🔥 PODER DE FOGO!', '#ff8c24');
+        } else if (it.type === 'sword') {
+          p.weapon = 'sword';
+          updateActionButtonUI();
+          spawnFloatingText(it.x - 15, floatY - 12, '⚔️ ESPADA DOURADA!', '#73d7ff');
+        } else if (it.type === 'shield') {
+          p.shieldTimer = 4.0;
+          spawnFloatingText(it.x - 15, floatY - 12, '🛡️ ESCUDO (4s)!', '#54e8ff');
+        } else if (it.type === 'heart') {
+          p.lives = Math.min(3, p.lives + 1);
+          spawnFloatingText(it.x - 10, floatY - 12, '+1 ❤️ VIDA!', '#ff6b6b');
+        } else {
+          p.scarves = Math.min(20, p.scarves + 1);
+          spawnFloatingText(it.x - 10, floatY - 12, `+1 (${p.scarves}/20)`, '#ffe66d');
+        }
+        spawnParticles(it.x + 15, floatY + 15, '#ffd426', 16, 180);
+        world.powerItems.splice(i, 1);
+      }
+    }
+
+    // Atualiza bolas de fogo lançadas pelo jogador
+    for (let i = world.projectiles.length - 1; i >= 0; i--) {
+      const pr = world.projectiles[i];
+      pr.life -= dt;
+      pr.x += pr.vx * dt;
+      pr.vy += 980 * dt;
+      pr.y += pr.vy * dt;
+
+      for (const s of solids) {
+        if (aabb(pr.x - pr.r, pr.y - pr.r, pr.r * 2, pr.r * 2, s.x, s.y, s.w, s.h)) {
+          if (pr.vy > 0 && pr.y - pr.r < s.y) {
+            pr.y = s.y - pr.r;
+            pr.vy = -310;
+          } else {
+            pr.life = 0;
+          }
+        }
+      }
+
+      if (!world.inBonus && pr.life > 0) {
+        for (let hi = world.hazards.length - 1; hi >= 0; hi--) {
+          const h = world.hazards[hi];
+          if (['patrol', 'bird', 'hopper', 'spiny'].includes(h.type) && aabb(pr.x - pr.r, pr.y - pr.r, pr.r * 2, pr.r * 2, h.x, h.y, h.w, h.h)) {
+            spawnParticles(h.x + h.w / 2, h.y + h.h / 2, '#ff7b29', 16, 200);
+            world.hazards.splice(hi, 1);
+            pr.life = 0;
+            break;
+          }
+        }
+      }
+
+      if (!world.inBonus && pr.life > 0 && world.boss && !world.boss.defeated) {
+        const b = world.boss;
+        if (aabb(pr.x - pr.r, pr.y - pr.r, pr.r * 2, pr.r * 2, b.x, b.y, b.w, b.h)) {
+          damageBoss(1, '🔥 -1 HP!');
+          pr.life = 0;
+        }
+      }
+
+      if (pr.life <= 0) {
+        spawnParticles(pr.x, pr.y, '#ff9429', 6, 110);
+        world.projectiles.splice(i, 1);
+      }
+    }
+
+    // IA e Combate dos 3 Chefões (Guardião da Floresta, Luiz Felipe, Abraão Gessé)
+    if (!world.inBonus && world.boss && !world.boss.defeated) {
+      const b = world.boss;
+      if (b.hurtTimer > 0) b.hurtTimer -= dt;
+
+      if (Math.abs(p.x - b.x) < 820) {
+        // Troca automaticamente para a música de Batalha contra Chefão!
+        sfx.setMusicMode('boss');
+
+        const isEnraged = (b.type === 'abraao_gesse' && b.hp <= 4);
+        const speedMult = isEnraged ? 1.32 : 1.0;
+
+        b.actionTimer -= dt;
+        if (b.actionTimer <= 0) {
+          b.actionTimer = isEnraged ? 1.05 : (b.type === 'guardiao' ? 2.0 : (b.type === 'luiz_felipe' ? 1.65 : 1.45));
+
+          if (b.onGround) {
+            b.vy = b.jumpForce;
+            b.onGround = false;
+            b.vx = (p.x < b.x ? -1 : 1) * b.speed * speedMult * 1.15;
+          }
+
+          const dir = p.x < b.x ? -1 : 1;
+          if (b.type === 'luiz_felipe') {
+            world.bossProjectiles.push({
+              x: b.x + b.w / 2,
+              y: b.y + b.h - 24,
+              vx: dir * 340,
+              vy: 0,
+              r: 10,
+              color: '#73b3ff',
+              life: 2.6
+            });
+          } else if (b.type === 'abraao_gesse') {
+            // Projétil duplo: um rasteiro reto e um em arco elevado!
+            world.bossProjectiles.push({
+              x: b.x + b.w / 2,
+              y: b.y + b.h - 22,
+              vx: dir * (isEnraged ? 410 : 350),
+              vy: 0,
+              r: 10,
+              color: '#ffd426',
+              life: 2.8
+            });
+            world.bossProjectiles.push({
+              x: b.x + b.w / 2,
+              y: b.y + 24,
+              vx: dir * 290,
+              vy: -380,
+              gravity: 780,
+              r: 10,
+              color: '#c77dff',
+              life: 2.8
+            });
+          }
+        }
+
+        b.x += b.vx * dt;
+        if (b.x <= b.arenaMinX) {
+          b.x = b.arenaMinX;
+          b.vx = Math.abs(b.speed * speedMult);
+        } else if (b.x + b.w >= b.arenaMaxX) {
+          b.x = b.arenaMaxX - b.w;
+          b.vx = -Math.abs(b.speed * speedMult);
+        }
+
+        const wasInAir = !b.onGround;
+        b.vy += 1550 * dt;
+        b.y += b.vy * dt;
+        if (b.y + b.h >= 432) {
+          b.y = 432 - b.h;
+          b.vy = 0;
+          b.onGround = true;
+          // Guardião da Floresta cria ondas de choque rasteiras ao aterrissar!
+          if (wasInAir && b.type === 'guardiao') {
+            world.shakeTimer = 0.16;
+            world.shockwaves.push({ x: b.x, y: 416, vx: -290, w: 26, h: 16, life: 1.8 });
+            world.shockwaves.push({ x: b.x + b.w, y: 416, vx: 290, w: 26, h: 16, life: 1.8 });
+          }
+        }
+
+        // Colisão entre Desbravador e Chefão
+        if (aabb(p.x + 4, p.y + 4, p.w - 8, p.h - 4, b.x + 4, b.y + 4, b.w - 8, b.h - 4)) {
+          if (p.vy > 0 && prevBottom <= b.y + 28) {
+            p.vy = -570;
+            damageBoss(1, '👟 PISÃO -1 HP!');
+          } else if (p.shieldTimer > 0) {
+            p.vx = (p.x < b.x ? -1 : 1) * 260;
+          } else {
+            damagePlayer();
+            if (gameState === 'ENDED') return;
+          }
+        }
+      }
+    }
+
+    // Ondas de choque rasteiras do Guardião da Floresta
+    for (let i = world.shockwaves.length - 1; i >= 0; i--) {
+      const sw = world.shockwaves[i];
+      sw.x += sw.vx * dt;
+      sw.life -= dt;
+      if (aabb(p.x + 6, p.y + 6, p.w - 12, p.h - 6, sw.x, sw.y, sw.w, sw.h)) {
+        if (p.shieldTimer <= 0) {
           damagePlayer();
           if (gameState === 'ENDED') return;
         }
+        sw.life = 0;
+      }
+      if (sw.life <= 0) world.shockwaves.splice(i, 1);
+    }
+
+    // Projéteis lançados por Luiz Felipe e Abraão Gessé
+    for (let i = world.bossProjectiles.length - 1; i >= 0; i--) {
+      const bp = world.bossProjectiles[i];
+      bp.x += bp.vx * dt;
+      if (bp.gravity) {
+        bp.vy += bp.gravity * dt;
+        bp.y += bp.vy * dt;
+      }
+      bp.life -= dt;
+      if (aabb(p.x + 6, p.y + 6, p.w - 12, p.h - 10, bp.x - bp.r, bp.y - bp.r, bp.r * 2, bp.r * 2)) {
+        if (p.shieldTimer <= 0) {
+          damagePlayer();
+          if (gameState === 'ENDED') return;
+        }
+        bp.life = 0;
+      }
+      if (bp.life <= 0) {
+        world.bossProjectiles.splice(i, 1);
       }
     }
 
@@ -2532,7 +4140,7 @@
       const bobY = sc.y + Math.sin(world.elapsed * 4.5 + sc.phase) * 5;
       if (aabb(p.x - 4, p.y - 4, p.w + 8, p.h + 8, sc.x - 16, bobY - 16, 32, 32)) {
         sc.taken = true;
-        p.scarves++;
+        p.scarves = Math.min(20, p.scarves + 1);
         sfx.scarf();
         spawnParticles(sc.x, bobY, '#ffd426', 14, 185);
         spawnFloatingText(sc.x - 14, bobY - 18, `+1 (${p.scarves}/20)`, '#ffe66d');
@@ -2540,19 +4148,24 @@
     }
 
     if (!world.inBonus) {
-      const cp = world.checkpoint;
-      if (!cp.activated && Math.abs(p.x - cp.x) < 48) {
-        cp.activated = true;
-        p.spawnX = cp.x - 10;
-        p.spawnY = cp.y - 90;
-        sfx.checkpoint();
-        spawnParticles(cp.x, cp.y - 30, '#ffae19', 22, 200);
-        spawnFloatingText(cp.x - 45, cp.y - 75, 'CHECKPOINT!', '#7dff9b');
+      for (const cp of world.checkpoints) {
+        if (!cp.activated && Math.abs(p.x - cp.x) < 48) {
+          cp.activated = true;
+          p.spawnX = cp.x - 10;
+          p.spawnY = cp.y - 90;
+          sfx.checkpoint();
+          spawnParticles(cp.x, cp.y - 30, '#ffae19', 22, 200);
+          spawnFloatingText(cp.x - 45, cp.y - 75, 'CHECKPOINT!', '#7dff9b');
+        }
       }
 
       if (p.x + p.w >= world.goal.x) {
-        endGame(p.scarves >= 10);
-        return;
+        if (world.boss && !world.boss.defeated) {
+          p.x = world.goal.x - p.w - 4;
+        } else {
+          endGame(p.scarves >= 10);
+          return;
+        }
       }
     }
 
@@ -2576,15 +4189,15 @@
   }
 
   /**
-   * 7. RENDERIZAÇÃO PIXEL ART (CENÁRIO PARALLAX, TERRENOS, CANO MARIO E HUD)
+   * 7. RENDERIZAÇÃO PIXEL ART (CENÁRIOS, FIRE BARS, MOLAS, BLOCOS ?, CHEFÕES E HUD)
    */
   function drawPixelCloud(x, y, scale) {
     ctx.save();
     ctx.translate(Math.round(x), Math.round(y));
     ctx.scale(scale, scale);
-    ctx.fillStyle = world.theme === 'sunset' ? '#ffd9b3' : '#cbeeff';
+    ctx.fillStyle = world.theme === 'sunset' ? '#ffd9b3' : (world.theme === 'night' || world.theme === 'storm' ? '#3d5a80' : '#cbeeff');
     ctx.fillRect(-38, 8, 92, 16);
-    ctx.fillStyle = world.theme === 'sunset' ? '#fff4e6' : '#ffffff';
+    ctx.fillStyle = world.theme === 'sunset' ? '#fff4e6' : (world.theme === 'night' || world.theme === 'storm' ? '#6282ab' : '#ffffff');
     ctx.fillRect(-34, 2, 84, 18);
     ctx.fillRect(-20, -14, 34, 22);
     ctx.fillRect(6, -24, 38, 30);
@@ -2596,7 +4209,6 @@
     ctx.fillStyle = '#071224';
     ctx.fillRect(0, 0, W, H);
 
-    // Parede de tijolos subterrâneos em parallax
     const tileW = 64;
     const tileH = 32;
     const shiftX = (camX * 0.35) % tileW;
@@ -2609,7 +4221,6 @@
       }
     }
 
-    // Cristais brilhantes decorativos no fundo da caverna bônus
     const crystals = [190, 440, 720, 990];
     for (const cx of crystals) {
       const sx = Math.round(cx - camX * 0.5);
@@ -2636,6 +4247,22 @@
       skyGrad.addColorStop(0.45, '#d96b27');
       skyGrad.addColorStop(0.82, '#ffae34');
       skyGrad.addColorStop(1, '#ffe599');
+    } else if (world.theme === 'canyon') {
+      skyGrad.addColorStop(0, '#4a1c40');
+      skyGrad.addColorStop(0.5, '#c85a32');
+      skyGrad.addColorStop(1, '#f5b971');
+    } else if (world.theme === 'night') {
+      skyGrad.addColorStop(0, '#040b1a');
+      skyGrad.addColorStop(0.6, '#0f2952');
+      skyGrad.addColorStop(1, '#1e4d82');
+    } else if (world.theme === 'alpine') {
+      skyGrad.addColorStop(0, '#1b6ca8');
+      skyGrad.addColorStop(0.6, '#7ec8e3');
+      skyGrad.addColorStop(1, '#e8f6ff');
+    } else if (world.theme === 'storm') {
+      skyGrad.addColorStop(0, '#16092b');
+      skyGrad.addColorStop(0.55, '#3b1c6e');
+      skyGrad.addColorStop(1, '#7a3ec9');
     } else {
       skyGrad.addColorStop(0, '#067cf5');
       skyGrad.addColorStop(0.65, '#3eb5ff');
@@ -2643,6 +4270,15 @@
     }
     ctx.fillStyle = skyGrad;
     ctx.fillRect(0, 0, W, H);
+
+    if (world.theme === 'night' || world.theme === 'storm') {
+      ctx.fillStyle = '#fff9c4';
+      for (let i = 0; i < 28; i++) {
+        const sx = (i * 173) % W;
+        const sy = 30 + ((i * 97) % 190);
+        ctx.fillRect(sx, sy, (i % 3 === 0) ? 3 : 2, (i % 3 === 0) ? 3 : 2);
+      }
+    }
 
     const cloudSpan = 1300;
     for (let i = 0; i < 6; i++) {
@@ -2656,7 +4292,7 @@
     const mShift = camX * 0.16;
     for (let i = -1; i < 4; i++) {
       const bx = i * mSpan - (mShift % mSpan);
-      ctx.fillStyle = world.theme === 'sunset' ? '#6b3e5e' : '#4c88c9';
+      ctx.fillStyle = world.theme === 'sunset' ? '#6b3e5e' : (world.theme === 'canyon' ? '#8c3b2b' : (world.theme === 'storm' ? '#2c1554' : '#4c88c9'));
       ctx.beginPath();
       ctx.moveTo(bx, 440);
       ctx.lineTo(bx + 210, 185);
@@ -2664,7 +4300,7 @@
       ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = world.theme === 'sunset' ? '#9e5868' : '#6da7e3';
+      ctx.fillStyle = world.theme === 'alpine' ? '#ffffff' : (world.theme === 'sunset' ? '#9e5868' : (world.theme === 'storm' ? '#522994' : '#6da7e3'));
       ctx.beginPath();
       ctx.moveTo(bx + 210, 185);
       ctx.lineTo(bx + 135, 310);
@@ -2673,7 +4309,7 @@
       ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = world.theme === 'sunset' ? '#4d2b47' : '#3872b2';
+      ctx.fillStyle = world.theme === 'sunset' ? '#4d2b47' : (world.theme === 'storm' ? '#1f0d3d' : '#3872b2');
       ctx.beginPath();
       ctx.moveTo(bx + 300, 440);
       ctx.lineTo(bx + 490, 215);
@@ -2686,13 +4322,13 @@
     const bushShift = camX * 0.34;
     for (let i = -1; i < 8; i++) {
       const x = i * bushSpan - (bushShift % bushSpan);
-      ctx.fillStyle = world.theme === 'sunset' ? '#2d4a3e' : '#1f7a5c';
+      ctx.fillStyle = world.theme === 'sunset' ? '#2d4a3e' : (world.theme === 'storm' ? '#261447' : '#1f7a5c');
       ctx.beginPath();
       ctx.arc(x + 50, 355, 62, 0, Math.PI * 2);
       ctx.arc(x + 125, 340, 74, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = world.theme === 'sunset' ? '#3f6b53' : '#2fa168';
+      ctx.fillStyle = world.theme === 'sunset' ? '#3f6b53' : (world.theme === 'storm' ? '#3d2270' : '#2fa168');
       ctx.beginPath();
       ctx.arc(x + 50, 348, 50, 0, Math.PI * 2);
       ctx.arc(x + 125, 332, 60, 0, Math.PI * 2);
@@ -2703,8 +4339,7 @@
   function drawSceneryProps(camX) {
     if (world.inBonus) return;
 
-    const treePositions = [95, 660, 1520, 2290, 3450, 4410, 5740, 6540, 7200];
-    for (const tx of treePositions) {
+    for (let tx = 95; tx < world.worldWidth - 200; tx += 680) {
       const sx = tx - camX;
       if (sx < -160 || sx > W + 160) continue;
       const gy = 432;
@@ -2717,7 +4352,7 @@
       ctx.lineWidth = 3;
       ctx.strokeRect(sx - 18, gy - 145, 36, 145);
 
-      const blobs = world.theme === 'sunset'
+      const blobs = world.theme === 'sunset' || world.theme === 'canyon'
         ? [
             [0, -175, 68, '#7a3b12'],
             [-45, -145, 48, '#a65117'],
@@ -2740,8 +4375,7 @@
       }
     }
 
-    const fencePositions = [180, 1620, 2650, 3880, 5880, 6620];
-    for (const fx of fencePositions) {
+    for (let fx = 180; fx < world.worldWidth - 300; fx += 1250) {
       const sx = fx - camX;
       if (sx < -220 || sx > W + 220) continue;
       const gy = 432;
@@ -2766,6 +4400,8 @@
   function drawPlatforms(camX) {
     const activePlatforms = world.inBonus ? world.bonusRoom.platforms : world.platforms;
     const activeMovingPlats = world.inBonus ? [] : world.movingPlatforms;
+    const activeFallingPlats = world.inBonus ? [] : world.fallingPlatforms;
+    const activeQBlocks = world.inBonus ? [] : world.questionBlocks;
     const activeCrates = world.inBonus ? [] : world.crates;
 
     for (const plat of activePlatforms) {
@@ -2785,12 +4421,12 @@
           ctx.fillRect(rx + 6, plat.y + 48, 10, 8);
         }
 
-        ctx.fillStyle = world.theme === 'sunset' ? '#63b82e' : '#4ad636';
+        ctx.fillStyle = world.theme === 'sunset' ? '#63b82e' : (world.theme === 'alpine' ? '#9be8ff' : (world.theme === 'storm' ? '#9b5de5' : '#4ad636'));
         ctx.fillRect(sx, plat.y, plat.w, 16);
-        ctx.fillStyle = world.theme === 'sunset' ? '#a6e848' : '#89ff54';
+        ctx.fillStyle = world.theme === 'sunset' ? '#a6e848' : (world.theme === 'alpine' ? '#ffffff' : (world.theme === 'storm' ? '#e0aaff' : '#89ff54'));
         ctx.fillRect(sx, plat.y, plat.w, 5);
 
-        ctx.fillStyle = '#2fa122';
+        ctx.fillStyle = world.theme === 'alpine' ? '#58b4d1' : (world.theme === 'storm' ? '#5a189a' : '#2fa122');
         for (let gx = plat.x; gx < plat.x + plat.w - 8; gx += 16) {
           const rx = Math.round(gx - camX);
           ctx.fillRect(rx + 2, plat.y + 15, 10, 6);
@@ -2800,7 +4436,6 @@
         ctx.lineWidth = 3;
         ctx.strokeRect(sx, plat.y, plat.w, plat.h);
       } else if (plat.style && plat.style.startsWith('brick')) {
-        // Tijolos azuis clássicos de fase bônus subterrânea
         ctx.fillStyle = '#235c9c';
         ctx.fillRect(sx, plat.y, plat.w, plat.h);
         ctx.fillStyle = '#4895e8';
@@ -2823,20 +4458,11 @@
       }
     }
 
-    // Plataformas Elevadoras (Sobem e Descobrem)
+    // Plataformas Móveis (Verticais e Horizontais)
     for (const mp of activeMovingPlats) {
       const sx = Math.round(mp.x - camX);
       const sy = Math.round(mp.y);
       if (sx + mp.w < -40 || sx > W + 40) continue;
-
-      // Guia vertical pontilhada sutil
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-      ctx.setLineDash([5, 5]);
-      ctx.beginPath();
-      ctx.moveTo(sx + mp.w / 2, mp.baseY - mp.ampY);
-      ctx.lineTo(sx + mp.w / 2, mp.baseY + mp.ampY + mp.h);
-      ctx.stroke();
-      ctx.setLineDash([]);
 
       ctx.fillStyle = '#d4822a';
       ctx.fillRect(sx, sy, mp.w, mp.h);
@@ -2845,6 +4471,48 @@
       ctx.strokeStyle = '#261305';
       ctx.lineWidth = 3;
       ctx.strokeRect(sx, sy, mp.w, mp.h);
+    }
+
+    // Pontes Pontilhadas que Caem ao Pisar e Reaparecem
+    for (const fp of activeFallingPlats) {
+      if (fp.fallen) continue;
+      const shake = (fp.triggered && fp.timer < 0.55) ? Math.sin(world.elapsed * 55) * 3 : 0;
+      const sx = Math.round(fp.x - camX + shake);
+      const sy = Math.round(fp.y);
+      if (sx + fp.w < -40 || sx > W + 40) continue;
+
+      ctx.fillStyle = fp.triggered ? '#d9534f' : '#b87435';
+      ctx.fillRect(sx, sy, fp.w, fp.h);
+      ctx.fillStyle = '#f0ad4e';
+      ctx.fillRect(sx + 3, sy + 3, fp.w - 6, 5);
+      ctx.strokeStyle = '#261305';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([8, 4]);
+      ctx.strokeRect(sx, sy, fp.w, fp.h);
+      ctx.setLineDash([]);
+    }
+
+    // Blocos Bônus Imóveis "?"
+    for (const qb of activeQBlocks) {
+      const sx = Math.round(qb.x - camX);
+      const sy = Math.round(qb.y + qb.bounceY);
+      if (sx + qb.w < -40 || sx > W + 40) continue;
+
+      ctx.fillStyle = qb.used ? '#6c7a89' : '#ffae19';
+      ctx.fillRect(sx, sy, qb.w, qb.h);
+      ctx.fillStyle = qb.used ? '#95a5a6' : '#ffe047';
+      ctx.fillRect(sx + 4, sy + 4, qb.w - 8, 8);
+      ctx.strokeStyle = '#241300';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(sx, sy, qb.w, qb.h);
+
+      if (!qb.used) {
+        ctx.fillStyle = '#241300';
+        ctx.font = '900 22px Rubik, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('?', sx + qb.w / 2, sy + 30);
+        ctx.textAlign = 'left';
+      }
     }
 
     for (const c of activeCrates) {
@@ -2879,7 +4547,6 @@
       const bodyX = sx + 5;
       const bodyW = pipe.w - 10;
 
-      // Corpo do Cano Verde (estilo Super Mario)
       ctx.fillStyle = '#1fa838';
       ctx.fillRect(bodyX, sy + lipH, bodyW, pipe.h - lipH);
       ctx.fillStyle = '#57e36b';
@@ -2890,7 +4557,6 @@
       ctx.lineWidth = 3;
       ctx.strokeRect(bodyX, sy + lipH, bodyW, pipe.h - lipH);
 
-      // Borda superior do Cano
       ctx.fillStyle = '#27c443';
       ctx.fillRect(sx, sy, pipe.w, lipH);
       ctx.fillStyle = '#7dff8e';
@@ -2899,7 +4565,6 @@
       ctx.fillRect(sx + pipe.w - 14, sy + 2, 14, lipH - 4);
       ctx.strokeRect(sx, sy, pipe.w, lipH);
 
-      // Indicação visual sutil para agachar
       if (pipe.label) {
         ctx.fillStyle = '#7dff9b';
         ctx.font = '900 11px Rubik, sans-serif';
@@ -2910,8 +4575,173 @@
     }
   }
 
+  function drawSpringsAndFireBars(camX) {
+    if (world.inBonus) return;
+
+    // Molas / Trampolins (estilo Baby Looney Tunes / Sonic)
+    for (const sp of world.springs) {
+      const sx = Math.round(sp.x - camX);
+      const sy = Math.round(sp.y);
+      if (sx + sp.w < -40 || sx > W + 40) continue;
+
+      const stretch = Math.round(sp.bounceAnim * 12);
+      // Base metálica
+      ctx.fillStyle = '#414c59';
+      ctx.fillRect(sx + 4, sy + sp.h - 6, sp.w - 8, 6);
+      // Mola espiral
+      ctx.strokeStyle = '#ffd426';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(sx + 10, sy + sp.h - 6);
+      ctx.lineTo(sx + sp.w - 10, sy + 12 - stretch / 2);
+      ctx.lineTo(sx + 10, sy + 6 - stretch);
+      ctx.stroke();
+      // Topo vermelho acolchoado
+      ctx.fillStyle = '#de3626';
+      ctx.fillRect(sx, sy - stretch, sp.w, 8);
+      ctx.fillStyle = '#ff8080';
+      ctx.fillRect(sx + 4, sy + 1 - stretch, sp.w - 8, 3);
+      ctx.strokeStyle = '#141013';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(sx, sy - stretch, sp.w, 8);
+    }
+
+    // Barras de Fogo Giratórias (Fire Bars estilo Mario)
+    for (const fb of world.fireBars) {
+      const px = Math.round(fb.cx - camX);
+      const py = Math.round(fb.cy);
+      if (px < -180 || px > W + 180) continue;
+
+      // Bloco pivô central
+      ctx.fillStyle = '#5c6675';
+      ctx.fillRect(px - 14, py - 14, 28, 28);
+      ctx.strokeStyle = '#141013';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(px - 14, py - 14, 28, 28);
+      ctx.fillStyle = '#ffd426';
+      ctx.fillRect(px - 4, py - 4, 8, 8);
+
+      // Esferas de fogo girando em 360°
+      for (let idx = 1; idx <= fb.count; idx++) {
+        const dist = idx * fb.spacing;
+        const fx = Math.round(px + Math.cos(fb.angle) * dist);
+        const fy = Math.round(py + Math.sin(fb.angle) * dist);
+
+        ctx.fillStyle = '#ff5400';
+        ctx.beginPath();
+        ctx.arc(fx, fy, 9, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffe647';
+        ctx.beginPath();
+        ctx.arc(fx, fy, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  function drawBossAndProjectiles(camX) {
+    if (world.inBonus) return;
+
+    // Itens bônus emergidos dos Blocos "?"
+    for (const it of world.powerItems) {
+      const sx = Math.round(it.x - camX);
+      const sy = Math.round(it.y + Math.sin(it.phase) * 4);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.beginPath();
+      ctx.arc(sx + 15, sy + 15, 20, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.font = '24px Rubik, sans-serif';
+      const iconMap = { fire: '🔥', sword: '⚔️', shield: '🛡️', heart: '❤️', scarf: '🧣' };
+      ctx.fillText(iconMap[it.type] || '⭐', sx + 2, sy + 24);
+    }
+
+    // Bolas de fogo do jogador
+    for (const pr of world.projectiles) {
+      const sx = Math.round(pr.x - camX);
+      const sy = Math.round(pr.y);
+      ctx.fillStyle = '#ff6a00';
+      ctx.beginPath();
+      ctx.arc(sx, sy, pr.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffe647';
+      ctx.beginPath();
+      ctx.arc(sx, sy, pr.r * 0.55, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Ondas de choque rasteiras do Guardião da Floresta
+    for (const sw of world.shockwaves) {
+      const sx = Math.round(sw.x - camX);
+      const sy = Math.round(sw.y);
+      ctx.fillStyle = '#ffae34';
+      ctx.beginPath();
+      ctx.moveTo(sx, sy + sw.h);
+      ctx.lineTo(sx + sw.w / 2, sy);
+      ctx.lineTo(sx + sw.w, sy + sw.h);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Projéteis dos chefões Luiz Felipe e Abraão Gessé
+    for (const bp of world.bossProjectiles) {
+      const sx = Math.round(bp.x - camX);
+      const sy = Math.round(bp.y);
+      ctx.fillStyle = bp.color;
+      ctx.beginPath();
+      ctx.arc(sx, sy, bp.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // Renderização dos 3 Chefões Animados em Pixel Art Matricial
+    const b = world.boss;
+    if (b && !b.defeated) {
+      const sx = Math.round(b.x - camX);
+      const sy = Math.round(b.y);
+      if (sx + b.w > -80 && sx < W + 80) {
+        if (b.hurtTimer > 0 && Math.floor(b.hurtTimer * 20) % 2 === 0) return;
+
+        const frame = Math.floor(world.elapsed * 5) % 2;
+        let bossSprite = BOSS_GUARDIAN_1;
+        if (b.type === 'guardiao') {
+          bossSprite = frame === 0 ? BOSS_GUARDIAN_1 : BOSS_GUARDIAN_2;
+        } else if (b.type === 'luiz_felipe') {
+          bossSprite = frame === 0 ? BOSS_LUIZ_1 : BOSS_LUIZ_2;
+        } else if (b.type === 'abraao_gesse') {
+          bossSprite = frame === 0 ? BOSS_ABRAAO_1 : BOSS_ABRAAO_2;
+        }
+
+        ctx.save();
+        ctx.translate(sx + b.w / 2, sy + b.h);
+        if (b.vx > 0) ctx.scale(-1, 1);
+        ctx.drawImage(bossSprite, Math.round(-bossSprite.width / 2), Math.round(-bossSprite.height));
+        ctx.restore();
+
+        // Barra de vida e Nome do Chefão acima da cabeça
+        const barW = 112;
+        const barX = sx + b.w / 2 - barW / 2;
+        const barY = sy - 26;
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(barX, barY, barW, 10);
+        ctx.fillStyle = b.colorLight;
+        ctx.fillRect(barX + 2, barY + 2, (barW - 4) * (b.hp / b.maxHp), 6);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 11px Rubik, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`👑 ${b.name} (${b.hp}/${b.maxHp})`, sx + b.w / 2, barY - 5);
+        ctx.textAlign = 'left';
+      }
+    }
+  }
+
   function drawHazardsAndProps(camX) {
     drawPipes(camX);
+    drawSpringsAndFireBars(camX);
 
     if (!world.inBonus) {
       for (const h of world.hazards) {
@@ -2945,7 +4775,6 @@
             ctx.stroke();
           }
         } else if (h.type === 'bobber') {
-          // Totem / Obstáculo Móvel Vertical que Sobe e Desce
           ctx.fillStyle = '#5c6675';
           ctx.fillRect(sx, sy + 12, h.w, h.h - 12);
           ctx.fillStyle = '#8693a6';
@@ -2954,7 +4783,6 @@
           ctx.lineWidth = 3;
           ctx.strokeRect(sx, sy + 12, h.w, h.h - 12);
 
-          // Ponta de espinho no topo do totem
           ctx.fillStyle = '#ffd426';
           ctx.beginPath();
           ctx.moveTo(sx, sy + 12);
@@ -2964,7 +4792,6 @@
           ctx.fill();
           ctx.stroke();
 
-          // Olhos de totem
           ctx.fillStyle = '#ff4d4d';
           ctx.fillRect(sx + 10, sy + 28, 7, 7);
           ctx.fillRect(sx + h.w - 17, sy + 28, 7, 7);
@@ -3010,33 +4837,84 @@
 
           ctx.fillStyle = '#fff';
           ctx.fillRect(sx + (h.vx > 0 ? 22 : 8), sy + 14, 6, 5);
+        } else if (h.type === 'spiny') {
+          // Inimigo Espinhoso (Spiny) — Casco vermelho com espinhos brancos afiados (não pule em cima!)
+          ctx.fillStyle = '#c92a2a';
+          ctx.beginPath();
+          ctx.arc(sx + h.w / 2, sy + h.h - 4, h.w / 2, Math.PI, 0);
+          ctx.fill();
+          ctx.strokeStyle = '#180c24';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+
+          ctx.fillStyle = '#ffffff';
+          for (let s = 0; s < 4; s++) {
+            const px = sx + 4 + s * 8;
+            ctx.beginPath();
+            ctx.moveTo(px, sy + 11);
+            ctx.lineTo(px + 4, sy - 6);
+            ctx.lineTo(px + 8, sy + 11);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+          }
+
+          ctx.fillStyle = '#ffd426';
+          ctx.fillRect(sx + (h.vx > 0 ? 24 : 8), sy + 15, 6, 5);
+        } else if (h.type === 'bird') {
+          const wingFlap = Math.sin(world.elapsed * 18) * 8;
+          ctx.fillStyle = '#d93829';
+          ctx.beginPath();
+          ctx.ellipse(sx + h.w / 2, sy + h.h / 2, h.w / 2, h.h / 2.4, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#1b1010';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          ctx.fillStyle = '#ffd426';
+          ctx.beginPath();
+          ctx.moveTo(sx + h.w / 2 - 8, sy + 10);
+          ctx.lineTo(sx + h.w / 2 + 8, sy + 10);
+          ctx.lineTo(sx + h.w / 2, sy - 6 + wingFlap);
+          ctx.closePath();
+          ctx.fill();
+        } else if (h.type === 'hopper') {
+          ctx.fillStyle = '#1f8a4c';
+          ctx.fillRect(sx + 4, sy + 6, h.w - 8, h.h - 6);
+          ctx.strokeStyle = '#0d2b18';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(sx + 4, sy + 6, h.w - 8, h.h - 6);
+          ctx.fillStyle = '#ffe047';
+          ctx.fillRect(sx + 8, sy + 12, 7, 7);
+          ctx.fillRect(sx + h.w - 15, sy + 12, 7, 7);
         }
       }
 
-      const cp = world.checkpoint;
-      const cpx = Math.round(cp.x - camX);
-      if (cpx > -80 && cpx < W + 80) {
-        ctx.fillStyle = '#6e3d19';
-        ctx.fillRect(cpx - 18, cp.y - 10, 36, 10);
-        if (cp.activated) {
-          const flicker = Math.sin(world.elapsed * 18) * 4;
-          ctx.fillStyle = '#ff6a00';
-          ctx.beginPath();
-          ctx.moveTo(cpx - 14, cp.y - 10);
-          ctx.lineTo(cpx, cp.y - 42 + flicker);
-          ctx.lineTo(cpx + 14, cp.y - 10);
-          ctx.fill();
+      for (const cp of world.checkpoints) {
+        const cpx = Math.round(cp.x - camX);
+        if (cpx > -80 && cpx < W + 80) {
+          ctx.fillStyle = '#6e3d19';
+          ctx.fillRect(cpx - 18, cp.y - 10, 36, 10);
+          if (cp.activated) {
+            const flicker = Math.sin(world.elapsed * 18) * 4;
+            ctx.fillStyle = '#ff6a00';
+            ctx.beginPath();
+            ctx.moveTo(cpx - 14, cp.y - 10);
+            ctx.lineTo(cpx, cp.y - 42 + flicker);
+            ctx.lineTo(cpx + 14, cp.y - 10);
+            ctx.fill();
 
-          ctx.fillStyle = '#ffe033';
-          ctx.beginPath();
-          ctx.moveTo(cpx - 7, cp.y - 10);
-          ctx.lineTo(cpx, cp.y - 28 - flicker);
-          ctx.lineTo(cpx + 7, cp.y - 10);
-          ctx.fill();
+            ctx.fillStyle = '#ffe033';
+            ctx.beginPath();
+            ctx.moveTo(cpx - 7, cp.y - 10);
+            ctx.lineTo(cpx, cp.y - 28 - flicker);
+            ctx.lineTo(cpx + 7, cp.y - 10);
+            ctx.fill();
+          }
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 11px Rubik, sans-serif';
+          ctx.fillText(cp.activated ? 'CHECKPOINT ✓' : 'FOGUEIRA', cpx - 32, cp.y - 48);
         }
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 11px Rubik, sans-serif';
-        ctx.fillText(cp.activated ? 'CHECKPOINT ✓' : 'FOGUEIRA', cpx - 32, cp.y - 48);
       }
 
       const gx = Math.round(world.goal.x - camX);
@@ -3080,6 +4958,8 @@
         ctx.fill();
       }
     }
+
+    drawBossAndProjectiles(camX);
 
     const activeScarves = world.inBonus ? world.bonusRoom.scarves : world.scarves;
     for (const sc of activeScarves) {
@@ -3138,7 +5018,34 @@
       ctx.scale(-1, 1);
     }
     ctx.drawImage(sprite, Math.round(-sprite.width / 2), Math.round(-sprite.height));
+
+    if (p.weapon === 'sword') {
+      const swingAngle = p.swordSwingTimer > 0 ? 0.95 : -0.35;
+      ctx.save();
+      ctx.translate(14, -36);
+      ctx.rotate(swingAngle);
+      ctx.fillStyle = '#ffd426';
+      ctx.fillRect(-3, -6, 12, 4);
+      ctx.fillStyle = '#8ce8ff';
+      ctx.fillRect(0, -34, 6, 28);
+      ctx.strokeStyle = '#092642';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(0, -34, 6, 28);
+      ctx.restore();
+    }
     ctx.restore();
+
+    if (p.shieldTimer > 0) {
+      ctx.save();
+      ctx.strokeStyle = '#54e8ff';
+      ctx.fillStyle = 'rgba(84, 232, 255, 0.2)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(sx + p.w / 2, sy + p.h / 2, 48 + Math.sin(world.elapsed * 16) * 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
   }
 
   function drawHUD() {
@@ -3164,6 +5071,16 @@
     ctx.font = '900 17px Rubik, sans-serif';
     ctx.fillText(`${p.scarves} / 20`, 104, 58);
 
+    if (p.weapon || p.shieldTimer > 0) {
+      let badgeStr = '';
+      if (p.weapon === 'fire') badgeStr += '🔥 FOGO (X)  ';
+      if (p.weapon === 'sword') badgeStr += '⚔️ ESPADA (X)  ';
+      if (p.shieldTimer > 0) badgeStr += `🛡️ ${p.shieldTimer.toFixed(1)}s`;
+      ctx.fillStyle = '#ffd426';
+      ctx.font = '900 11px Rubik, sans-serif';
+      ctx.fillText(badgeStr.trim(), 18, 90);
+    }
+
     ctx.fillStyle = 'rgba(10, 28, 54, 0.9)';
     ctx.strokeStyle = world.inBonus ? '#57e378' : '#92b6db';
     roundRect(ctx, 280, 12, 400, 48, 12, true, true);
@@ -3172,7 +5089,7 @@
     ctx.fillStyle = '#ffffff';
     ctx.font = '800 11px Rubik, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(world.inBonus ? `${world.stageLabel} · SALA BÔNUS` : world.stageLabel, 492, 29);
+    ctx.fillText(world.inBonus ? `${world.stageLabel} · SALA BÔNUS` : `${world.stageLabel} · POR ABRAÃO GESSÉ`, 492, 29);
     ctx.fillStyle = world.inBonus ? '#7dff9b' : '#ffd426';
     ctx.font = '900 15px Rubik, sans-serif';
     ctx.fillText(world.inBonus ? 'CAVERNA SECRETA DOS LENÇOS' : world.stageTitle, 492, 49);
@@ -3268,7 +5185,6 @@
     requestAnimationFrame(gameLoop);
   }
 
-  // Inicializa o mundo em segundo plano, atualiza seletor de fases e sincroniza ranking/insígnias
   updateStageSelectorUI();
   resetGame(1);
   renderDeviceInsignias();
